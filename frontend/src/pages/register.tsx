@@ -19,7 +19,7 @@ type FormType = {
   remember: boolean;
 };
 
-export default function Login() {
+export default function Register() {
   const [visible, { toggle }] = useDisclosure(false);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<FormType>({
@@ -48,16 +48,14 @@ export default function Login() {
     <AuthLayout>
       <Card shadow="sm" padding="lg" radius="lg" withBorder p={40}>
         <div className="flex flex-col gap-1 mb-4">
-          <h1 className="text-lg font-bold">Login</h1>
-          <p className="text-xs">
-            Selamat datang kembali, masukkan kredensial Anda untuk melanjutkan.
-          </p>
+          <h1 className="text-lg font-bold">Register</h1>
+          <p className="text-xs">Silakan masuk jika Anda sudah membuat akun.</p>
         </div>
         <Button
           leftSection={<FcGoogle size={12} />}
           variant="default"
           radius="md">
-          <p className="text-xs">Masuk dengan google</p>
+          <p className="text-xs">Register dengan google</p>
         </Button>
         <div className="flex gap-3 justify-between items-center [&>span]:border [&>span]:border-gray-100 [&>span]:w-full my-4 text-xs">
           <span></span>
@@ -89,19 +87,41 @@ export default function Login() {
             visible={visible}
             onVisibilityChange={toggle}
           />
+          <PasswordInput
+            label="Konfirmasi Password"
+            placeholder=""
+            required
+            mt="md"
+            key={form.key('password')}
+            {...form.getInputProps('password', { type: 'checkbox' })}
+            radius="md"
+            leftSection={<IconLock size={14} />}
+            readOnly={isLoading}
+            visible={visible}
+            onVisibilityChange={toggle}
+          />
           <div className="flex justify-between items-center my-5">
             <Checkbox
-              label="Ingat saja saya"
+              label={
+                <p>
+                  Saya setuju dengan{' '}
+                  <TextLink
+                    href="/terms"
+                    text="Ketentuan
+                  Layanan"
+                  />{' '}
+                  dan <TextLink href="/privacy" text="Kebijakan Privasi" />
+                </p>
+              }
               size="xs"
               key={form.key('remember')}
               {...form.getInputProps('remember', { type: 'checkbox' })}
             />
-            <TextLink href="/forgot-password" text="Lupa password?" />
           </div>
           <div className="flex justify-between items-center">
-            <TextLink href="/register" text="Register" />
+            <TextLink href="/login" text="Sudah daftar?" />
             <Button variant="filled" size="xs" type="submit">
-              Log in
+              Register
             </Button>
           </div>
         </form>

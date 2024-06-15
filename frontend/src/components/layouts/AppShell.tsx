@@ -31,10 +31,10 @@ export default function Appshell({ children }: Props) {
   const isActivePage = (href: string) =>
     rootPath.split('/').includes(href.replace('/', ''));
 
-  const pathNotNavbar = ['/login', '/register'];
+  const pathNotNavbar = ['/login', '/register', '/terms'];
 
   return pathNotNavbar.includes(rootPath) ? (
-    <Container size="lg">{children}</Container>
+    children
   ) : (
     <AppShell
       header={{ height: 60 }}

@@ -9,8 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cWhite: '#eef2f5',
-        cPrimary: '#00957B',
+        mantineBlue: '#228be6',
+      },
+      fontFamily: {
+        sans: ['var(--font-gt-walsheim)'],
       },
     },
   },

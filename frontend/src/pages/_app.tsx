@@ -12,9 +12,7 @@ import { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import Appshell from '@/components/layouts/AppShell';
 
-const theme = createTheme({
-  // primaryColor: '#000',
-});
+const theme = createTheme({});
 
 const quicksand = Quicksand({ subsets: ['latin'] });
 
