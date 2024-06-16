@@ -1,6 +1,8 @@
 import { ContentModel } from '@/models/contentModel';
-import { Button } from '@mantine/core';
+import { Button, Divider, SimpleGrid } from '@mantine/core';
 import React from 'react';
+import CardContent from '../atoms/CardContent';
+import TextLink from '../atoms/TextLink';
 
 type Props = {
   title: string;
@@ -9,18 +11,19 @@ type Props = {
 
 export default function SectionListContent({ title, data }: Props) {
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h1>{title}</h1>
-        <Button variant="filled" size="xs">
-          Tampilkan lebih banyak
-        </Button>
-      </div>
+    <div className="flex flex-col gap-4">
       <div>
-        {data.map((item) => (
-          <div key={item.id}>{item.title}</div>
-        ))}
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-bold">{title}</h1>
+          <TextLink href="" text="Tampilkan lebih banyak" />
+        </div>
+        <Divider mt={10} />
       </div>
+      <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }}>
+        {data.map((item) => (
+          <CardContent key={item.id} {...item} />
+        ))}
+      </SimpleGrid>
     </div>
   );
 }

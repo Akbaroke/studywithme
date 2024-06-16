@@ -8,7 +8,7 @@ type Props = {
 
 function Logo({ className }: Props) {
   return (
-    <Link href="/" className={cn('font-bold w-max text-1xl', className)}>
+    <Link href="/" className={cn('font-bold w-max text-2xl', className)}>
       studywithme_
     </Link>
   );

@@ -1,14 +1,28 @@
 import Banner from '@/components/atoms/Banner';
 import SectionListContent from '@/components/molecules/SectionListContent';
+import {
+  freeLearningContents,
+  latestLearningContents,
+  mostViewedContents,
+} from '@/data/fakeDataContent';
 import React from 'react';
 
 function Home() {
   return (
-    <div>
+    <div className="flex flex-col gap-10">
       <Banner />
-      <SectionListContent title="Paling Banyak Dilihat" data={[]} />
-      <SectionListContent title="Pembelajaran Gratis" data={[]} />
-      <SectionListContent title="Pembelajaran Terbaru" data={[]} />
+      <SectionListContent
+        title="Paling Banyak Dilihat"
+        data={mostViewedContents}
+      />
+      <SectionListContent
+        title="Pembelajaran Gratis"
+        data={freeLearningContents}
+      />
+      <SectionListContent
+        title="Pembelajaran Terbaru"
+        data={latestLearningContents}
+      />
     </div>
   );
 }
