@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Divider,
   PasswordInput,
   TextInput,
 } from '@mantine/core';
@@ -9,14 +10,14 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconAt, IconLock } from '@tabler/icons-react';
 import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { isEmail, useForm } from '@mantine/form';
+import { isEmail, matchesField, useForm } from '@mantine/form';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import TextLink from '@/components/atoms/TextLink';
 
 type FormType = {
   email: string;
   password: string;
-  remember: boolean;
+  confirmPassword: string;
 };
 
 export default function Register() {
@@ -27,7 +28,7 @@ export default function Register() {
     initialValues: {
       email: '',
       password: '',
-      remember: false,
+      confirmPassword: '',
     },
     validate: {
       email: isEmail('Email tidak valid.'),
@@ -37,6 +38,10 @@ export default function Register() {
           : /^(?=.*\d)(?=.*[a-zA-Z])/.test(value)
           ? null
           : 'Password harus mengandung angka dan huruf.',
+      confirmPassword: matchesField(
+        'password',
+        'Harus sama dengan kata sandi.'
+      ),
     },
   });
 
@@ -57,11 +62,7 @@ export default function Register() {
           radius="md">
           <p className="text-xs">Register dengan google</p>
         </Button>
-        <div className="flex gap-3 justify-between items-center [&>span]:border [&>span]:border-gray-100 [&>span]:w-full my-4 text-xs">
-          <span></span>
-          <p>Atau</p>
-          <span></span>
-        </div>
+        <Divider my="xs" label="Atau" labelPosition="center" mt={20} />
         <form onSubmit={form.onSubmit((values) => hanldeSubmitForm(values))}>
           <TextInput
             label="Email"
@@ -92,8 +93,8 @@ export default function Register() {
             placeholder=""
             required
             mt="md"
-            key={form.key('password')}
-            {...form.getInputProps('password', { type: 'checkbox' })}
+            key={form.key('confirmPassword')}
+            {...form.getInputProps('confirmPassword', { type: 'checkbox' })}
             radius="md"
             leftSection={<IconLock size={14} />}
             readOnly={isLoading}
@@ -107,10 +108,16 @@ export default function Register() {
                   Saya setuju dengan{' '}
                   <TextLink
                     href="/terms"
+                    target="_blank"
                     text="Ketentuan
                   Layanan"
                   />{' '}
-                  dan <TextLink href="/privacy" text="Kebijakan Privasi" />
+                  dan{' '}
+                  <TextLink
+                    href="/privacy"
+                    target="_blank"
+                    text="Kebijakan Privasi"
+                  />
                 </p>
               }
               size="xs"

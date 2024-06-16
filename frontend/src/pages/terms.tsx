@@ -4,7 +4,10 @@ import React from 'react';
 
 export default function Terms() {
   return (
-    <div className="max-w-screen-sm m-auto flex flex-col gap-3 my-20">
+    <div className="max-w-screen-sm m-auto flex flex-col gap-3 my-20 realative">
+      <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute -top-10 left-56 -z-10"></div>
+      <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute right-0 top-1/2 -z-10"></div>
+      <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute -right-10 top-1/4 -z-10"></div>
       <Image
         src={STUDYWITHME}
         alt="studywithme_"
@@ -12,9 +15,9 @@ export default function Terms() {
         width={70}
         className="mb-3"
       />
-      <h1 className="text-xl font-bold">{dataTerms.title}</h1>
+      <h1 className="text-2xl font-bold">{dataTerms.title}</h1>
       <p className="text-sm">{dataTerms.description}</p>
-      <div>
+      <div className="flex flex-col gap-3">
         {dataTerms.terms.map((item, index) => (
           <div key={index} className="flex flex-col gap-2">
             <h2 className="text-lg font-semibold">{item.title}</h2>

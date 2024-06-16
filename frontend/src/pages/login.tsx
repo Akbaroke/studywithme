@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Divider,
   PasswordInput,
   TextInput,
 } from '@mantine/core';
@@ -59,11 +60,7 @@ export default function Login() {
           radius="md">
           <p className="text-xs">Masuk dengan google</p>
         </Button>
-        <div className="flex gap-3 justify-between items-center [&>span]:border [&>span]:border-gray-100 [&>span]:w-full my-4 text-xs">
-          <span></span>
-          <p>Atau</p>
-          <span></span>
-        </div>
+        <Divider my="xs" label="Atau" labelPosition="center" mt={20} />
         <form onSubmit={form.onSubmit((values) => hanldeSubmitForm(values))}>
           <TextInput
             label="Email"

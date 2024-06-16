@@ -9,7 +9,7 @@ import { createTheme, MantineProvider } from '@mantine/core';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
-import { Analytics } from '@vercel/analytics/react';
+// import { Analytics } from '@vercel/analytics/react';
 import Appshell from '@/components/layouts/AppShell';
 
 const theme = createTheme({});
@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <Appshell>
           <Component {...pageProps} />
-          <Analytics />
+          {/* <Analytics /> */}
         </Appshell>
       </main>
     </MantineProvider>
