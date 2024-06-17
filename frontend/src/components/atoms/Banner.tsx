@@ -1,4 +1,4 @@
-import { BANNER_1 } from '@/assets';
+import { images } from '@/assets';
 import { Button } from '@mantine/core';
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -10,7 +10,7 @@ export default function Banner() {
   return (
     <div className="w-full h-max sm:h-[300px] rounded-xl overflow-hidden relative bg-black sm:p-8 p-5">
       <Image
-        src={BANNER_1}
+        src={images.BANNER_1}
         alt="banner_1"
         className="w-full h-full object-cover object-left absolute top-0 left-0 bottom-0 right-0"
       />

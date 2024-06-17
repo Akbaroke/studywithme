@@ -70,7 +70,7 @@ export default function Register() {
             type="email"
             required
             key={form.key('email')}
-            {...form.getInputProps('email', { type: 'checkbox' })}
+            {...form.getInputProps('email', { type: 'input' })}
             radius="md"
             leftSection={<IconAt size={14} />}
             readOnly={isLoading}
@@ -81,7 +81,7 @@ export default function Register() {
             required
             mt="md"
             key={form.key('password')}
-            {...form.getInputProps('password', { type: 'checkbox' })}
+            {...form.getInputProps('password', { type: 'input' })}
             radius="md"
             leftSection={<IconLock size={14} />}
             readOnly={isLoading}
@@ -94,7 +94,7 @@ export default function Register() {
             required
             mt="md"
             key={form.key('confirmPassword')}
-            {...form.getInputProps('confirmPassword', { type: 'checkbox' })}
+            {...form.getInputProps('confirmPassword', { type: 'input' })}
             radius="md"
             leftSection={<IconLock size={14} />}
             readOnly={isLoading}

@@ -1,3 +1,4 @@
+import { images } from '@/assets';
 import { ContentModel } from '@/models/contentModel';
 import { Badge, Card } from '@mantine/core';
 import { IconClock } from '@tabler/icons-react';
@@ -25,8 +26,8 @@ export default function CardContent({
       padding="md"
       radius="md"
       withBorder
-      className="cursor-pointer [&>div>div>img]:hover:scale-110">
-      <Card.Section className="relative">
+      className="cursor-pointer [&>div>div>img]:hover:scale-110 min-h-[320px]">
+      <Card.Section className="relative bg-black/20">
         {isPremium && (
           <Badge
             color="#000"
@@ -42,7 +43,7 @@ export default function CardContent({
         )}
         <LazyLoad className="w-full h-[150px] overflow-hidden" threshold={0.95}>
           <Image
-            src={thumbnail}
+            src={thumbnail ? thumbnail : images.DEFAULT_THUMBNAIL}
             height={160}
             width={160}
             className="w-full h-full object-cover object-center transition-all duration-300"
@@ -51,16 +52,18 @@ export default function CardContent({
         </LazyLoad>
       </Card.Section>
 
-      <div className="mt-3 flex flex-col gap-2">
-        <h1 className="text-md font-medium">{title}</h1>
-        <div className="flex gap-4 items-center">
-          <div className="flex text-gray-400 items-center gap-1 text-xs">
-            <IoStatsChart size={12} />
-            <p>{total_kliks}</p>
-          </div>
-          <div className="flex text-gray-400 items-center gap-1 text-xs">
-            <IconClock size={12} />
-            <p>{total_duration} menit</p>
+      <div className="mt-3 flex flex-col justify-between h-full">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-md font-medium">{title}</h1>
+          <div className="flex gap-4 items-center">
+            <div className="flex text-gray-400 items-center gap-1 text-xs">
+              <IoStatsChart size={12} />
+              <p>{total_kliks}</p>
+            </div>
+            <div className="flex text-gray-400 items-center gap-1 text-xs">
+              <IconClock size={12} />
+              <p>{total_duration} menit</p>
+            </div>
           </div>
         </div>
         <div className="flex gap-2 flex-wrap mt-3">

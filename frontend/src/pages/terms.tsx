@@ -1,4 +1,4 @@
-import { STUDYWITHME } from '@/assets';
+import { images } from '@/assets';
 import Image from 'next/image';
 import React from 'react';
 
@@ -9,7 +9,7 @@ export default function Terms() {
       <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute right-0 top-1/2 -z-10"></div>
       <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute -right-10 top-1/4 -z-10"></div>
       <Image
-        src={STUDYWITHME}
+        src={images.STUDYWITHME}
         alt="studywithme_"
         title="studywithme_"
         width={70}

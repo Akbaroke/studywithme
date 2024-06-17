@@ -15,6 +15,7 @@ import { useRef } from 'react';
 import ScrollToTop from '../atoms/ScrollToTop';
 import { useDisclosure } from '@mantine/hooks';
 import Logo from '../atoms/Logo';
+import Footer from '../molecules/Footer';
 
 type Props = {
   children: React.ReactNode;
@@ -150,7 +151,10 @@ export default function Appshell({ children }: Props) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Container size="md">{children}</Container>
+        <div className="flex flex-col gap-32">
+          <Container size="md">{children}</Container>
+          <Footer />
+        </div>
       </AppShell.Main>
     </AppShell>
   );
@@ -166,7 +170,7 @@ const navLinkData: LinkData[] = [
     href: '/categories',
   },
   {
-    label: 'Hubungi Kami',
-    href: '/contact-us',
+    label: 'Tentang Kami',
+    href: '/about',
   },
 ];

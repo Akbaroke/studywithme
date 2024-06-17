@@ -6,8 +6,7 @@ export const mostViewedContents: ContentModel[] = [
     id: '1',
     title: 'Belajar JavaScript Dasar',
     description: 'Panduan lengkap untuk mempelajari dasar-dasar JavaScript.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: false,
     total_duration: 180,
     categories: ['Pemrograman', 'JavaScript'],
@@ -49,8 +48,7 @@ export const mostViewedContents: ContentModel[] = [
     id: '2',
     title: 'Belajar Python untuk Pemula',
     description: 'Menguasai dasar-dasar pemrograman dengan Python.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: false,
     total_duration: 210,
     categories: ['Pemrograman', 'Python'],
@@ -92,8 +90,7 @@ export const mostViewedContents: ContentModel[] = [
     id: '3',
     title: 'Belajar HTML & CSS',
     description: 'Panduan dasar untuk mempelajari HTML dan CSS.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: false,
     total_duration: 120,
     categories: ['Pemrograman', 'Web Development'],
@@ -136,8 +133,7 @@ export const mostViewedContents: ContentModel[] = [
     title: 'Belajar React',
     description:
       'Panduan lengkap untuk mempelajari React dari dasar hingga mahir.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: true,
     total_duration: 300,
     categories: ['Pemrograman', 'JavaScript', 'React'],
@@ -180,8 +176,7 @@ export const mostViewedContents: ContentModel[] = [
     id: '5',
     title: 'Belajar Vue.js',
     description: 'Panduan untuk mempelajari framework Vue.js dari dasar.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: true,
     total_duration: 240,
     categories: ['Pemrograman', 'JavaScript', 'Vue.js'],
@@ -228,8 +223,7 @@ export const freeLearningContents: ContentModel[] = [
     id: '6',
     title: 'Belajar Git dan GitHub',
     description: 'Memahami dasar-dasar version control dengan Git dan GitHub.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: false,
     total_duration: 150,
     categories: ['Pemrograman', 'Version Control'],
@@ -273,8 +267,7 @@ export const freeLearningContents: ContentModel[] = [
     title: 'Belajar Bootstrap',
     description:
       'Memahami dasar-dasar penggunaan Bootstrap untuk desain responsif.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: false,
     total_duration: 100,
     categories: ['Pemrograman', 'Web Design'],
@@ -317,8 +310,7 @@ export const freeLearningContents: ContentModel[] = [
     id: '8',
     title: 'Belajar Command Line',
     description: 'Memahami dasar-dasar penggunaan command line di berbagai OS.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: false,
     total_duration: 90,
     categories: ['Pemrograman', 'Operating Systems'],
@@ -361,8 +353,7 @@ export const freeLearningContents: ContentModel[] = [
     id: '9',
     title: 'Belajar SQL',
     description: 'Panduan dasar untuk mempelajari bahasa SQL dan basis data.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: false,
     total_duration: 110,
     categories: ['Pemrograman', 'Databases'],
@@ -406,8 +397,7 @@ export const freeLearningContents: ContentModel[] = [
     title: 'Belajar Docker',
     description:
       'Panduan dasar untuk mempelajari containerization dengan Docker.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: false,
     total_duration: 140,
     categories: ['Pemrograman', 'DevOps'],
@@ -453,8 +443,7 @@ export const latestLearningContents: ContentModel[] = [
     id: '11',
     title: 'Belajar TypeScript',
     description: 'Panduan lengkap untuk mempelajari TypeScript dari dasar.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: true,
     total_duration: 200,
     categories: ['Pemrograman', 'JavaScript', 'TypeScript'],
@@ -498,8 +487,7 @@ export const latestLearningContents: ContentModel[] = [
     title: 'Belajar Node.js',
     description:
       'Panduan lengkap untuk mempelajari Node.js dari dasar hingga mahir.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: true,
     total_duration: 240,
     categories: ['Pemrograman', 'JavaScript', 'Node.js'],
@@ -543,8 +531,7 @@ export const latestLearningContents: ContentModel[] = [
     title: 'Belajar Angular',
     description:
       'Panduan lengkap untuk mempelajari Angular dari dasar hingga mahir.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: true,
     total_duration: 220,
     categories: ['Pemrograman', 'JavaScript', 'Angular'],
@@ -588,8 +575,7 @@ export const latestLearningContents: ContentModel[] = [
     title: 'Belajar Kubernetes',
     description:
       'Panduan lengkap untuk mempelajari orkestrasi container dengan Kubernetes.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: true,
     total_duration: 180,
     categories: ['Pemrograman', 'DevOps', 'Kubernetes'],
@@ -633,8 +619,7 @@ export const latestLearningContents: ContentModel[] = [
     title: 'Belajar GraphQL',
     description:
       'Panduan lengkap untuk mempelajari GraphQL dari dasar hingga mahir.',
-    thumbnail:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/coding-design-template-7fdcbfed1fb311be96a282920fba8515_screen.jpg?ts=1599184512',
+    thumbnail: '',
     isPremium: true,
     total_duration: 210,
     categories: ['Pemrograman', 'Web Development', 'GraphQL'],
