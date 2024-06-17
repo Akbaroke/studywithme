@@ -41,7 +41,7 @@ export default function CardContent({
             Premium
           </Badge>
         )}
-        <LazyLoad className="w-full h-[150px] overflow-hidden" threshold={0.95}>
+        <LazyLoad className="w-full h-[150px] overflow-hidden">
           <Image
             src={thumbnail ? thumbnail : images.DEFAULT_THUMBNAIL}
             height={160}

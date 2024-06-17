@@ -1,18 +1,13 @@
 import {
-  ActionIcon,
   AppShell,
   Badge,
   Burger,
   Button,
   Container,
   Group,
-  ScrollArea,
-  Tooltip,
 } from '@mantine/core';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
-import ScrollToTop from '../atoms/ScrollToTop';
 import { useDisclosure } from '@mantine/hooks';
 import Logo from '../atoms/Logo';
 import Footer from '../molecules/Footer';
@@ -172,5 +167,9 @@ const navLinkData: LinkData[] = [
   {
     label: 'Tentang Kami',
     href: '/about',
+  },
+  {
+    label: 'Mengelola Konten',
+    href: '/manage-content',
   },
 ];
