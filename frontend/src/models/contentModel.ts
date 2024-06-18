@@ -26,7 +26,7 @@ export interface DetailContentModel {
 
 export interface DiscussionModel {
   id: string;
-  title: string;
+  message: string;
   like: {
     count: number;
     is_liked: boolean;
