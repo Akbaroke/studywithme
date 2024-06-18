@@ -1,0 +1,203 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+  THEACHER
+}
+
+model User {
+  id          String   @id @default(uuid()) @db.VarChar(255)
+  email       String   @unique @db.VarChar(255)
+  password    String   @db.VarChar(255)
+  name        String   @db.VarChar(255)
+  token       String?  @db.VarChar(255)
+  avatar      String?  @db.VarChar(255)
+  is_verified Boolean
+  role        Role
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  updated_at  DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  PricesCreated          Price[]         @relation("PricesCreatedBy")
+  PricesUpdated          Price[]         @relation("PricesUpdatedBy")
+  PremiumUserId          Premium[]       @relation("PremiumUserId")
+  DiscussionUserId       Discussion[]    @relation("DiscussionUserId")
+  ContentCreatedBy       Content[]       @relation("ContentCreatedBy")
+  ContentUpdatedBy       Content[]       @relation("ContentUpdatedBy")
+  DetailContentCreatedBy DetailContent[] @relation("DetailContentCreatedBy")
+  DetailContentUpdatedBy DetailContent[] @relation("DetailContentUpdatedBy")
+  CategoryCreatedBy      Category[]      @relation("CategoryCreatedBy")
+  CategoryUpdatedBy      Category[]      @relation("CategoryUpdatedBy")
+  progressUserId         Progress[]      @relation("progressUserId")
+  scoreQuestionUserId    ScoreQuestion[] @relation("scoreQuestionUserId")
+
+  @@map("tb_users")
+}
+
+model Price {
+  id          String   @id @default(uuid()) @db.VarChar(255)
+  name        String   @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  price       Int
+  created_by  String   @db.VarChar(255)
+  updated_by  String   @db.VarChar(255)
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  updated_at  DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  createdBy User @relation("PricesCreatedBy", fields: [created_by], references: [id])
+  updatedBy User @relation("PricesUpdatedBy", fields: [updated_by], references: [id])
+
+  @@map("tb_price")
+}
+
+model Premium {
+  id         String    @id @default(uuid()) @db.VarChar(255)
+  id_user    String    @db.VarChar(255)
+  start_at   DateTime  @default(now()) @db.Timestamp(0)
+  expired_at DateTime? @db.Timestamp(0)
+
+  user User @relation("PremiumUserId", fields: [id_user], references: [id])
+
+  @@map("tb_premium")
+}
+
+model Discussion {
+  id                    String   @id @default(uuid()) @db.VarChar(255)
+  message               String?  @db.VarChar(255)
+  created_at            DateTime @default(now()) @db.Timestamp(0)
+  updated_at            DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  id_replies_discussion String?  @db.VarChar(255)
+  id_user               String   @db.VarChar(255)
+  id_detail_content     String   @db.VarChar(255)
+
+  user          User          @relation("DiscussionUserId", fields: [id_user], references: [id])
+  detailContent DetailContent @relation("DiscussionDetailContentId", fields: [id_detail_content], references: [id])
+
+  @@map("tb_discussions")
+}
+
+model Content {
+  id             String   @id @default(uuid()) @db.VarChar(255)
+  title          String   @db.VarChar(255)
+  description    String?  @db.VarChar(255)
+  thumbnail      String?  @db.VarChar(255)
+  is_premium     Boolean
+  total_duration Int
+  total_klik     Int
+  created_by     String   @db.VarChar(255)
+  updated_by     String   @db.VarChar(255)
+  created_at     DateTime @default(now()) @db.Timestamp(0)
+  updated_at     DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  createdBy                User              @relation("ContentCreatedBy", fields: [created_by], references: [id])
+  updatedBy                User              @relation("ContentUpdatedBy", fields: [updated_by], references: [id])
+  detailContentContentId   DetailContent[]   @relation("detailContentContentId")
+  contentCategoryContentId ContentCategory[] @relation("contentCategoryContentId")
+  contentUserId            Progress[]        @relation("contentUserId")
+
+  @@map("tb_contents")
+}
+
+model DetailContent {
+  id          String   @id @default(uuid()) @db.VarChar(255)
+  id_content  String   @db.VarChar(255)
+  title       String   @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  is_premium  Boolean
+  duration    Int
+  video_url   String?  @db.VarChar(255)
+  id_question String?  @unique @db.VarChar(255)
+  created_by  String   @db.VarChar(255)
+  updated_by  String   @db.VarChar(255)
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  updated_at  DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  createdBy                 User         @relation("DetailContentCreatedBy", fields: [created_by], references: [id])
+  updatedBy                 User         @relation("DetailContentUpdatedBy", fields: [updated_by], references: [id])
+  discussionDetailContentId Discussion[] @relation("DiscussionDetailContentId")
+  content                   Content      @relation("detailContentContentId", fields: [id_content], references: [id])
+  question                  Question?    @relation("DetailContentQuestionId", fields: [id_question], references: [id])
+
+  @@map("tb_detail_content")
+}
+
+model Category {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  name       String   @db.VarChar(255)
+  created_by String   @db.VarChar(255)
+  updated_by String   @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  createdBy                 User              @relation("CategoryCreatedBy", fields: [created_by], references: [id])
+  updatedBy                 User              @relation("CategoryUpdatedBy", fields: [updated_by], references: [id])
+  contentCategoryCategoryId ContentCategory[] @relation("contentCategoryCategoryId")
+
+  @@map("tb_categories")
+}
+
+model ContentCategory {
+  id          Int    @id @default(autoincrement()) @db.Int
+  id_content  String @db.VarChar(255)
+  id_category String @db.VarChar(255)
+
+  content  Content  @relation("contentCategoryContentId", fields: [id_content], references: [id])
+  category Category @relation("contentCategoryCategoryId", fields: [id_category], references: [id])
+
+  @@map("tb_content_category")
+}
+
+model Progress {
+  id                 String @id @default(uuid()) @db.VarChar(255)
+  id_user            String @db.VarChar(255)
+  id_content         String @db.VarChar(255)
+  total_content_done Int?
+
+  user    User    @relation("progressUserId", fields: [id_user], references: [id])
+  content Content @relation("contentUserId", fields: [id_content], references: [id])
+
+  @@map("tb_progress")
+}
+
+model Question {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  question   String   @db.VarChar(255)
+  id_answer  String   @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  detailContentQuestionId DetailContent[] @relation("DetailContentQuestionId")
+  optionQuestionId        Option[]        @relation("optionQuestionId")
+  scoreQuestionQuestionId ScoreQuestion[] @relation("scoreQuestionQuestionId")
+
+  @@map("tb_questions")
+}
+
+model Option {
+  id          String @id @default(uuid()) @db.VarChar(255)
+  option      String @db.VarChar(255)
+  id_question String @db.VarChar(255)
+
+  question Question @relation("optionQuestionId", fields: [id_question], references: [id])
+
+  @@map("tb_options")
+}
+
+model ScoreQuestion {
+  id          String @id @default(uuid()) @db.VarChar(255)
+  id_user     String @db.VarChar(255)
+  id_question String @db.VarChar(255)
+  score       Int?
+
+  user     User     @relation("scoreQuestionUserId", fields: [id_user], references: [id])
+  question Question @relation("scoreQuestionQuestionId", fields: [id_question], references: [id])
+
+  @@map("tb_score_question")
+}
