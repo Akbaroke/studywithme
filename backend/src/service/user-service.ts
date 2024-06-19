@@ -15,8 +15,6 @@ import { User } from '@prisma/client';
 import { sendEmail } from '../helper/email';
 import { generateOTP, isOTPValid } from '../helper/otp';
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
-
 export class UserService {
   static async register(request: CreateUserRequest): Promise<UserResponse> {
     const registerRequest = Validation.validate(
@@ -107,7 +105,7 @@ export class UserService {
     }
 
     if (!user.is_email_verification) {
-      throw new ResponseError(401, 'Email is not verified');
+      throw new ResponseError(402, 'Email is not verified');
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -119,7 +117,9 @@ export class UserService {
     }
 
     // Create JWT token
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
+      expiresIn: '7d',
+    });
 
     return {
       user: toUserResponse(user),
@@ -136,9 +136,13 @@ export class UserService {
       throw new ResponseError(400, 'Email not found');
     }
 
-    const resetToken = jwt.sign({ id: user.id }, JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    const resetToken = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET as string,
+      {
+        expiresIn: '1h',
+      }
+    );
 
     await prismaClient.user.update({
       where: { email },
@@ -151,7 +155,7 @@ export class UserService {
     await sendEmail(
       email,
       'Reset your password',
-      `Your reset token is ${resetToken}`
+      `Your reset token is ${process.env.CLIENT_URL}/reset-password?token=${resetToken}`
     );
   }
 
@@ -159,7 +163,9 @@ export class UserService {
     token: string,
     newPassword: string
   ): Promise<void> {
-    const payload = jwt.verify(token, JWT_SECRET) as { id: string };
+    const payload = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      id: string;
+    };
 
     const user = await prismaClient.user.findUnique({
       where: { id: payload.id },
@@ -245,6 +251,6 @@ export class UserService {
   }
 
   static verifyToken(token: string): any {
-    return jwt.verify(token, JWT_SECRET);
+    return jwt.verify(token, process.env.JWT_SECRET as string);
   }
 }

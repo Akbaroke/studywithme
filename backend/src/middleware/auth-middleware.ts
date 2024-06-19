@@ -4,8 +4,6 @@ import { prismaClient } from '../application/database';
 import { UserRequest } from '../type/user-request';
 import { ResponseError } from '../error/response-error';
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
-
 export const authMiddleware = async (
   req: UserRequest,
   res: Response,
@@ -23,7 +21,7 @@ export const authMiddleware = async (
       throw new ResponseError(401, 'Unauthorized');
     }
 
-    const decoded: any = jwt.verify(token, JWT_SECRET);
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
 
     const user = await prismaClient.user.findUnique({
       where: {
