@@ -33,6 +33,54 @@ export class UserController {
     }
   }
 
+  static async verifyOTP(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, otp } = req.body;
+      await UserService.verifyOTP(email, otp);
+      res.status(200).json({
+        message: 'Email verified successfully',
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async resendOTP(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req.body;
+      await UserService.resendOTP(email);
+      res.status(200).json({
+        message: 'OTP resent successfully',
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req.body;
+      await UserService.forgotPassword(email);
+      res.status(200).json({
+        message: 'Password reset email sent',
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async resetPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { token, newPassword } = req.body;
+      await UserService.resetPassword(token, newPassword);
+      res.status(200).json({
+        message: 'Password reset successfully',
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   static async get(req: UserRequest, res: Response, next: NextFunction) {
     try {
       const response = await UserService.get(req.user!);
