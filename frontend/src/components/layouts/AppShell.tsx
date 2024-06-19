@@ -35,6 +35,8 @@ export default function Appshell({ children }: Props) {
     '/terms',
     '/privacy',
     '/reset-password/[token]',
+    '/verify-otp',
+    '/reset-password',
   ];
 
   return pathNotNavbar.includes(rootPath) ? (

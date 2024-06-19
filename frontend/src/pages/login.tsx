@@ -13,6 +13,10 @@ import { FcGoogle } from 'react-icons/fc';
 import { isEmail, useForm } from '@mantine/form';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import TextLink from '@/components/atoms/TextLink';
+import { validatorPassword } from '@/helpers/validator';
+import Notify from '@/components/atoms/Notify';
+import axios from '@/helpers/axios';
+import { useRouter } from 'next/router';
 
 type FormType = {
   email: string;
@@ -21,6 +25,7 @@ type FormType = {
 };
 
 export default function Login() {
+  const router = useRouter();
   const [visible, { toggle }] = useDisclosure(false);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<FormType>({
@@ -35,14 +40,35 @@ export default function Login() {
       password: (value) =>
         value.length < 8
           ? 'Password minimal 8 karakter.'
-          : /^(?=.*\d)(?=.*[a-zA-Z])/.test(value)
+          : validatorPassword(value)
           ? null
           : 'Password harus mengandung angka dan huruf.',
     },
   });
 
-  const hanldeSubmitForm = (values: FormType) => {
-    console.log(values);
+  const hanldeSubmitForm = async (values: FormType) => {
+    Notify('loading', 'Mendaftarkan akun...', 'login');
+    setIsLoading(true);
+    try {
+      const response = await axios.post('/users/login', {
+        email: values.email,
+        password: values.password,
+      });
+      Notify('success', 'Akun anda telah dibuat. Silakan login.', 'login');
+      console.log(response);
+      router.replace('/');
+    } catch (error: any) {
+      console.log(error);
+      Notify('error', error.response.data.errors, 'login');
+      if (error.response.status === 402) {
+        router.push({
+          pathname: '/verify-otp',
+          query: { email: values.email },
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -97,7 +123,12 @@ export default function Login() {
           </div>
           <div className="flex justify-between items-center">
             <TextLink href="/register" text="Register" />
-            <Button variant="filled" size="xs" type="submit">
+            <Button
+              variant="filled"
+              size="xs"
+              type="submit"
+              loading={isLoading}
+              disabled={!form.isValid()}>
               Log in
             </Button>
           </div>

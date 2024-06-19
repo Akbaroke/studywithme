@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
       forceColorScheme="light"
       defaultColorScheme="light">
       <main className={quicksand.className}>
-        <Toaster richColors position="top-center" expand={true} closeButton />
+        <Toaster richColors position="top-center" expand={true} />
         <NextNProgress
           showOnShallow={false}
           options={{ showSpinner: false }}

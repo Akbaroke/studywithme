@@ -7,46 +7,83 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconAt, IconLock } from '@tabler/icons-react';
+import { IconAt, IconLock, IconUser } from '@tabler/icons-react';
 import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { isEmail, matchesField, useForm } from '@mantine/form';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import TextLink from '@/components/atoms/TextLink';
+import axios from '@/helpers/axios';
+import validator from 'validator';
+import { validatorNotOnlySpace, validatorPassword } from '@/helpers/validator';
+import Notify from '@/components/atoms/Notify';
+import { useRouter } from 'next/router';
 
 type FormType = {
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
+  termAndPrivacy: boolean;
 };
 
 export default function Register() {
+  const router = useRouter();
   const [visible, { toggle }] = useDisclosure(false);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<FormType>({
     validateInputOnChange: true,
     initialValues: {
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
+      termAndPrivacy: false,
     },
     validate: {
+      name: (value) =>
+        value.length < 8
+          ? 'Nama minimal harus 8 karakter.'
+          : validatorNotOnlySpace(value)
+          ? 'Nama tidak boleh hanya berisi spasi.'
+          : null,
       email: isEmail('Email tidak valid.'),
       password: (value) =>
         value.length < 8
           ? 'Password minimal 8 karakter.'
-          : /^(?=.*\d)(?=.*[a-zA-Z])/.test(value)
+          : validatorPassword(value)
           ? null
           : 'Password harus mengandung angka dan huruf.',
       confirmPassword: matchesField(
         'password',
         'Harus sama dengan kata sandi.'
       ),
+      termAndPrivacy: (value) =>
+        value ? null : 'Anda harus menyetujui syarat dan ketentuan.',
     },
   });
 
-  const hanldeSubmitForm = (values: FormType) => {
-    console.log(values);
+  const hanldeSubmitForm = async (values: FormType) => {
+    Notify('loading', 'Mendaftarkan akun...', 'register');
+    setIsLoading(true);
+    try {
+      const response = await axios.post('/users', {
+        email: values.email,
+        password: values.password,
+        name: values.name,
+      });
+      Notify('success', 'Akun anda telah dibuat. Silakan verifikasi email.', 'register');
+      router.push({
+        pathname: '/verify-otp',
+        query: { email: values.email },
+      });
+      console.log(response);
+    } catch (error: any) {
+      console.log(error);
+      Notify('error', error.response.data.errors, 'register');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -65,10 +102,22 @@ export default function Register() {
         <Divider my="xs" label="Atau" labelPosition="center" mt={20} />
         <form onSubmit={form.onSubmit((values) => hanldeSubmitForm(values))}>
           <TextInput
+            label="Nama"
+            placeholder="Jhon Doe"
+            type="text"
+            required
+            key={form.key('name')}
+            {...form.getInputProps('name', { type: 'input' })}
+            radius="md"
+            leftSection={<IconUser size={14} />}
+            readOnly={isLoading}
+          />
+          <TextInput
             label="Email"
             placeholder="saya@email.com"
             type="email"
             required
+            mt="md"
             key={form.key('email')}
             {...form.getInputProps('email', { type: 'input' })}
             radius="md"
@@ -121,13 +170,18 @@ export default function Register() {
                 </p>
               }
               size="xs"
-              key={form.key('remember')}
-              {...form.getInputProps('remember', { type: 'checkbox' })}
+              key={form.key('termAndPrivacy')}
+              {...form.getInputProps('termAndPrivacy', { type: 'checkbox' })}
             />
           </div>
           <div className="flex justify-between items-center">
             <TextLink href="/login" text="Sudah daftar?" />
-            <Button variant="filled" size="xs" type="submit">
+            <Button
+              variant="filled"
+              size="xs"
+              type="submit"
+              loading={isLoading}
+              disabled={!form.isValid()}>
               Register
             </Button>
           </div>

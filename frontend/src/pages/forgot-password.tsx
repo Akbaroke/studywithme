@@ -1,5 +1,8 @@
+import Notify from '@/components/atoms/Notify';
 import AuthLayout from '@/components/layouts/AuthLayout';
+import axios from '@/helpers/axios';
 import cn from '@/helpers/cn';
+import useCountdown from '@/hooks/useCountdown';
 import { Button, Card, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
 import { IconAt } from '@tabler/icons-react';
@@ -14,6 +17,7 @@ type StatusType = 'success' | 'error' | '';
 
 export default function ForgotPassword() {
   const router = useRouter();
+  const { time, setTime } = useCountdown();
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<StatusType>('');
   const form = useForm<FormType>({
@@ -26,9 +30,27 @@ export default function ForgotPassword() {
     },
   });
 
-  const hanldeSubmitForm = (values: FormType) => {
-    console.log(values);
-    setStatus('success');
+  const hanldeSubmitForm = async (values: FormType) => {
+    Notify('loading', 'Mengirimkan email...', 'forgot-password');
+    setIsLoading(true);
+    try {
+      const response = await axios.post('/users/forgot-password', {
+        email: values.email,
+      });
+      console.log(response);
+      setStatus('success');
+      Notify(
+        'success',
+        'Link reset password berhasil dikirmkan di email anda.',
+        'forgot-password'
+      );
+      setTime(60);
+    } catch (error: any) {
+      console.log(error);
+      Notify('error', error.response.data.errors, 'forgot-password');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -70,8 +92,13 @@ export default function ForgotPassword() {
             <Button variant="outline" size="xs" onClick={() => router.back()}>
               Batal
             </Button>
-            <Button variant="filled" size="xs" type="submit">
-              Email Password Reset Link
+            <Button
+              variant="filled"
+              size="xs"
+              type="submit"
+              disabled={!form.isValid() || !!time}
+              loading={isLoading}>
+              {!time ? 'Kirim Email' : `Kirim Ulang Dalam ${time} detik`}
             </Button>
           </div>
         </form>
