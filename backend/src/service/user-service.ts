@@ -104,16 +104,16 @@ export class UserService {
       throw new ResponseError(401, 'Email or password is wrong');
     }
 
-    if (!user.is_email_verification) {
-      throw new ResponseError(402, 'Email is not verified');
-    }
-
     const isPasswordValid = await bcrypt.compare(
       loginRequest.password,
       user.password
     );
     if (!isPasswordValid) {
       throw new ResponseError(401, 'Email or password is wrong');
+    }
+
+    if (!user.is_email_verification) {
+      throw new ResponseError(402, 'Email is not verified');
     }
 
     // Create JWT token
