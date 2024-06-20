@@ -11,6 +11,14 @@ import { useRouter } from 'next/router';
 import { useDisclosure } from '@mantine/hooks';
 import Logo from '../atoms/Logo';
 import Footer from '../molecules/Footer';
+import { signOut, useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { getToken } from 'next-auth/jwt';
+import { GetServerSideProps } from 'next';
+import getSession from '@/services/getSession';
+import { UserModel } from '@/models/userModel';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/redux/slices/userSlice';
 
 type Props = {
   children: React.ReactNode;
@@ -25,19 +33,30 @@ export default function Appshell({ children }: Props) {
   const router = useRouter();
   const rootPath = router.pathname;
   const [opened, { toggle }] = useDisclosure();
+  const session: UserModel = useSession().data?.user as UserModel;
 
   const isActivePage = (href: string) => rootPath === href;
 
-  const pathNotNavbar = [
-    '/login',
-    '/register',
-    '/forgot-password',
-    '/terms',
-    '/privacy',
-    '/reset-password/[token]',
-    '/verify-otp',
-    '/reset-password',
+  const navLinkData: LinkData[] = [
+    {
+      label: 'Home',
+      href: '/',
+    },
+    {
+      label: 'Kategori',
+      href: '/categories',
+    },
+    {
+      label: 'Tentang Kami',
+      href: '/about',
+    },
   ];
+
+  session?.role !== 'STUDENT' &&
+    navLinkData.push({
+      label: 'Mengelola Konten',
+      href: '/manage-content',
+    });
 
   return pathNotNavbar.includes(rootPath) ? (
     children
@@ -91,22 +110,35 @@ export default function Appshell({ children }: Props) {
                 )
               )}
               <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="xs"
-                  radius="md"
-                  color="#000"
-                  onClick={() => router.push('/login')}>
-                  Login
-                </Button>
-                <Button
-                  variant="filled"
-                  size="xs"
-                  radius="md"
-                  color="#000"
-                  onClick={() => router.push('/register')}>
-                  Register
-                </Button>
+                {session?.token ? (
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    radius="md"
+                    color="#000"
+                    onClick={() => signOut()}>
+                    Logout
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      radius="md"
+                      color="#000"
+                      onClick={() => router.push('/login')}>
+                      Login
+                    </Button>
+                    <Button
+                      variant="filled"
+                      size="xs"
+                      radius="md"
+                      color="#000"
+                      onClick={() => router.push('/register')}>
+                      Register
+                    </Button>
+                  </>
+                )}
               </div>
             </Group>
           </Group>
@@ -149,7 +181,9 @@ export default function Appshell({ children }: Props) {
 
       <AppShell.Main>
         <div className="flex flex-col gap-32">
-          <Container size="md">{children}</Container>
+          <Container size="md" p={0}>
+            {children}
+          </Container>
           <Footer />
         </div>
       </AppShell.Main>
@@ -157,21 +191,13 @@ export default function Appshell({ children }: Props) {
   );
 }
 
-const navLinkData: LinkData[] = [
-  {
-    label: 'Home',
-    href: '/',
-  },
-  {
-    label: 'Kategori',
-    href: '/categories',
-  },
-  {
-    label: 'Tentang Kami',
-    href: '/about',
-  },
-  {
-    label: 'Mengelola Konten',
-    href: '/manage-content',
-  },
+const pathNotNavbar = [
+  '/login',
+  '/register',
+  '/forgot-password',
+  '/terms',
+  '/privacy',
+  '/reset-password/[token]',
+  '/verify-otp',
+  '/reset-password',
 ];

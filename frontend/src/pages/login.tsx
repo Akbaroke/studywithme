@@ -1,11 +1,4 @@
-import {
-  Button,
-  Card,
-  Checkbox,
-  Divider,
-  PasswordInput,
-  TextInput,
-} from '@mantine/core';
+import { Button, Card, Divider, PasswordInput, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconAt, IconLock } from '@tabler/icons-react';
 import React, { useState } from 'react';
@@ -15,13 +8,12 @@ import AuthLayout from '@/components/layouts/AuthLayout';
 import TextLink from '@/components/atoms/TextLink';
 import { validatorPassword } from '@/helpers/validator';
 import Notify from '@/components/atoms/Notify';
-import axios from '@/helpers/axios';
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 type FormType = {
   email: string;
   password: string;
-  remember: boolean;
 };
 
 export default function Login() {
@@ -33,7 +25,6 @@ export default function Login() {
     initialValues: {
       email: '',
       password: '',
-      remember: false,
     },
     validate: {
       email: isEmail('Email tidak valid.'),
@@ -46,26 +37,41 @@ export default function Login() {
     },
   });
 
+  const callbackUrl: any = router.query.callbackUrl || '/';
   const hanldeSubmitForm = async (values: FormType) => {
     Notify('loading', 'Mendaftarkan akun...', 'login');
     setIsLoading(true);
     try {
-      const response = await axios.post('/users/login', {
+      const res = await signIn('credentials', {
+        redirect: false,
         email: values.email,
         password: values.password,
+        callbackUrl,
       });
-      Notify('success', 'Akun anda telah dibuat. Silakan login.', 'login');
-      console.log(response);
-      router.replace('/');
+      if (res?.ok) {
+        Notify('success', 'Akun anda telah dibuat. Silakan login.', 'login');
+        router.replace(callbackUrl);
+      } else {
+        switch (
+          Number(res?.error?.replace('Request failed with status code ', ''))
+        ) {
+          case 401:
+            Notify('error', 'Email atau password salah.', 'login');
+            break;
+          case 402:
+            Notify('error', 'Email belum di verifikasi.', 'login');
+            router.push({
+              pathname: '/verify-otp',
+              query: { email: values.email },
+            });
+            break;
+          default:
+            Notify('error', 'Gagal login.', 'login');
+            break;
+        }
+      }
     } catch (error: any) {
       console.log(error);
-      Notify('error', error.response.data.errors, 'login');
-      if (error.response.status === 402) {
-        router.push({
-          pathname: '/verify-otp',
-          query: { email: values.email },
-        });
-      }
     } finally {
       setIsLoading(false);
     }
@@ -112,13 +118,7 @@ export default function Login() {
             visible={visible}
             onVisibilityChange={toggle}
           />
-          <div className="flex justify-between items-center my-5">
-            <Checkbox
-              label="Ingat saja saya"
-              size="xs"
-              key={form.key('remember')}
-              {...form.getInputProps('remember', { type: 'checkbox' })}
-            />
+          <div className="flex justify-end items-center my-5">
             <TextLink href="/forgot-password" text="Lupa password?" />
           </div>
           <div className="flex justify-between items-center">

@@ -26,7 +26,7 @@ export default function CardContent({
       padding="md"
       radius="md"
       withBorder
-      className="cursor-pointer [&>div>div>img]:hover:scale-110 min-h-[320px]">
+      className="cursor-pointer [&>div>div>img]:hover:scale-110 min-h-[300px]">
       <Card.Section className="relative bg-black/20">
         {isPremium && (
           <Badge
@@ -54,7 +54,9 @@ export default function CardContent({
 
       <div className="mt-3 flex flex-col justify-between h-full">
         <div className="flex flex-col gap-2">
-          <h1 className="text-md font-medium">{title}</h1>
+          <h1 className="sm:text-md text-xs font-medium line-clamp-2">
+            {title}
+          </h1>
           <div className="flex gap-4 items-center">
             <div className="flex text-gray-400 items-center gap-1 text-xs">
               <IoStatsChart size={12} />
@@ -72,7 +74,7 @@ export default function CardContent({
               key={category}
               color="blue"
               variant="light"
-              className="text-xs"
+              size="xs"
               styles={{
                 label: {
                   textTransform: 'capitalize',
