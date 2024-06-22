@@ -12,13 +12,7 @@ import { useDisclosure } from '@mantine/hooks';
 import Logo from '../atoms/Logo';
 import Footer from '../molecules/Footer';
 import { signOut, useSession } from 'next-auth/react';
-import { useEffect } from 'react';
-import { getToken } from 'next-auth/jwt';
-import { GetServerSideProps } from 'next';
-import getSession from '@/services/getSession';
 import { UserModel } from '@/models/userModel';
-import { useDispatch } from 'react-redux';
-import { setUser } from '@/redux/slices/userSlice';
 
 type Props = {
   children: React.ReactNode;

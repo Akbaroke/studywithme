@@ -13,10 +13,13 @@ import { useEffect } from 'react';
 import Appshell from '@/components/layouts/AppShell';
 import { store } from '@/redux';
 import { SessionProvider } from 'next-auth/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const theme = createTheme({});
 
 const quicksand = Quicksand({ subsets: ['latin'] });
+
+const queryClient = new QueryClient();
 
 export default function App({
   Component,
@@ -33,28 +36,30 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Provider store={store}>
-        <MantineProvider
-          theme={theme}
-          forceColorScheme="light"
-          defaultColorScheme="light">
-          <main className={quicksand.className}>
-            <Toaster
-              richColors
-              position="top-center"
-              expand={true}
-              duration={800}
-            />
-            <NextNProgress
-              showOnShallow={false}
-              options={{ showSpinner: false }}
-              color="#000"
-            />
-            <Appshell>
-              <Component {...pageProps} />
-              {/* <Analytics /> */}
-            </Appshell>
-          </main>
-        </MantineProvider>
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider
+            theme={theme}
+            forceColorScheme="light"
+            defaultColorScheme="light">
+            <main className={quicksand.className}>
+              <Toaster
+                richColors
+                position="top-center"
+                expand={true}
+                duration={800}
+              />
+              <NextNProgress
+                showOnShallow={false}
+                options={{ showSpinner: false }}
+                color="#000"
+              />
+              <Appshell>
+                <Component {...pageProps} />
+                {/* <Analytics /> */}
+              </Appshell>
+            </main>
+          </MantineProvider>
+        </QueryClientProvider>
       </Provider>
     </SessionProvider>
   );

@@ -1,61 +1,49 @@
-import {
-  ActionIcon,
-  Table as MantineTable,
-  NumberFormatter,
-} from '@mantine/core';
-import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { Card, Table as MantineTable, Skeleton } from '@mantine/core';
 import React from 'react';
 
 type Props = {
-  data: any[];
-  header: string[];
+  isLoading?: boolean;
+  header: React.ReactNode;
+  body: React.ReactNode;
 };
 
-export default function Table({ data, header }: Props) {
-  const rows = []?.map((element, index) => (
-    <MantineTable.Tr key={index}>
-      {data?.map((element, index) => (
-        <MantineTable.Td key={index}>{element}</MantineTable.Td>
-      ))}
-      <MantineTable.Td className="flex items-center gap-3 justify-evenly">
-        <ActionIcon variant="light" size="lg">
-          <IconTrash size={18} />
-        </ActionIcon>
-        <ActionIcon variant="light" size="lg">
-          <IconPencil size={18} />
-        </ActionIcon>
-      </MantineTable.Td>
-    </MantineTable.Tr>
-  ));
+export default function Table({ isLoading, body, header }: Props) {
+  const ths = <MantineTable.Tr>{header}</MantineTable.Tr>;
 
-  const ths = (
-    <MantineTable.Tr>
-      {header?.map((element, index) => (
-        <MantineTable.Th key={index}>{element}</MantineTable.Th>
-      ))}
-      <MantineTable.Th>Action</MantineTable.Th>
-    </MantineTable.Tr>
-  );
+  let headerCount = 0;
+  React.Children.forEach(header, (child: any) => {
+    headerCount = child.props.children.length;
+  });
 
   return (
-    <MantineTable.ScrollContainer minWidth={500}>
-      <MantineTable
-        withTableBorder
-        withColumnBorders
-        styles={{
-          thead: {
-            background: '#f0f0f0',
-          },
-          th: {
-            textAlign: 'center',
-          },
-          td: {
-            textAlign: 'center',
-          },
-        }}>
-        <MantineTable.Thead>{ths}</MantineTable.Thead>
-        <MantineTable.Tbody>{rows}</MantineTable.Tbody>
-      </MantineTable>
-    </MantineTable.ScrollContainer>
+    <MantineTable
+      withTableBorder
+      withColumnBorders
+      styles={{
+        thead: {
+          background: '#f0f0f0',
+        },
+        th: {
+          textAlign: 'center',
+        },
+        td: {
+          textAlign: 'center',
+        },
+      }}>
+      <MantineTable.Thead>{ths}</MantineTable.Thead>
+      <MantineTable.Tbody>
+        {isLoading
+          ? Array.from({ length: 5 }).map((_, index) => (
+              <MantineTable.Tr key={index}>
+                {Array.from({ length: headerCount }).map((_, index) => (
+                  <MantineTable.Td key={index}>
+                    <Skeleton height={8} radius="xl" />
+                  </MantineTable.Td>
+                ))}
+              </MantineTable.Tr>
+            ))
+          : body}
+      </MantineTable.Tbody>
+    </MantineTable>
   );
 }

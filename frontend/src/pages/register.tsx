@@ -14,7 +14,6 @@ import { isEmail, matchesField, useForm } from '@mantine/form';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import TextLink from '@/components/atoms/TextLink';
 import axios from '@/helpers/axios';
-import validator from 'validator';
 import { validatorNotOnlySpace, validatorPassword } from '@/helpers/validator';
 import Notify from '@/components/atoms/Notify';
 import { useRouter } from 'next/router';

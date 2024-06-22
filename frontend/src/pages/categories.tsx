@@ -1,29 +1,13 @@
-import { Button } from '@mantine/core';
-import React from 'react';
+import { CategoryModel } from '@/models/categoryModel';
+import { getAllCategory } from '@/services/categoryService';
+import { Button, Skeleton } from '@mantine/core';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Categories() {
-  const categories = [
-    { id: '1', name: 'Pemrograman' },
-    { id: '2', name: 'JavaScript' },
-    { id: '3', name: 'React' },
-    { id: '4', name: 'Vue.js' },
-    { id: '5', name: 'Angular' },
-    { id: '6', name: 'Laravel' },
-    { id: '7', name: 'Next.js' },
-    { id: '8', name: 'Dart' },
-    { id: '9', name: 'Flutter' },
-    { id: '10', name: 'Tailwind CSS' },
-    { id: '11', name: 'Bootstrap' },
-    { id: '12', name: 'Svelte' },
-    { id: '13', name: 'Golang' },
-    { id: '14', name: 'Kotlin' },
-    { id: '15', name: 'Rust' },
-    { id: '16', name: 'C++' },
-    { id: '17', name: 'Python' },
-    { id: '18', name: 'PHP' },
-    { id: '19', name: 'C#' },
-    { id: '20', name: 'Ruby' },
-  ];
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getAllCategory,
+  });
 
   return (
     <div>
@@ -36,16 +20,22 @@ export default function Categories() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant="default"
-              radius="md"
-              size="xs"
-              className="hover:shadow-lg transition-all duration-500">
-              {category.name}
-            </Button>
-          ))}
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, index) => (
+                <Button key={index} variant="default" radius="md" size="xs">
+                  <Skeleton height={8} width={50} radius="xl" />
+                </Button>
+              ))
+            : data?.map((category: CategoryModel) => (
+                <Button
+                  key={category.id}
+                  variant="default"
+                  radius="md"
+                  size="xs"
+                  className="hover:shadow-lg transition-all duration-500">
+                  {category.name}
+                </Button>
+              ))}
         </div>
       </div>
     </div>
