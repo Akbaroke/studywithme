@@ -11,10 +11,8 @@ apiRouter.get('/api/users/current', UserController.get);
 apiRouter.patch('/api/users/current', UserController.update);
 apiRouter.delete('/api/users/current', UserController.logout);
 
-apiRouter.post('/api/users/categories', CategoryController.create);
-apiRouter.get('/api/users/categories', CategoryController.getAll);
-apiRouter.get('/api/users/categories/:id', CategoryController.getById);
-apiRouter.patch('/api/users/categories/:id', CategoryController.update);
-apiRouter.delete('/api/users/categories/:id', CategoryController.delete);
+apiRouter.post('/api/categories', CategoryController.create);
+apiRouter.patch('/api/categories/:id', CategoryController.update);
+apiRouter.delete('/api/categories/:id', CategoryController.delete);
 
 export default apiRouter;

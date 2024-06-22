@@ -19,7 +19,11 @@ export class CategoryService {
   }
 
   static async getAll(): Promise<Category[]> {
-    return await prismaClient.category.findMany();
+    return await prismaClient.category.findMany({
+      orderBy: {
+        updated_at: 'desc',
+      },
+    });
   }
 
   static async getById(id: string): Promise<Category | null> {

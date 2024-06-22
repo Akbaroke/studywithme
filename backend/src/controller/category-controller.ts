@@ -48,7 +48,7 @@ export class CategoryController {
   static async delete(req: Request, res: Response, next: NextFunction) {
     try {
       await CategoryService.delete(req.params.id);
-      res.status(204).send().json({
+      res.status(204).json({
         data: 'OK',
       });
     } catch (error) {
