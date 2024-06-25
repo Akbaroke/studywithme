@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CategoryModel } from '@/models/categoryModel';
 import { validatorNotOnlySpace } from '@/helpers/validator';
+import Notify from '../atoms/Notify';
 
 type Props = {
   id?: string;
@@ -53,21 +54,28 @@ export default function FormCategory({ id, close }: Props) {
   }, []);
 
   const mutation = useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       newCategory,
       token,
     }: {
       newCategory: Partial<CategoryModel>;
       token: string;
-    }) =>
-      id
+    }) => {
+      const response = id
         ? updateCategory(id, newCategory, token)
-        : createCategory(newCategory, token),
-    onSuccess: () => {
+        : createCategory(newCategory, token);
+      return response;
+    },
+    onMutate: () => {
+      Notify('loading', 'Sedang memproses kategori..', 'action-category');
+    },
+    onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+      Notify('success', response, 'action-category');
       close();
     },
     onError: (error: any) => {
+      Notify('error', 'Gagal memproses kategori', 'action-category');
       console.error('Error creating category:', error);
     },
   });
@@ -82,7 +90,6 @@ export default function FormCategory({ id, close }: Props) {
       console.error('User is not authenticated');
     }
   };
-  console.log(mutation.status);
 
   return (
     <form

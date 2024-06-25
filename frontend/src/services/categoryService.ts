@@ -18,7 +18,7 @@ export const createCategory = async (
   const { data } = await axios.post('/categories', dataCategory, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return data.data;
+  return data.message;
 };
 
 export const updateCategory = async (
@@ -29,12 +29,12 @@ export const updateCategory = async (
   const { data } = await axios.patch(`/categories/${id}`, dataCategory, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return data.data;
+  return data.message;
 };
 
 export const deleteCategory = async (id: string, token: string) => {
   const { data } = await axios.delete(`/categories/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return data.data;
+  return data.message;
 };

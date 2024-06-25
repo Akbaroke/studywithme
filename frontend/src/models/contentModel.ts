@@ -1,27 +1,35 @@
+import { CategoryModel } from './categoryModel';
+
 export interface ContentModel {
   id: string;
   title: string;
   description: string;
-  thumbnail: string;
-  isPremium: boolean;
+  thumbnail: string | null;
+  is_premium: boolean;
   total_duration: number;
-  categories: string[];
-  contents?: DetailContentModel[];
-  total_kliks: number;
-  updated_at: string;
-  created_at: string;
+  total_klik: number;
+  created_by: string;
+  updated_by: string;
+  created_at: Date;
+  updated_at: Date;
+  total_content: number;
+  detail_content: DetailContentModel[];
+  categories: CategoryModel[];
 }
 
 export interface DetailContentModel {
   id: string;
+  id_content: string;
+  serial_number: number;
   title: string;
   description: string;
-  isPremium: boolean;
+  is_premium: boolean;
   duration: number;
-  video_url: string;
-  discussion?: DiscussionModel[];
-  updated_at: string;
-  created_at: string;
+  video_url?: string;
+  created_by: string;
+  updated_by: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface DiscussionModel {

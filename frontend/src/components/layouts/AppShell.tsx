@@ -174,12 +174,10 @@ export default function Appshell({ children }: Props) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <div className="flex flex-col gap-32">
-          <Container size="md" p={0}>
-            {children}
-          </Container>
-          <Footer />
-        </div>
+        <Container size="lg" p={0} mb={100}>
+          {children}
+        </Container>
+        <Footer />
       </AppShell.Main>
     </AppShell>
   );

@@ -22,7 +22,7 @@ export default function SectionListContent({ title, data }: Props) {
       <SimpleGrid
         cols={{ base: 2, xs: 3, sm: 4 }}
         spacing={{ base: 10, sm: 20 }}>
-        {data.map((item) => (
+        {data?.map((item) => (
           <CardContent key={item.id} {...item} />
         ))}
       </SimpleGrid>

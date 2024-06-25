@@ -7,6 +7,13 @@ export const validatorNotOnlySpace = (value: string) => {
   );
 };
 
+export const validatorNotOnlySpaceSymbolTrue = (value: string) => {
+  const trimmedValue = validator.trim(value);
+  const singleSpacedValue = trimmedValue.replace(/\s+/g, ' ');
+
+  return trimmedValue !== singleSpacedValue || trimmedValue !== value;
+};
+
 export const validatorPassword = (value: string) => {
   return /^(?=.*\d)(?=.*[a-zA-Z])/.test(value);
 };

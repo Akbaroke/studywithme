@@ -3,6 +3,7 @@ import { ContentModel } from '@/models/contentModel';
 import { Badge, Card } from '@mantine/core';
 import { IconClock } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { IoStatsChart } from 'react-icons/io5';
 import { MdWorkspacePremium } from 'react-icons/md';
@@ -13,22 +14,24 @@ export default function CardContent({
   title,
   description,
   thumbnail,
-  isPremium,
+  is_premium,
   total_duration,
   categories,
-  total_kliks,
+  total_klik,
   updated_at,
   created_at,
 }: ContentModel) {
+  const router = useRouter();
   return (
     <Card
+      onClick={() => router.push(`/detail-content/${id}`)}
       shadow="sm"
       padding="md"
       radius="md"
       withBorder
       className="cursor-pointer [&>div>div>img]:hover:scale-110 min-h-[300px]">
       <Card.Section className="relative bg-black/20">
-        {isPremium && (
+        {is_premium && (
           <Badge
             color="#000"
             leftSection={<MdWorkspacePremium size={12} />}
@@ -60,7 +63,7 @@ export default function CardContent({
           <div className="flex gap-4 items-center">
             <div className="flex text-gray-400 items-center gap-1 text-xs">
               <IoStatsChart size={12} />
-              <p>{total_kliks}</p>
+              <p>{total_klik}</p>
             </div>
             <div className="flex text-gray-400 items-center gap-1 text-xs">
               <IconClock size={12} />
@@ -71,7 +74,7 @@ export default function CardContent({
         <div className="flex gap-2 flex-wrap mt-3">
           {categories.map((category) => (
             <Badge
-              key={category}
+              key={category.id}
               color="blue"
               variant="light"
               size="xs"
@@ -80,7 +83,7 @@ export default function CardContent({
                   textTransform: 'capitalize',
                 },
               }}>
-              {category}
+              {category.name}
             </Badge>
           ))}
         </div>

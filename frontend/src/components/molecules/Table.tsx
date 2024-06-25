@@ -5,9 +5,10 @@ type Props = {
   isLoading?: boolean;
   header: React.ReactNode;
   body: React.ReactNode;
+  minWidth?: number;
 };
 
-export default function Table({ isLoading, body, header }: Props) {
+export default function Table({ isLoading, body, header, minWidth }: Props) {
   const ths = <MantineTable.Tr>{header}</MantineTable.Tr>;
 
   let headerCount = 0;
@@ -16,34 +17,37 @@ export default function Table({ isLoading, body, header }: Props) {
   });
 
   return (
-    <MantineTable
-      withTableBorder
-      withColumnBorders
-      styles={{
-        thead: {
-          background: '#f0f0f0',
-        },
-        th: {
-          textAlign: 'center',
-        },
-        td: {
-          textAlign: 'center',
-        },
-      }}>
-      <MantineTable.Thead>{ths}</MantineTable.Thead>
-      <MantineTable.Tbody>
-        {isLoading
-          ? Array.from({ length: 5 }).map((_, index) => (
-              <MantineTable.Tr key={index}>
-                {Array.from({ length: headerCount }).map((_, index) => (
-                  <MantineTable.Td key={index}>
-                    <Skeleton height={8} radius="xl" />
-                  </MantineTable.Td>
-                ))}
-              </MantineTable.Tr>
-            ))
-          : body}
-      </MantineTable.Tbody>
-    </MantineTable>
+    <MantineTable.ScrollContainer minWidth={minWidth ?? 300}>
+      <MantineTable
+        withTableBorder
+        withColumnBorders
+        styles={{
+          thead: {
+            background: '#f0f0f0',
+          },
+          th: {
+            textAlign: 'center',
+            textWrap: 'nowrap',
+          },
+          td: {
+            textAlign: 'center',
+          },
+        }}>
+        <MantineTable.Thead>{ths}</MantineTable.Thead>
+        <MantineTable.Tbody>
+          {isLoading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <MantineTable.Tr key={index}>
+                  {Array.from({ length: headerCount }).map((_, index) => (
+                    <MantineTable.Td key={index}>
+                      <Skeleton height={8} radius="xl" />
+                    </MantineTable.Td>
+                  ))}
+                </MantineTable.Tr>
+              ))
+            : body}
+        </MantineTable.Tbody>
+      </MantineTable>
+    </MantineTable.ScrollContainer>
   );
 }
