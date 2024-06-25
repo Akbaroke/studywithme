@@ -1,6 +1,7 @@
 import express from 'express';
 import { UserController } from '../controller/user-controller';
 import { CategoryController } from '../controller/category-controller';
+import { ContentController } from '../controller/content-controller';
 
 export const publicRouter = express.Router();
 
@@ -14,3 +15,7 @@ publicRouter.post('/api/users/reset-password', UserController.resetPassword);
 
 publicRouter.get('/api/categories', CategoryController.getAll);
 publicRouter.get('/api/categories/:id', CategoryController.getById);
+
+publicRouter.get('/api/contents', ContentController.getAll);
+publicRouter.get('/api/contents/free', ContentController.getFreeContent);
+publicRouter.get('/api/contents/most-click', ContentController.getMostClickedContent);

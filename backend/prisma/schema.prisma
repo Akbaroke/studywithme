@@ -42,7 +42,6 @@ model User {
   CategoryCreatedBy      Category[]      @relation("CategoryCreatedBy")
   CategoryUpdatedBy      Category[]      @relation("CategoryUpdatedBy")
   progressUserId         Progress[]      @relation("progressUserId")
-  scoreQuestionUserId    ScoreQuestion[] @relation("scoreQuestionUserId")
 
   @@map("tb_users")
 }
@@ -50,7 +49,7 @@ model User {
 model Price {
   id          String   @id @default(uuid()) @db.VarChar(255)
   name        String   @db.VarChar(255)
-  description String?  @db.VarChar(255)
+  description String?  @db.VarChar(2000)
   price       Int
   created_by  String   @db.VarChar(255)
   updated_by  String   @db.VarChar(255)
@@ -81,44 +80,45 @@ model Discussion {
 model Content {
   id             String   @id @default(uuid()) @db.VarChar(255)
   title          String   @db.VarChar(255)
-  description    String?  @db.VarChar(255)
+  description    String?  @db.VarChar(2000)
   thumbnail      String?  @db.VarChar(255)
   is_premium     Boolean
-  total_duration Int
-  total_klik     Int
+  total_duration Int?     @default(0)
+  total_klik     Int?     @default(0)
   created_by     String   @db.VarChar(255)
   updated_by     String   @db.VarChar(255)
   created_at     DateTime @default(now()) @db.Timestamp(0)
   updated_at     DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
-  createdBy                User              @relation("ContentCreatedBy", fields: [created_by], references: [id])
-  updatedBy                User              @relation("ContentUpdatedBy", fields: [updated_by], references: [id])
-  detailContentContentId   DetailContent[]   @relation("detailContentContentId")
-  contentCategoryContentId ContentCategory[] @relation("contentCategoryContentId")
-  contentUserId            Progress[]        @relation("contentUserId")
+  createdBy User @relation("ContentCreatedBy", fields: [created_by], references: [id])
+  updatedBy User @relation("ContentUpdatedBy", fields: [updated_by], references: [id])
+
+  detailContentContentId DetailContent[]   @relation("detailContentContentId")
+  contentUserId          Progress[]        @relation("contentUserId")
+  categories             ContentCategory[] @relation("contentCategoryContentId")
 
   @@map("tb_contents")
 }
 
 model DetailContent {
-  id          String   @id @default(uuid()) @db.VarChar(255)
-  id_content  String   @db.VarChar(255)
-  title       String   @db.VarChar(255)
-  description String?  @db.VarChar(255)
-  is_premium  Boolean
-  duration    Int
-  video_url   String?  @db.VarChar(255)
-  id_question String?  @unique @db.VarChar(255)
-  created_by  String   @db.VarChar(255)
-  updated_by  String   @db.VarChar(255)
-  created_at  DateTime @default(now()) @db.Timestamp(0)
-  updated_at  DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  id            String   @id @default(uuid()) @db.VarChar(255)
+  id_content    String   @db.VarChar(255)
+  serial_number Int      @default(1)
+  title         String   @db.VarChar(255)
+  description   String?  @db.VarChar(2000)
+  is_premium    Boolean
+  duration      Int?     @default(0)
+  video_url     String?  @db.VarChar(255)
+  created_by    String   @db.VarChar(255)
+  updated_by    String   @db.VarChar(255)
+  created_at    DateTime @default(now()) @db.Timestamp(0)
+  updated_at    DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
-  createdBy                 User         @relation("DetailContentCreatedBy", fields: [created_by], references: [id])
-  updatedBy                 User         @relation("DetailContentUpdatedBy", fields: [updated_by], references: [id])
-  discussionDetailContentId Discussion[] @relation("DiscussionDetailContentId")
-  content                   Content      @relation("detailContentContentId", fields: [id_content], references: [id])
-  question                  Question?    @relation("DetailContentQuestionId", fields: [id_question], references: [id])
+  createdBy                 User                    @relation("DetailContentCreatedBy", fields: [created_by], references: [id])
+  updatedBy                 User                    @relation("DetailContentUpdatedBy", fields: [updated_by], references: [id])
+  discussionDetailContentId Discussion[]            @relation("DiscussionDetailContentId")
+  content                   Content                 @relation("detailContentContentId", fields: [id_content], references: [id], onDelete: Cascade)
+  questions                 DetailContentQuestion[] @relation("detailContentQuestionDetailContentId")
 
   @@map("tb_detail_content")
 }
@@ -143,17 +143,30 @@ model ContentCategory {
   id_content  String @db.VarChar(255)
   id_category String @db.VarChar(255)
 
-  content  Content  @relation("contentCategoryContentId", fields: [id_content], references: [id])
-  category Category @relation("contentCategoryCategoryId", fields: [id_category], references: [id])
+  content  Content  @relation("contentCategoryContentId", fields: [id_content], references: [id], onDelete: Cascade)
+  category Category @relation("contentCategoryCategoryId", fields: [id_category], references: [id], onDelete: Cascade)
 
   @@map("tb_content_category")
+}
+
+model DetailContentQuestion {
+  id                Int    @id @default(autoincrement()) @db.Int
+  id_detail_content String @db.VarChar(255)
+  id_question       String @db.VarChar(255)
+  score             Int?   @default(0)
+
+  detail_content DetailContent @relation("detailContentQuestionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
+  question       Question      @relation("detailContentQuestionQuestionId", fields: [id_question], references: [id], onDelete: Cascade)
+
+  @@map("tb_detail_content_question")
 }
 
 model Progress {
   id                 String @id @default(uuid()) @db.VarChar(255)
   id_user            String @db.VarChar(255)
   id_content         String @db.VarChar(255)
-  total_content_done Int?
+  final_score        Int?   @default(0)
+  total_content_done Int?   @default(0)
 
   user    User    @relation("progressUserId", fields: [id_user], references: [id])
   content Content @relation("contentUserId", fields: [id_content], references: [id])
@@ -168,9 +181,8 @@ model Question {
   created_at DateTime @default(now()) @db.Timestamp(0)
   updated_at DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
-  detailContentQuestionId DetailContent[] @relation("DetailContentQuestionId")
-  optionQuestionId        Option[]        @relation("optionQuestionId")
-  scoreQuestionQuestionId ScoreQuestion[] @relation("scoreQuestionQuestionId")
+  detailContentQuestionQuestionId DetailContentQuestion[] @relation("detailContentQuestionQuestionId")
+  optionQuestionId                Option[]                @relation("optionQuestionId")
 
   @@map("tb_questions")
 }
@@ -183,16 +195,4 @@ model Option {
   question Question @relation("optionQuestionId", fields: [id_question], references: [id])
 
   @@map("tb_options")
-}
-
-model ScoreQuestion {
-  id          String @id @default(uuid()) @db.VarChar(255)
-  id_user     String @db.VarChar(255)
-  id_question String @db.VarChar(255)
-  score       Int?
-
-  user     User     @relation("scoreQuestionUserId", fields: [id_user], references: [id])
-  question Question @relation("scoreQuestionQuestionId", fields: [id_question], references: [id])
-
-  @@map("tb_score_question")
 }
