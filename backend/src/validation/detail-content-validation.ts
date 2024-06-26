@@ -4,7 +4,7 @@ import { z, ZodType } from 'zod';
 export interface ValidatedDetailContentData
   extends Omit<
     DetailContent,
-    'id' | 'duration' | 'created_at' | 'updated_at' | 'created_by'
+    'id' | 'created_at' | 'updated_at' | 'created_by'
   > {
   questions: string[];
 }
@@ -16,7 +16,7 @@ export class DetailContentValidation {
     title: z.string().min(1).max(255),
     description: z.string().max(255).optional(),
     is_premium: z.boolean(),
-    // duration: z.number().int().positive(),
+    duration: z.number().int().positive().optional(),
     video_url: z.string().max(255).optional(),
     questions: z.array(z.string()).optional(),
   });
@@ -27,7 +27,7 @@ export class DetailContentValidation {
     title: z.string().min(1).max(255).optional(),
     description: z.string().max(255).optional(),
     is_premium: z.boolean().optional(),
-    // duration: z.number().int().positive().optional(),
+    duration: z.number().int().positive().optional(),
     video_url: z.string().max(255).optional(),
     questions: z.array(z.string()).optional(),
   });

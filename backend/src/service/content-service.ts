@@ -62,28 +62,34 @@ export class ContentService {
       },
     });
 
-    return contents.map((content) => ({
-      id: content.id,
-      title: content.title,
-      description: content.description,
-      thumbnail: content.thumbnail,
-      is_premium: content.is_premium,
-      total_duration: content.total_duration,
-      total_klik: content.total_klik,
-      created_by: content.createdBy.name,
-      updated_by: content.updatedBy.name,
-      created_at: content.created_at,
-      updated_at: content.updated_at,
-      total_content: content.detailContentContentId.length,
-      categories: content.categories.map(({ category }) => ({
-        id: category.id,
-        name: category.name,
-        created_by: category.created_by,
-        updated_by: category.updated_by,
-        created_at: category.created_at,
-        updated_at: category.updated_at,
-      })),
-    }));
+    return contents.map((content) => {
+      let total_duration = 0;
+      content.detailContentContentId.forEach((detail) => {
+        total_duration += detail.duration ?? 0;
+      });
+      return {
+        id: content.id,
+        title: content.title,
+        description: content.description,
+        thumbnail: content.thumbnail,
+        is_premium: content.is_premium,
+        total_duration,
+        total_klik: content.total_klik,
+        created_by: content.createdBy.name,
+        updated_by: content.updatedBy.name,
+        created_at: content.created_at,
+        updated_at: content.updated_at,
+        total_content: content.detailContentContentId.length,
+        categories: content.categories.map(({ category }) => ({
+          id: category.id,
+          name: category.name,
+          created_by: category.created_by,
+          updated_by: category.updated_by,
+          created_at: category.created_at,
+          updated_at: category.updated_at,
+        })),
+      };
+    });
   }
 
   static async getFreeContent(): Promise<Content[]> {
@@ -114,28 +120,35 @@ export class ContentService {
       },
     });
 
-    return contents.map((content) => ({
-      id: content.id,
-      title: content.title,
-      description: content.description,
-      thumbnail: content.thumbnail,
-      is_premium: content.is_premium,
-      total_duration: content.total_duration,
-      total_klik: content.total_klik,
-      created_by: content.createdBy.name,
-      updated_by: content.updatedBy.name,
-      created_at: content.created_at,
-      updated_at: content.updated_at,
-      total_content: content.detailContentContentId.length,
-      categories: content.categories.map(({ category }) => ({
-        id: category.id,
-        name: category.name,
-        created_by: category.created_by,
-        updated_by: category.updated_by,
-        created_at: category.created_at,
-        updated_at: category.updated_at,
-      })),
-    }));
+    return contents.map((content) => {
+      let total_duration = 0;
+      content.detailContentContentId.forEach((detail) => {
+        total_duration += detail.duration ?? 0;
+      });
+
+      return {
+        id: content.id,
+        title: content.title,
+        description: content.description,
+        thumbnail: content.thumbnail,
+        is_premium: content.is_premium,
+        total_duration,
+        total_klik: content.total_klik,
+        created_by: content.createdBy.name,
+        updated_by: content.updatedBy.name,
+        created_at: content.created_at,
+        updated_at: content.updated_at,
+        total_content: content.detailContentContentId.length,
+        categories: content.categories.map(({ category }) => ({
+          id: category.id,
+          name: category.name,
+          created_by: category.created_by,
+          updated_by: category.updated_by,
+          created_at: category.created_at,
+          updated_at: category.updated_at,
+        })),
+      };
+    });
   }
 
   static async getMostClickedContent(): Promise<Content[]> {
@@ -163,29 +176,36 @@ export class ContentService {
       },
     });
 
-    return contents.map((content) => ({
-      id: content.id,
-      title: content.title,
-      description: content.description,
-      thumbnail: content.thumbnail,
-      is_premium: content.is_premium,
-      total_duration: content.total_duration,
-      total_klik: content.total_klik,
-      created_by: content.createdBy.name,
-      updated_by: content.updatedBy.name,
-      created_at: content.created_at,
-      updated_at: content.updated_at,
-      total_content: content.detailContentContentId.length,
-      detail_content: content.detailContentContentId,
-      categories: content.categories.map(({ category }) => ({
-        id: category.id,
-        name: category.name,
-        created_by: category.created_by,
-        updated_by: category.updated_by,
-        created_at: category.created_at,
-        updated_at: category.updated_at,
-      })),
-    }));
+    return contents.map((content) => {
+      let total_duration = 0;
+      content.detailContentContentId.forEach((detail) => {
+        total_duration += detail.duration ?? 0;
+      });
+
+      return {
+        id: content.id,
+        title: content.title,
+        description: content.description,
+        thumbnail: content.thumbnail,
+        is_premium: content.is_premium,
+        total_duration,
+        total_klik: content.total_klik,
+        created_by: content.createdBy.name,
+        updated_by: content.updatedBy.name,
+        created_at: content.created_at,
+        updated_at: content.updated_at,
+        total_content: content.detailContentContentId.length,
+        detail_content: content.detailContentContentId,
+        categories: content.categories.map(({ category }) => ({
+          id: category.id,
+          name: category.name,
+          created_by: category.created_by,
+          updated_by: category.updated_by,
+          created_at: category.created_at,
+          updated_at: category.updated_at,
+        })),
+      };
+    });
   }
 
   static async getById(contentId: string): Promise<any> {
@@ -221,13 +241,18 @@ export class ContentService {
       throw new Error(`Content with id ${contentId} not found.`);
     }
 
+    let total_duration = 0;
+    content.detailContentContentId.forEach((detail) => {
+      total_duration += detail.duration ?? 0;
+    });
+
     return {
       id: content.id,
       title: content.title,
       description: content.description,
       thumbnail: content.thumbnail,
       is_premium: content.is_premium,
-      total_duration: content.total_duration,
+      total_duration,
       total_klik: content.total_klik,
       created_by: content.createdBy.name,
       updated_by: content.updatedBy.name,
@@ -244,6 +269,33 @@ export class ContentService {
         updated_at: category.updated_at,
       })),
     };
+  }
+
+  static async clickedContent(contentId: string): Promise<Content> {
+    console.log('==== CLICKED CONTENT ====');
+    const currentContent = await prismaClient.content.findUnique({
+      where: {
+        id: contentId,
+      },
+    });
+
+    if (!currentContent) {
+      throw new Error('Konten tidak ditemukan');
+    }
+
+    const previousTotalKlik = currentContent.total_klik ? currentContent.total_klik : 0;
+
+    // Perbarui total_klik
+    const updatedContent = await prismaClient.content.update({
+      where: {
+        id: contentId,
+      },
+      data: {
+        total_klik: previousTotalKlik + 1,
+      }
+    });
+
+    return updatedContent;
   }
 
   static async update(

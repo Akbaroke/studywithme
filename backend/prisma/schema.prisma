@@ -83,7 +83,6 @@ model Content {
   description    String?  @db.VarChar(2000)
   thumbnail      String?  @db.VarChar(255)
   is_premium     Boolean
-  total_duration Int?     @default(0)
   total_klik     Int?     @default(0)
   created_by     String   @db.VarChar(255)
   updated_by     String   @db.VarChar(255)

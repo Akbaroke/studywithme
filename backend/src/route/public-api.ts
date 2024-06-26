@@ -16,6 +16,7 @@ publicRouter.post('/api/users/reset-password', UserController.resetPassword);
 publicRouter.get('/api/categories', CategoryController.getAll);
 publicRouter.get('/api/categories/:id', CategoryController.getById);
 
+publicRouter.patch('/api/contents/klik/:id', ContentController.clickedContent);
 publicRouter.get('/api/contents', ContentController.getAll);
 publicRouter.get('/api/contents/free', ContentController.getFreeContent);
 publicRouter.get('/api/contents/most-click', ContentController.getMostClickedContent);

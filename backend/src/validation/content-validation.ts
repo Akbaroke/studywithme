@@ -22,7 +22,6 @@ export class ContentValidation {
     description: z.string().max(255).optional(),
     thumbnail: z.string().max(255).optional(),
     is_premium: z.boolean(),
-    total_duration: z.number().int().positive().optional(),
     total_klik: z.number().int().positive().optional(),
     categories: z.array(z.string()),
   });
@@ -32,7 +31,6 @@ export class ContentValidation {
     description: z.string().max(255).optional(),
     thumbnail: z.string().max(255).optional(),
     is_premium: z.boolean().optional(),
-    total_duration: z.number().int().positive().optional(),
     total_klik: z.number().int().positive().optional(),
     categories: z.array(z.string()).optional(),
   });

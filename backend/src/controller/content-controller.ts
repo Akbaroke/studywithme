@@ -51,6 +51,20 @@ export class ContentController {
     }
   }
 
+  static async clickedContent(
+    req: UserRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params;
+      await ContentService.clickedContent(id);
+      res.status(200).json({ message: 'Klik Konten berhasil diperbarui' });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   static async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
