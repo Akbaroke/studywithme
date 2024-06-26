@@ -1,5 +1,7 @@
 import { images } from '@/assets';
+import { formatSeconds } from '@/helpers/formatDate';
 import { ContentModel } from '@/models/contentModel';
+import { clickedContent } from '@/services/contentService';
 import { Badge, Card } from '@mantine/core';
 import { IconClock } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -22,9 +24,15 @@ export default function CardContent({
   created_at,
 }: ContentModel) {
   const router = useRouter();
+
+  const onClickCard = async () => {
+    router.push(`/detail-content/${id}`);
+    await clickedContent(id);
+  };
+
   return (
     <Card
-      onClick={() => router.push(`/detail-content/${id}`)}
+      onClick={onClickCard}
       shadow="sm"
       padding="md"
       radius="md"
@@ -67,7 +75,7 @@ export default function CardContent({
             </div>
             <div className="flex text-gray-400 items-center gap-1 text-xs">
               <IconClock size={12} />
-              <p>{total_duration} menit</p>
+              <p>{formatSeconds(total_duration ?? 0)}</p>
             </div>
           </div>
         </div>

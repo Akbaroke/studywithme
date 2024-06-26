@@ -47,6 +47,11 @@ export const updateContent = async (
   return data.message;
 };
 
+export const clickedContent = async (id: string) => {
+  const { data } = await axios.patch(`/contents/klik/${id}`);
+  return data.message;
+};
+
 export const deleteContent = async (id: string, token: string) => {
   const { data } = await axios.delete(`/contents/${id}`, {
     headers: { Authorization: `Bearer ${token}` },

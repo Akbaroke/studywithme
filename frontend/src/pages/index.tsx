@@ -1,11 +1,6 @@
 import Banner from '@/components/atoms/Banner';
 import SectionListContent from '@/components/molecules/SectionListContent';
 import {
-  freeLearningContents,
-  latestLearningContents,
-  mostViewedContents,
-} from '@/data/fakeDataContent';
-import {
   getAllContent,
   getFreeContent,
   getMostClickedContent,

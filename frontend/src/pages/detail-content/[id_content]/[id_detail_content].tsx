@@ -1,6 +1,7 @@
 import VideoPlayer from '@/components/molecules/VideoPlayer';
 import cn from '@/helpers/cn';
 import { formatSeconds } from '@/helpers/formatDate';
+import urlify from '@/helpers/urlify';
 import { ContentModel, DetailContentModel } from '@/models/contentModel';
 import { getContentById } from '@/services/contentService';
 import { getDetailContentById } from '@/services/detailContentService';
@@ -15,6 +16,7 @@ import {
 } from '@tabler/icons-react';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { NextRequest } from 'next/server';
 
 type Props = {
@@ -30,11 +32,12 @@ export default function DetailContent({
   id_content,
   id_detail_content,
 }: Props) {
+  const router = useRouter();
   const isNotMobile = useMediaQuery('(min-width: 768px)');
 
   return (
-    <div className="flex items-start gap-5 py-10 ">
-      <div className="md:w-[200px] lg:w-[300px] md:flex flex-col gap-5 border rounded-lg p-3 hidden">
+    <div className="flex items-start gap-5 py-10">
+      <div className="md:w-[200px] lg:w-[300px] md:flex flex-col gap-5 border rounded-lg p-3 hidden sticky top-28">
         <Link
           href={`/detail-content/${id_content}`}
           className="flex flex-col gap-0 p-3 border-b cursor-pointer hover:bg-gray-100 transition-all duration-300">
@@ -78,33 +81,59 @@ export default function DetailContent({
           thumbnail={content?.thumbnail}
         />
         <div className="w-full border rounded-lg mt-6">
-          <div className="flex items-center justify-between p-5 w-full">
-            <h1 className="text-2xl font-bold">{content?.title}</h1>
-            <div className="flex items-center gap-2">
-              <ActionIcon
-                variant="filled"
-                disabled={detailContent?.serial_number === 1}
-                color="#000"
-                aria-label="prev"
-                radius="md"
-                size={35}>
-                <IconPlayerTrackPrev
-                  style={{ width: '55%', height: '55%' }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                color="#000"
-                aria-label="next"
-                radius="md"
-                size={35}>
-                <IconPlayerTrackNext
-                  style={{ width: '55%', height: '55%' }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
+          <div className="p-5 flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold">{detailContent?.title}</h1>
+              <div className="flex items-center gap-2">
+                <ActionIcon
+                  variant="filled"
+                  disabled={detailContent?.serial_number === 1}
+                  onClick={() =>
+                    router.push(
+                      `/detail-content/${id_content}/${
+                        content?.detail_content[
+                          (detailContent?.serial_number ?? 0) - 2
+                        ].id
+                      }`
+                    )
+                  }
+                  color="#000"
+                  aria-label="prev"
+                  radius="md"
+                  size={35}>
+                  <IconPlayerTrackPrev
+                    style={{ width: '55%', height: '55%' }}
+                    stroke={1.5}
+                  />
+                </ActionIcon>
+                <ActionIcon
+                  variant="filled"
+                  disabled={
+                    detailContent?.serial_number === content?.total_content
+                  }
+                  onClick={() =>
+                    router.push(
+                      `/detail-content/${id_content}/${
+                        content?.detail_content[
+                          detailContent?.serial_number ?? 0 + 2
+                        ].id
+                      }`
+                    )
+                  }
+                  color="#000"
+                  aria-label="next"
+                  radius="md"
+                  size={35}>
+                  <IconPlayerTrackNext
+                    style={{ width: '55%', height: '55%' }}
+                    stroke={1.5}
+                  />
+                </ActionIcon>
+              </div>
             </div>
+            <p className="text-sm font-medium break-words whitespace-pre-line">
+              {urlify(detailContent?.description)}
+            </p>
           </div>
           <div></div>
         </div>
@@ -138,7 +167,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const content = await getContentById(id_content, sessionData.token!);
     const detailContent = await getDetailContentById(
       id_detail_content,
-      sessionData.token!
+      sessionData.token as string
     );
 
     return {

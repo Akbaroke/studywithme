@@ -2,17 +2,27 @@ import { Modal as MantineModal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import FormCategory from '../molecules/FormCategory';
 import FormContent from '../molecules/FormContent';
+import FormDetailContent from '../molecules/FormDetailContent';
 
 type Props = {
   children: React.ReactNode;
   title: string;
   formType: 'category' | 'content' | 'detail-content';
   id?: string;
+  id_content?: string;
   className?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 };
 
-export default function ModalForm({ children, title, formType, id, className, size = 'sm' }: Props) {
+export default function ModalForm({
+  children,
+  title,
+  formType,
+  id,
+  id_content,
+  className,
+  size = 'sm',
+}: Props) {
   const [opened, { open, close }] = useDisclosure(false);
 
   const formRender = () => {
@@ -22,7 +32,9 @@ export default function ModalForm({ children, title, formType, id, className, si
       case 'content':
         return <FormContent id={id} close={close} />;
       case 'detail-content':
-        return <FormContent id={id} close={close} />;
+        return (
+          <FormDetailContent id={id} id_content={id_content} close={close} />
+        );
     }
   };
 

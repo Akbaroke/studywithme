@@ -21,7 +21,6 @@ import {
 import { ContentModel } from '@/models/contentModel';
 import { getAllCategory } from '@/services/categoryService';
 import { CategoryModel } from '@/models/categoryModel';
-import TextEditor from '../atoms/TextEditor';
 import Notify from '../atoms/Notify';
 
 type Props = {
@@ -65,11 +64,7 @@ export default function FormContent({ id, close }: Props) {
           ? 'Judul tidak boleh hanya berisi spasi.'
           : null,
       description: (value: string) =>
-        value.length < 10
-          ? 'Deskripsi minimal harus 10 karakter.'
-          : validatorNotOnlySpaceSymbolTrue(value)
-          ? 'Deskripsi tidak boleh hanya berisi spasi.'
-          : null,
+        value.length < 10 ? 'Deskripsi minimal harus 10 karakter.' : null,
       categories: (value) =>
         value.length > 0 ? null : 'Pilih minimal 1 kategori.',
     },
@@ -81,7 +76,7 @@ export default function FormContent({ id, close }: Props) {
         form.setValues({
           thumbnail: data.thumbnail ?? '',
           title: data.title,
-          description: data.description,
+          description: data.description.trim(),
           is_premium: data.is_premium,
           categories: data.categories.map((category) => category.id),
         });
@@ -133,14 +128,6 @@ export default function FormContent({ id, close }: Props) {
       className="flex flex-col gap-3"
       onSubmit={form.onSubmit(handleSubmit)}>
       <TextInput
-        label="URL Sampul"
-        placeholder="https://example.com/image.jpg"
-        value={form.values.thumbnail}
-        error={form.errors.thumbnail as string}
-        onChange={(e) => form.setFieldValue('thumbnail', e.currentTarget.value)}
-        readOnly={mutation.status === 'pending'}
-      />
-      <TextInput
         label="Judul"
         required
         value={form.values.title}
@@ -187,6 +174,14 @@ export default function FormContent({ id, close }: Props) {
         disabled={isLoadingCategories}
         readOnly={mutation.status === 'pending'}
         clearable
+      />
+      <TextInput
+        label="URL Sampul"
+        placeholder="https://example.com/image.jpg"
+        value={form.values.thumbnail}
+        error={form.errors.thumbnail as string}
+        onChange={(e) => form.setFieldValue('thumbnail', e.currentTarget.value)}
+        readOnly={mutation.status === 'pending'}
       />
       <Button
         rightSection={<IconDeviceFloppy size={16} />}

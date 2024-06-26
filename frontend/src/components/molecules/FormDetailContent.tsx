@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from '@mantine/form';
 import {
   Button,
   Group,
-  MultiSelect,
+  NumberInput,
   Radio,
   Textarea,
   TextInput,
@@ -11,24 +11,27 @@ import {
 import { IconDeviceFloppy } from '@tabler/icons-react';
 import { UserModel } from '@/models/userModel';
 import { useSession } from 'next-auth/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { validatorNotOnlySpaceSymbolTrue } from '@/helpers/validator';
-import {
-  createContent,
-  getContentById,
-  updateContent,
-} from '@/services/contentService';
-import { ContentModel } from '@/models/contentModel';
-import { getAllCategory } from '@/services/categoryService';
-import { CategoryModel } from '@/models/categoryModel';
+import { DetailContentModel } from '@/models/contentModel';
 import Notify from '../atoms/Notify';
+import {
+  createDetailContent,
+  getDetailContentById,
+  updateDetailContent,
+} from '@/services/detailContentService';
+import dynamic from 'next/dynamic';
+
+// Load ReactPlayer dynamically to ensure server-side rendering is handled properly
+const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 
 type Props = {
   id?: string;
+  id_content?: string;
   close: () => void;
 };
 
-type ContentForm = {
+type DetailContentForm = {
   id_content: string;
   title: string;
   description: string;
@@ -37,11 +40,14 @@ type ContentForm = {
   serial_number: number;
 };
 
-export default function FormDetailContent({ id, close }: Props) {
+export default function FormDetailContent({ id, id_content, close }: Props) {
   const queryClient = useQueryClient();
   const session: UserModel = useSession().data?.user as UserModel;
 
-  const form = useForm<ContentForm>({
+  const [videoDuration, setVideoDuration] = useState<number>(0);
+  console.log(videoDuration);
+
+  const form = useForm<DetailContentForm>({
     validateInputOnChange: true,
     initialValues: {
       id_content: '',
@@ -59,50 +65,57 @@ export default function FormDetailContent({ id, close }: Props) {
           ? 'Judul tidak boleh hanya berisi spasi.'
           : null,
       description: (value: string) =>
-        value.length < 10
-          ? 'Deskripsi minimal harus 10 karakter.'
-          : validatorNotOnlySpaceSymbolTrue(value)
-          ? 'Deskripsi tidak boleh hanya berisi spasi.'
-          : null,
+        value.length < 10 ? 'Deskripsi minimal harus 10 karakter.' : null,
     },
   });
 
   useEffect(() => {
     if (id) {
-      getContentById(id, session.token!).then((data) => {
+      getDetailContentById(id, session.token!).then((data) => {
         form.setValues({
           title: data.title,
-          description: data.description,
+          description: data.description.trim(),
           is_premium: data.is_premium,
+          video_url: data.video_url,
+          serial_number: data.serial_number,
         });
       });
     }
+    form.setValues({
+      id_content,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const mutation = useMutation({
     mutationFn: async ({
-      newContent,
+      newDetailContent,
       token,
     }: {
-      newContent: Partial<ContentModel | any>;
+      newDetailContent: Partial<DetailContentModel | any>;
       token: string;
     }) => {
       const response = id
-        ? await updateContent(id, newContent, token)
-        : await createContent(newContent, token);
+        ? await updateDetailContent(id, newDetailContent, token)
+        : await createDetailContent(newDetailContent, token);
       return response;
     },
     onMutate: () => {
-      Notify('loading', 'Sedang memproses konten..', 'action-content');
+      Notify(
+        'loading',
+        'Sedang memproses detail konten..',
+        'action-detail-content'
+      );
     },
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ['contents'] });
-      Notify('success', response, 'action-content');
+      queryClient.invalidateQueries({
+        queryKey: ['contents/' + id_content],
+      });
+      Notify('success', response, 'action-detail-content');
       close();
     },
     onError: (error: any) => {
-      Notify('error', 'Gagal memproses konten', 'action-content');
+      Notify('error', 'Gagal memproses detail konten', 'action-detail-content');
       console.error('Error creating content:', error);
     },
   });
@@ -110,7 +123,7 @@ export default function FormDetailContent({ id, close }: Props) {
   const handleSubmit = async () => {
     if (session.token) {
       mutation.mutate({
-        newContent: form.values,
+        newDetailContent: { ...form.values, duration: videoDuration },
         token: session.token,
       });
     } else {
@@ -155,6 +168,22 @@ export default function FormDetailContent({ id, close }: Props) {
           <Radio value="false" label="Tidak" />
         </Group>
       </Radio.Group>
+      <TextInput
+        label="URL Video"
+        placeholder="https://example.com/video.mp4"
+        value={form.values.video_url}
+        error={form.errors.video_url as string}
+        onChange={(e) => form.setFieldValue('video_url', e.currentTarget.value)}
+        readOnly={mutation.status === 'pending'}
+      />
+      <NumberInput
+        label="Nomer Urut Materi"
+        required
+        value={form.values.serial_number}
+        error={form.errors.serial_number as string}
+        onChange={(e) => form.setFieldValue('serial_number', e as number)}
+        readOnly={mutation.status === 'pending'}
+      />
       <Button
         rightSection={<IconDeviceFloppy size={16} />}
         type="submit"
@@ -168,6 +197,12 @@ export default function FormDetailContent({ id, close }: Props) {
         }}>
         Simpan
       </Button>
+      <div style={{ display: 'none' }}>
+        <ReactPlayer
+          url={form.values.video_url}
+          onDuration={setVideoDuration}
+        />
+      </div>
     </form>
   );
 }

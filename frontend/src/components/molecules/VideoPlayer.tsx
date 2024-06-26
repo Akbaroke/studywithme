@@ -2,10 +2,9 @@ import { images } from '@/assets';
 import cn from '@/helpers/cn';
 import { formatSeconds } from '@/helpers/formatDate';
 import { ActionIcon, Progress } from '@mantine/core';
-import { IconPlayerPlay, IconPlayerPlayFilled } from '@tabler/icons-react';
+import { IconPlayerPlayFilled } from '@tabler/icons-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
 const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 

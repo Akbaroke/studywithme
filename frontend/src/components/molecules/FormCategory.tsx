@@ -70,7 +70,7 @@ export default function FormCategory({ id, close }: Props) {
       Notify('loading', 'Sedang memproses kategori..', 'action-category');
     },
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ['categories', 'contents'] });
       Notify('success', response, 'action-category');
       close();
     },

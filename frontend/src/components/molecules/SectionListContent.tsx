@@ -19,13 +19,15 @@ export default function SectionListContent({ title, data }: Props) {
         </div>
         <Divider mt={10} />
       </div>
-      <SimpleGrid
-        cols={{ base: 2, xs: 3, sm: 4 }}
-        spacing={{ base: 10, sm: 20 }}>
-        {data?.map((item) => (
-          <CardContent key={item.id} {...item} />
-        ))}
-      </SimpleGrid>
+      {data?.length > 0 && (
+        <SimpleGrid
+          cols={{ base: 2, xs: 3, sm: 4 }}
+          spacing={{ base: 10, sm: 20 }}>
+          {data?.map((item) => (
+            <CardContent key={item.id} {...item} />
+          ))}
+        </SimpleGrid>
+      )}
     </div>
   );
 }
