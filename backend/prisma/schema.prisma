@@ -49,7 +49,7 @@ model User {
 model Price {
   id          String   @id @default(uuid()) @db.VarChar(255)
   name        String   @db.VarChar(255)
-  description String?  @db.VarChar(2000)
+  description String?  @db.VarChar(10000)
   price       Int
   created_by  String   @db.VarChar(255)
   updated_by  String   @db.VarChar(255)
@@ -78,16 +78,16 @@ model Discussion {
 }
 
 model Content {
-  id             String   @id @default(uuid()) @db.VarChar(255)
-  title          String   @db.VarChar(255)
-  description    String?  @db.VarChar(2000)
-  thumbnail      String?  @db.VarChar(255)
-  is_premium     Boolean
-  total_klik     Int?     @default(0)
-  created_by     String   @db.VarChar(255)
-  updated_by     String   @db.VarChar(255)
-  created_at     DateTime @default(now()) @db.Timestamp(0)
-  updated_at     DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  id          String   @id @default(uuid()) @db.VarChar(255)
+  title       String   @db.VarChar(255)
+  description String?  @db.VarChar(10000)
+  thumbnail   String?  @db.VarChar(255)
+  is_premium  Boolean
+  total_klik  Int?     @default(0)
+  created_by  String   @db.VarChar(255)
+  updated_by  String   @db.VarChar(255)
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  updated_at  DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
   createdBy User @relation("ContentCreatedBy", fields: [created_by], references: [id])
   updatedBy User @relation("ContentUpdatedBy", fields: [updated_by], references: [id])
@@ -104,7 +104,7 @@ model DetailContent {
   id_content    String   @db.VarChar(255)
   serial_number Int      @default(1)
   title         String   @db.VarChar(255)
-  description   String?  @db.VarChar(2000)
+  description   String?  @db.VarChar(10000)
   is_premium    Boolean
   duration      Int?     @default(0)
   video_url     String?  @db.VarChar(255)
@@ -152,7 +152,7 @@ model DetailContentQuestion {
   id                Int    @id @default(autoincrement()) @db.Int
   id_detail_content String @db.VarChar(255)
   id_question       String @db.VarChar(255)
-  score             Int?   @default(0)
+  score      Int?     @default(0)
 
   detail_content DetailContent @relation("detailContentQuestionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
   question       Question      @relation("detailContentQuestionQuestionId", fields: [id_question], references: [id], onDelete: Cascade)
@@ -175,21 +175,21 @@ model Progress {
 
 model Question {
   id         String   @id @default(uuid()) @db.VarChar(255)
-  question   String   @db.VarChar(255)
-  id_answer  String   @db.VarChar(255)
+  question   String   @db.VarChar(10000)
   created_at DateTime @default(now()) @db.Timestamp(0)
   updated_at DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
   detailContentQuestionQuestionId DetailContentQuestion[] @relation("detailContentQuestionQuestionId")
-  optionQuestionId                Option[]                @relation("optionQuestionId")
+  options                         Option[]                @relation("optionQuestionId")
 
   @@map("tb_questions")
 }
 
 model Option {
-  id          String @id @default(uuid()) @db.VarChar(255)
-  option      String @db.VarChar(255)
-  id_question String @db.VarChar(255)
+  id          String   @id @default(uuid()) @db.VarChar(255)
+  option      String   @db.VarChar(5000)
+  id_question String   @db.VarChar(255)
+  is_answer   Boolean? @default(false)
 
   question Question @relation("optionQuestionId", fields: [id_question], references: [id])
 

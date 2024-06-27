@@ -272,7 +272,6 @@ export class ContentService {
   }
 
   static async clickedContent(contentId: string): Promise<Content> {
-    console.log('==== CLICKED CONTENT ====');
     const currentContent = await prismaClient.content.findUnique({
       where: {
         id: contentId,
@@ -283,7 +282,9 @@ export class ContentService {
       throw new Error('Konten tidak ditemukan');
     }
 
-    const previousTotalKlik = currentContent.total_klik ? currentContent.total_klik : 0;
+    const previousTotalKlik = currentContent.total_klik
+      ? currentContent.total_klik
+      : 0;
 
     // Perbarui total_klik
     const updatedContent = await prismaClient.content.update({
@@ -292,7 +293,7 @@ export class ContentService {
       },
       data: {
         total_klik: previousTotalKlik + 1,
-      }
+      },
     });
 
     return updatedContent;

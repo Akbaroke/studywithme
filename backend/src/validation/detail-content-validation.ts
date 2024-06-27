@@ -6,8 +6,15 @@ export interface ValidatedDetailContentData
     DetailContent,
     'id' | 'created_at' | 'updated_at' | 'created_by'
   > {
-  questions: string[];
+  questions: QuestionType[];
 }
+
+export type QuestionType = { id_question: string; score: number };
+
+const QuestionSchema = z.object({
+  id_question: z.string().uuid(),
+  score: z.number().int().positive().optional(),
+});
 
 export class DetailContentValidation {
   static readonly CREATE: ZodType = z.object({
@@ -18,7 +25,7 @@ export class DetailContentValidation {
     is_premium: z.boolean(),
     duration: z.number().int().positive().optional(),
     video_url: z.string().max(255).optional(),
-    questions: z.array(z.string()).optional(),
+    questions: z.array(QuestionSchema).optional(),
   });
 
   static readonly UPDATE: ZodType = z.object({
@@ -29,6 +36,6 @@ export class DetailContentValidation {
     is_premium: z.boolean().optional(),
     duration: z.number().int().positive().optional(),
     video_url: z.string().max(255).optional(),
-    questions: z.array(z.string()).optional(),
+    questions: z.array(QuestionSchema).optional(),
   });
 }

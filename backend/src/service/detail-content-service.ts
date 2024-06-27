@@ -1,6 +1,7 @@
 import { DetailContent } from '@prisma/client';
 import {
   DetailContentValidation,
+  QuestionType,
   ValidatedDetailContentData,
 } from '../validation/detail-content-validation';
 import { prismaClient } from '../application/database';
@@ -16,25 +17,28 @@ export class DetailContentService {
       data
     );
 
-    // Extract categories from validatedData
+    // Extract questions from validatedData
     const { questions, ...dataWithoutQuestions } = validatedData;
 
-    // Create content without categories
+    // Create content without questions
     const createdContent = await prismaClient.detailContent.create({
       data: {
         ...dataWithoutQuestions,
         created_by: userId,
         updated_by: userId,
-        // Connect questions
-        questions: {
-          create: questions?.map((questionId: string) => ({
-            question: {
-              connect: { id: questionId },
-            },
-          })),
-        },
       },
     });
+
+    // Connect questions to the created content
+    if (questions && questions.length > 0) {
+      await prismaClient.detailContentQuestion.createMany({
+        data: questions.map((question: QuestionType) => ({
+          id_detail_content: createdContent.id,
+          id_question: question.id_question,
+          score: question.score,
+        })),
+      });
+    }
 
     return createdContent;
   }
@@ -50,17 +54,36 @@ export class DetailContentService {
     });
   }
 
-  static async getById(id: string): Promise<DetailContent | null> {
-    return prismaClient.detailContent.findUnique({
+  static async getById(id: string): Promise<any> {
+    const query = await prismaClient.detailContent.findUnique({
       where: { id },
       include: {
         questions: {
           include: {
-            question: true,
+            question: {
+              include: {
+                options: true,
+              },
+            },
           },
         },
       },
     });
+    return {
+      ...query,
+      questions: query?.questions?.map((question) => ({
+        id_question: question.question.id,
+        score: question.score,
+        question: question.question.question,
+        created_at: question.question.created_at,
+        updated_at: question.question.updated_at,
+        options: question.question.options.map((option) => ({
+          id: option.id,
+          option: option.option,
+          is_answer: option.is_answer,
+        })),
+      })),
+    };
   }
 
   static async update(
@@ -77,10 +100,17 @@ export class DetailContentService {
     const { questions, ...dataWithoutQuestions } = validatedData;
 
     // Prepare set object for updating content
-    const setContent = {
-      ...dataWithoutQuestions,
-      updated_by: userId,
-    };
+    const setContent = questions
+      ? {
+          ...dataWithoutQuestions,
+          duration: 0,
+          video_url: null,
+          updated_by: userId,
+        }
+      : {
+          ...dataWithoutQuestions,
+          updated_by: userId,
+        };
 
     if (questions) {
       // Delete all existing questions for this content
@@ -91,14 +121,21 @@ export class DetailContentService {
       });
 
       // Add new questions to the content
-      const questionsIds = questions?.map((questionsId: string) => ({
+      const questionsIds = questions?.map((questions: QuestionType) => ({
         id_detail_content: id,
-        id_question: questionsId,
+        id_question: questions.id_question,
+        score: questions.score,
       }));
 
       // Create new content questions
       await prismaClient.detailContentQuestion.createMany({
         data: questionsIds,
+      });
+    } else {
+      await prismaClient.detailContentQuestion.deleteMany({
+        where: {
+          id_detail_content: id,
+        },
       });
     }
 

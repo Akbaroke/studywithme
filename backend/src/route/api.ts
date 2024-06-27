@@ -4,6 +4,7 @@ import { authMiddleware } from '../middleware/auth-middleware';
 import { CategoryController } from '../controller/category-controller';
 import { ContentController } from '../controller/content-controller';
 import { DetailContentController } from '../controller/detail-content-controller';
+import { QuestionController } from '../controller/question-controller';
 
 const apiRouter = express.Router();
 
@@ -30,5 +31,11 @@ apiRouter.get(
 apiRouter.get('/api/detail-contents/:id', DetailContentController.getById);
 apiRouter.patch('/api/detail-contents/:id', DetailContentController.update);
 apiRouter.delete('/api/detail-contents/:id', DetailContentController.delete);
+
+apiRouter.post('/api/questions', QuestionController.create);
+apiRouter.get('/api/questions', QuestionController.getAll);
+apiRouter.get('/api/questions/:id', QuestionController.getById);
+apiRouter.patch('/api/questions/:id', QuestionController.update);
+apiRouter.delete('/api/questions/:id', QuestionController.delete);
 
 export default apiRouter;
