@@ -1,4 +1,5 @@
 import { CategoryModel } from './categoryModel';
+import { QuestionModel } from './questionModel';
 
 export interface ContentModel {
   id: string;
@@ -30,6 +31,7 @@ export interface DetailContentModel {
   updated_by: string;
   created_at: Date;
   updated_at: Date;
+  questions: QuestionModel[];
 }
 
 export interface DiscussionModel {

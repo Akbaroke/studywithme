@@ -1,3 +1,4 @@
+import FormQuiz, { AnswerType } from '@/components/molecules/FormQuiz';
 import VideoPlayer from '@/components/molecules/VideoPlayer';
 import cn from '@/helpers/cn';
 import { formatSeconds } from '@/helpers/formatDate';
@@ -18,6 +19,7 @@ import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NextRequest } from 'next/server';
+import { useState } from 'react';
 
 type Props = {
   content: ContentModel | null;
@@ -34,10 +36,26 @@ export default function DetailContent({
 }: Props) {
   const router = useRouter();
   const isNotMobile = useMediaQuery('(min-width: 768px)');
+  const [answers, setAnswers] = useState<AnswerType[]>([]);
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
+
+  const handleNextQuestion = (answer: AnswerType, questionNumber: number) => {
+    setAnswers([...answers, answer]);
+    setCurrentQuestionNumber(questionNumber + 1);
+  };
+
+  const handlePrevQuestion = (questionNumber: number) => {
+    setCurrentQuestionNumber(questionNumber - 1);
+  };
+
+  const handleLastQuestion = (answer: AnswerType) => {
+    setAnswers([...answers, answer]);
+    console.log(answers);
+  };
 
   return (
     <div className="flex items-start gap-5 py-10">
-      <div className="md:w-[200px] lg:w-[300px] md:flex flex-col gap-5 border rounded-lg p-3 hidden sticky top-28">
+      <div className="md:w-[200px] lg:w-[300px] md:flex flex-col gap-5 border rounded-lg p-3 hidden md:sticky md:top-28">
         <Link
           href={`/detail-content/${id_content}`}
           className="flex flex-col gap-0 p-3 border-b cursor-pointer hover:bg-gray-100 transition-all duration-300">
@@ -72,15 +90,17 @@ export default function DetailContent({
           </div>
         </ScrollArea>
       </div>
-      <div className="flex-1 relative">
-        <VideoPlayer
-          id={id_detail_content}
-          isNotMobile={isNotMobile}
-          url={detailContent?.video_url}
-          duration={detailContent?.duration}
-          thumbnail={content?.thumbnail}
-        />
-        <div className="w-full border rounded-lg mt-6">
+      <div className="flex-1 relative flex flex-col gap-5">
+        {detailContent?.video_url && (
+          <VideoPlayer
+            id={id_detail_content}
+            isNotMobile={isNotMobile}
+            url={detailContent?.video_url}
+            duration={detailContent?.duration}
+            thumbnail={content?.thumbnail}
+          />
+        )}
+        <div className="w-full border rounded-lg">
           <div className="p-5 flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold">{detailContent?.title}</h1>
@@ -135,6 +155,20 @@ export default function DetailContent({
               {urlify(detailContent?.description)}
             </p>
           </div>
+        </div>
+        <div className="w-full border rounded-lg p-5">
+          {detailContent?.questions[currentQuestionNumber - 1] && (
+            <FormQuiz
+              currentQuestionNumber={currentQuestionNumber}
+              question={
+                detailContent?.questions[currentQuestionNumber - 1] as any
+              }
+              nextQuestion={handleNextQuestion}
+              prevQuestion={handlePrevQuestion}
+              totalQuestion={detailContent?.questions.length}
+              lastQuestion={handleLastQuestion}
+            />
+          )}
           <div></div>
         </div>
       </div>

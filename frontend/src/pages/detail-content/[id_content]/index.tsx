@@ -50,7 +50,7 @@ export default function Content({ id_content }: Props) {
 
   return (
     <div className="flex gap-10 py-10 md:flex-row flex-col">
-      <div className="relative w-full md:max-w-[600px] min-h-[180px] max-w-none rounded-2xl overflow-hidden bg-gray-800">
+      <div className="w-full md:max-w-[600px] min-h-[180px] h-max max-w-none rounded-2xl overflow-hidden bg-gray-800 relative md:sticky md:top-28">
         <Image
           src={
             content?.thumbnail ? content?.thumbnail : images.DEFAULT_THUMBNAIL
@@ -123,7 +123,7 @@ export default function Content({ id_content }: Props) {
               materi untuk dipelajari.
             </p>
           </div>
-          {session?.role !== 'STUDENT' && (
+          {(session?.role === 'TEACHER' || session?.role === 'ADMIN') && (
             <ModalForm
               formType="detail-content"
               id_content={id_content}
@@ -201,7 +201,7 @@ const ListContent = ({
           <p>{formatSeconds(content.duration)}</p>
         </div>
       </Link>
-      {session?.role !== 'STUDENT' && (
+      {(session?.role === 'TEACHER' || session?.role === 'ADMIN') && (
         <div className="flex items-center gap-2">
           <ModalForm
             formType="detail-content"

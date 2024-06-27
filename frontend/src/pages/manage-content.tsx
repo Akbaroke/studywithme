@@ -3,6 +3,7 @@ import { IconPlus } from '@tabler/icons-react';
 import ModalForm from '@/components/organisms/ModalForm';
 import TableCategory from '@/components/organisms/TableCategory';
 import TableContent from '@/components/organisms/TableContent';
+import TableQuestion from '@/components/organisms/TableQuestion';
 
 export default function ManageContent() {
   return (
@@ -18,6 +19,7 @@ export default function ManageContent() {
           <Tabs.List>
             <Tabs.Tab value="kategori">Kategori</Tabs.Tab>
             <Tabs.Tab value="konten">Konten</Tabs.Tab>
+            <Tabs.Tab value="bank-soal">Bank Soal</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="kategori">
@@ -44,6 +46,19 @@ export default function ManageContent() {
                 </ModalForm>
               </div>
               <TableContent />
+            </div>
+          </Tabs.Panel>
+          <Tabs.Panel value="bank-soal">
+            <div className="flex flex-col gap-3 my-5 px-5">
+              <div className="flex items-center justify-between">
+                <p className="text-md font-semibold">Bank Soal</p>
+                <ModalForm formType="question" title="Buat Soal" size="lg">
+                  <ActionIcon variant="light" size="lg" radius="md">
+                    <IconPlus size={18} />
+                  </ActionIcon>
+                </ModalForm>
+              </div>
+              <TableQuestion />
             </div>
           </Tabs.Panel>
         </Tabs>

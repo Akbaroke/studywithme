@@ -7,4 +7,7 @@ export function mainMiddleware(req: NextRequest) {
   return res;
 }
 
-export default withAuth(mainMiddleware, ['/manage-content']);
+export default withAuth(mainMiddleware, [
+  '/manage-content',
+  '/detail-content/*',
+]);

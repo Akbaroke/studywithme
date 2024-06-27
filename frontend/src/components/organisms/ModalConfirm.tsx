@@ -63,23 +63,19 @@ export default function ModalConfirm({
             {text}
           </h1>
           <div className="flex items-center gap-3 justify-end my-2">
+            <Button radius="md" variant="default" onClick={close}>
+              Batal
+            </Button>
             <Button
               radius="md"
-              variant="default"
-              onClick={close}
+              variant="filled"
               color={
                 type === 'danger'
                   ? 'red'
                   : type === 'warning'
                   ? 'yellow'
                   : 'blue'
-              }>
-              Batal
-            </Button>
-            <Button
-              radius="md"
-              variant="filled"
-              color="red"
+              }
               onClick={() => {
                 onAction();
                 close();

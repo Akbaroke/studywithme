@@ -39,7 +39,7 @@ export default function Login() {
 
   const callbackUrl: any = router.query.callbackUrl || '/';
   const hanldeSubmitForm = async (values: FormType) => {
-    Notify('loading', 'Mendaftarkan akun...', 'login');
+    Notify('loading', 'Memverifikasi akun...', 'login');
     setIsLoading(true);
     try {
       const res = await signIn('credentials', {

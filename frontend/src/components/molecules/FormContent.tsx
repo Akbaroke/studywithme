@@ -64,7 +64,11 @@ export default function FormContent({ id, close }: Props) {
           ? 'Judul tidak boleh hanya berisi spasi.'
           : null,
       description: (value: string) =>
-        value.length < 10 ? 'Deskripsi minimal harus 10 karakter.' : null,
+        value.length < 5
+          ? 'Deskripsi minimal harus 5 karakter.'
+          : value.length > 10000
+          ? 'Deskripsi maksimal 10.000 karakter.'
+          : null,
       categories: (value) =>
         value.length > 0 ? null : 'Pilih minimal 1 kategori.',
     },
@@ -115,7 +119,10 @@ export default function FormContent({ id, close }: Props) {
   const handleSubmit = async () => {
     if (session.token) {
       mutation.mutate({
-        newContent: form.values,
+        newContent: {
+          ...form.values,
+          description: form.values.description.trim(),
+        },
         token: session.token,
       });
     } else {
@@ -125,7 +132,7 @@ export default function FormContent({ id, close }: Props) {
 
   return (
     <form
-      className="flex flex-col gap-3"
+      className="flex flex-col gap-7"
       onSubmit={form.onSubmit(handleSubmit)}>
       <TextInput
         label="Judul"
@@ -143,6 +150,7 @@ export default function FormContent({ id, close }: Props) {
         onChange={(e) =>
           form.setFieldValue('description', e.currentTarget.value)
         }
+        readOnly={mutation.status === 'pending'}
         autosize
         minRows={2}
         maxRows={4}

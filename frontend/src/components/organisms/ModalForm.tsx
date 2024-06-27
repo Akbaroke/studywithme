@@ -3,11 +3,12 @@ import { useDisclosure } from '@mantine/hooks';
 import FormCategory from '../molecules/FormCategory';
 import FormContent from '../molecules/FormContent';
 import FormDetailContent from '../molecules/FormDetailContent';
+import FormQuestion from '../molecules/FormQuestion';
 
 type Props = {
   children: React.ReactNode;
   title: string;
-  formType: 'category' | 'content' | 'detail-content';
+  formType: 'category' | 'content' | 'detail-content' | 'question';
   id?: string;
   id_content?: string;
   className?: string;
@@ -35,6 +36,8 @@ export default function ModalForm({
         return (
           <FormDetailContent id={id} id_content={id_content} close={close} />
         );
+      case 'question':
+        return <FormQuestion id={id} close={close} />;
     }
   };
 

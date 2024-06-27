@@ -70,7 +70,7 @@ export default function FormCategory({ id, close }: Props) {
       Notify('loading', 'Sedang memproses kategori..', 'action-category');
     },
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ['categories', 'contents'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
       Notify('success', response, 'action-category');
       close();
     },
@@ -93,7 +93,7 @@ export default function FormCategory({ id, close }: Props) {
 
   return (
     <form
-      className="flex flex-col gap-3"
+      className="flex flex-col gap-7"
       onSubmit={form.onSubmit(handleSubmit)}>
       <TextInput
         label="Nama"

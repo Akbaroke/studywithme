@@ -46,11 +46,13 @@ export default function Appshell({ children }: Props) {
     },
   ];
 
-  session?.role !== 'STUDENT' &&
+  if (session?.role === 'TEACHER' || session?.role === 'ADMIN') {
     navLinkData.push({
       label: 'Mengelola Konten',
       href: '/manage-content',
     });
+  } 
+      
 
   return pathNotNavbar.includes(rootPath) ? (
     children

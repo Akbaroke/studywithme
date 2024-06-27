@@ -1,10 +1,6 @@
+import { NextResponse } from 'next/server';
+import type { NextRequest, NextFetchEvent, NextMiddleware } from 'next/server';
 import getSession from '@/services/getSession';
-import {
-  NextMiddleware,
-  NextRequest,
-  NextResponse,
-  NextFetchEvent,
-} from 'next/server';
 
 export default function withAuth(
   middleware: NextMiddleware,
@@ -14,29 +10,40 @@ export default function withAuth(
     const pathname = req.nextUrl.pathname;
     const sessionData = await getSession(req);
 
-    if (requiredAuth.includes(pathname)) {
-      if (!sessionData?.token) {
-        const url = new URL('/login', req.url);
-        url.searchParams.set('callbackUrl', encodeURI(req.url));
-        return NextResponse.redirect(url);
-      }
+    const isProtectedRoute = requiredAuth.some((route) => {
+      const regex = new RegExp(`^${route.replace('*', '.*')}$`);
+      return regex.test(pathname);
+    });
+
+    if (isProtectedRoute && !sessionData?.token) {
+      const url = new URL('/login', req.url);
+      url.searchParams.set('callbackUrl', encodeURI(req.url));
+      return NextResponse.redirect(url);
     }
-    if (authRoutes.includes(pathname)) {
-      if (sessionData?.token) {
-        const url = new URL('/', req.url);
-        return NextResponse.redirect(url);
-      }
+
+    const isAuthRoute = authRoutes.some((route) => {
+      const regex = new RegExp(`^${route.replace('*', '.*')}$`);
+      return regex.test(pathname);
+    });
+
+    if (isAuthRoute && sessionData?.token) {
+      const url = new URL('/', req.url);
+      return NextResponse.redirect(url);
     }
 
     return middleware(req, next);
   };
 }
 
+export function mainMiddleware(req: NextRequest) {
+  return NextResponse.next();
+}
+
 const authRoutes = [
   '/login',
   '/register',
   '/forgot-password',
-  '/reset-password/[token]',
+  '/reset-password/*',
   '/verify-otp',
   '/reset-password',
 ];
