@@ -67,6 +67,7 @@ export class DetailContentService {
             },
           },
         },
+        historyQuestion: true,
       },
     });
     return {
@@ -133,6 +134,11 @@ export class DetailContentService {
       });
     } else {
       await prismaClient.detailContentQuestion.deleteMany({
+        where: {
+          id_detail_content: id,
+        },
+      });
+      await prismaClient.historyQuestion.delete({
         where: {
           id_detail_content: id,
         },

@@ -5,6 +5,7 @@ import { CategoryController } from '../controller/category-controller';
 import { ContentController } from '../controller/content-controller';
 import { DetailContentController } from '../controller/detail-content-controller';
 import { QuestionController } from '../controller/question-controller';
+import { HistoryQuestionController } from '../controller/history-question-controller';
 
 const apiRouter = express.Router();
 
@@ -37,5 +38,11 @@ apiRouter.get('/api/questions', QuestionController.getAll);
 apiRouter.get('/api/questions/:id', QuestionController.getById);
 apiRouter.patch('/api/questions/:id', QuestionController.update);
 apiRouter.delete('/api/questions/:id', QuestionController.delete);
+
+apiRouter.post('/api/history-question', HistoryQuestionController.create);
+apiRouter.get('/api/history-question', HistoryQuestionController.getAll);
+apiRouter.get('/api/history-question/:id', HistoryQuestionController.getById);
+apiRouter.put('/api/history-question/:id', HistoryQuestionController.update);
+apiRouter.delete('/api/history-question/:id', HistoryQuestionController.delete);
 
 export default apiRouter;

@@ -41,7 +41,6 @@ model User {
   DetailContentUpdatedBy DetailContent[] @relation("DetailContentUpdatedBy")
   CategoryCreatedBy      Category[]      @relation("CategoryCreatedBy")
   CategoryUpdatedBy      Category[]      @relation("CategoryUpdatedBy")
-  progressUserId         Progress[]      @relation("progressUserId")
 
   @@map("tb_users")
 }
@@ -72,7 +71,7 @@ model Discussion {
   id_detail_content     String   @db.VarChar(255)
 
   user          User          @relation("DiscussionUserId", fields: [id_user], references: [id])
-  detailContent DetailContent @relation("DiscussionDetailContentId", fields: [id_detail_content], references: [id])
+  detailContent DetailContent @relation("DiscussionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
 
   @@map("tb_discussions")
 }
@@ -93,7 +92,6 @@ model Content {
   updatedBy User @relation("ContentUpdatedBy", fields: [updated_by], references: [id])
 
   detailContentContentId DetailContent[]   @relation("detailContentContentId")
-  contentUserId          Progress[]        @relation("contentUserId")
   categories             ContentCategory[] @relation("contentCategoryContentId")
 
   @@map("tb_contents")
@@ -118,6 +116,7 @@ model DetailContent {
   discussionDetailContentId Discussion[]            @relation("DiscussionDetailContentId")
   content                   Content                 @relation("detailContentContentId", fields: [id_content], references: [id], onDelete: Cascade)
   questions                 DetailContentQuestion[] @relation("detailContentQuestionDetailContentId")
+  historyQuestion   HistoryQuestion? @relation("HistoryQuestionDetailContentId")
 
   @@map("tb_detail_content")
 }
@@ -152,25 +151,12 @@ model DetailContentQuestion {
   id                Int    @id @default(autoincrement()) @db.Int
   id_detail_content String @db.VarChar(255)
   id_question       String @db.VarChar(255)
-  score      Int?     @default(0)
+  score             Int?   @default(0)
 
   detail_content DetailContent @relation("detailContentQuestionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
   question       Question      @relation("detailContentQuestionQuestionId", fields: [id_question], references: [id], onDelete: Cascade)
 
   @@map("tb_detail_content_question")
-}
-
-model Progress {
-  id                 String @id @default(uuid()) @db.VarChar(255)
-  id_user            String @db.VarChar(255)
-  id_content         String @db.VarChar(255)
-  final_score        Int?   @default(0)
-  total_content_done Int?   @default(0)
-
-  user    User    @relation("progressUserId", fields: [id_user], references: [id])
-  content Content @relation("contentUserId", fields: [id_content], references: [id])
-
-  @@map("tb_progress")
 }
 
 model Question {
@@ -194,4 +180,15 @@ model Option {
   question Question @relation("optionQuestionId", fields: [id_question], references: [id])
 
   @@map("tb_options")
+}
+
+model HistoryQuestion {
+  id                String        @id @default(uuid()) @db.VarChar(255)
+  id_detail_content String        @db.VarChar(255) @unique
+  result_score      Int?          @default(0)
+  target_score      Int?          @default(0)
+
+  detailContent     DetailContent @relation("HistoryQuestionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
+
+  @@map("tb_history_question")
 }
