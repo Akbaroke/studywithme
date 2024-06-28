@@ -1,28 +1,22 @@
 import { getContentById } from '@/services/contentService';
 import { GetServerSideProps } from 'next';
-import { ContentModel, DetailContentModel } from '@/models/contentModel';
+import { ContentModel } from '@/models/contentModel';
 import {
-  IconLock,
-  IconPencil,
   IconPlayerPlay,
   IconPlus,
-  IconTrash,
   IconUpload,
 } from '@tabler/icons-react';
 import Image from 'next/image';
 import { images } from '@/assets';
 import { ActionIcon, Badge, Button, Divider, Skeleton } from '@mantine/core';
-import { formatDateOnly, formatSeconds } from '@/helpers/formatDate';
-import Link from 'next/link';
+import { formatDateOnly } from '@/helpers/formatDate';
 import urlify from '@/helpers/urlify';
 import ModalForm from '@/components/organisms/ModalForm';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { UserModel } from '@/models/userModel';
 import { useRouter } from 'next/router';
-import ModalConfirm from '@/components/organisms/ModalConfirm';
-import Notify from '@/components/atoms/Notify';
-import { deleteDetailContent } from '@/services/detailContentService';
+import ListContent from '@/components/molecules/ListContent';
 
 type Props = {
   id_content: string;
@@ -112,7 +106,7 @@ export default function Content({ id_content }: Props) {
           </div>
         </div>
       </div>
-      <div className="flex-1 min-w-[400px] flex flex-col gap-5 px-3 md:px-0">
+      <div className="flex-1 sm:min-w-[300px] flex flex-col gap-5 px-3 md:px-0">
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-xl font-semibold">Materi Pembelajaran</h2>
@@ -144,91 +138,6 @@ export default function Content({ id_content }: Props) {
     </div>
   );
 }
-
-const ListContent = ({
-  content,
-  id_content,
-}: {
-  content: DetailContentModel;
-  id_content: string;
-}) => {
-  const queryClient = useQueryClient();
-  const session: UserModel = useSession().data?.user as UserModel;
-
-  const mutation = useMutation({
-    mutationFn: async ({ id, token }: { id: string; token: string }) => {
-      const response = await deleteDetailContent(id, token);
-      return response;
-    },
-    onMutate: () => {
-      Notify('loading', 'Sedang menghapus konten..', 'delete-content');
-    },
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({
-        queryKey: ['contents/' + id_content],
-      });
-      Notify('success', response, 'delete-content');
-    },
-    onError: (error: any) => {
-      console.log(error);
-      Notify('error', 'Konten gagal dihapus', 'delete-content');
-    },
-  });
-
-  const onDeleteContent = async (id: string) => {
-    if (session.token) {
-      mutation.mutate({
-        id: id,
-        token: session.token,
-      });
-    } else {
-      console.error('User is not authenticated');
-    }
-  };
-
-  return (
-    <div className="flex items-center gap-5">
-      <Link
-        href={`/detail-content/${id_content}/${content.id}`}
-        className="flex items-center justify-between py-3 text-sm text-gray-500 [&>div>h2]:hover:text-gray-500 border-b border-dashed cursor-pointer flex-1">
-        <div className="flex items-center gap-2">
-          <h1>{content.serial_number}.</h1>
-          <h2 className="font-medium text-black">{content.title}</h2>
-        </div>
-        <div className="flex items-center gap-4">
-          {content.is_premium && <IconLock size={16} />}
-          <Divider orientation="vertical" />
-          <p>{formatSeconds(content.duration)}</p>
-        </div>
-      </Link>
-      {(session?.role === 'TEACHER' || session?.role === 'ADMIN') && (
-        <div className="flex items-center gap-2">
-          <ModalForm
-            formType="detail-content"
-            id_content={id_content}
-            id={content.id}
-            title="Edit Materi"
-            size="xl">
-            <ActionIcon variant="light" size="lg" radius="md">
-              <IconPencil size={18} />
-            </ActionIcon>
-          </ModalForm>
-          <ModalConfirm
-            btnTitle="Ya, hapus"
-            title="Hapus Materi"
-            text={`Apakah anda yakin ingin menghapus materi ini "${content.title}" ?`}
-            type="danger"
-            icon={<IconTrash size={18} />}
-            onAction={() => onDeleteContent(content.id)}>
-            <ActionIcon variant="light" size="lg" color="red" radius="md">
-              <IconTrash size={18} />
-            </ActionIcon>
-          </ModalConfirm>
-        </div>
-      )}
-    </div>
-  );
-};
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id_content } = ctx.query;
@@ -271,7 +180,7 @@ const SkeletonComponent = () => {
           </div>
         </div>
       </div>
-      <div className="flex-1 min-w-[400px] flex flex-col gap-5 px-3 md:px-0">
+      <div className="flex-1 sm:min-w-[300px] flex flex-col gap-5 px-3 md:px-0">
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-2 w-full">
             <Skeleton height={8} width={50} radius="xl" />

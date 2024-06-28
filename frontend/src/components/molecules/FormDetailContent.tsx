@@ -22,12 +22,14 @@ import { DetailContentModel } from '@/models/contentModel';
 import Notify from '../atoms/Notify';
 import {
   createDetailContent,
+  deleteDetailContent,
   getDetailContentById,
   updateDetailContent,
 } from '@/services/detailContentService';
 import dynamic from 'next/dynamic';
 import { getAllQuestion } from '@/services/questionService';
 import { QuestionModel } from '@/models/questionModel';
+import ModalConfirm from '../organisms/ModalConfirm';
 
 // Load ReactPlayer dynamically to ensure server-side rendering is handled properly
 const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
@@ -133,6 +135,26 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const mutation2 = useMutation({
+    mutationFn: async ({ id, token }: { id: string; token: string }) => {
+      const response = await deleteDetailContent(id, token);
+      return response;
+    },
+    onMutate: () => {
+      Notify('loading', 'Sedang menghapus konten..', 'delete-content');
+    },
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({
+        queryKey: ['contents/' + id_content],
+      });
+      Notify('success', response, 'delete-content');
+    },
+    onError: (error: any) => {
+      console.log(error);
+      Notify('error', 'Konten gagal dihapus', 'delete-content');
+    },
+  });
+
   const mutation = useMutation({
     mutationFn: async ({
       newDetailContent,
@@ -207,6 +229,17 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
 
   const removeQuestion = (index: number) => {
     form.removeListItem('questions', index);
+  };
+
+  const onDeleteContent = async (id: string) => {
+    if (session.token) {
+      mutation2.mutate({
+        id: id,
+        token: session.token,
+      });
+    } else {
+      console.error('User is not authenticated');
+    }
   };
 
   return (
@@ -346,8 +379,6 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
                 variant="filled"
                 radius="md"
                 onClick={addQuestion}
-                data-aos="fade-up"
-                data-aos-offset="-100"
                 className="cursor-pointer"
                 styles={{
                   legend: {
@@ -366,19 +397,30 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
         </div>
       )}
 
-      <Button
-        rightSection={<IconDeviceFloppy size={16} />}
-        type="submit"
-        radius="md"
-        loading={mutation.status === 'pending'}
-        disabled={!form.isValid()}
-        styles={{
-          root: {
-            margin: '14px 30px',
-          },
-        }}>
-        Simpan
-      </Button>
+      <div className="flex items-center gap-2 py-4 px-8">
+        {id && (
+          <ModalConfirm
+            btnTitle="Ya, hapus"
+            title="Hapus Materi"
+            text={`Apakah anda yakin ingin menghapus materi ini "${form.values.title}" ?`}
+            type="danger"
+            icon={<IconTrash size={18} />}
+            onAction={() => onDeleteContent(id)}>
+            <ActionIcon variant="light" size="lg" color="red" radius="md">
+              <IconTrash size={18} />
+            </ActionIcon>
+          </ModalConfirm>
+        )}
+        <Button
+          fullWidth
+          rightSection={<IconDeviceFloppy size={16} />}
+          type="submit"
+          radius="md"
+          loading={mutation.status === 'pending'}
+          disabled={!form.isValid()}>
+          Simpan
+        </Button>
+      </div>
       <div style={{ display: 'none' }}>
         <ReactPlayer
           url={form.values.video_url as string}

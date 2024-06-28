@@ -6,6 +6,7 @@ import MAN_2 from './images/man_2.png';
 import MAN_3 from './images/man_3.png';
 import MAN_4 from './images/man_4.png';
 import MAN_5 from './images/man_5.png';
+import MONKEY_FACE from './images/monkey_face.png';
 
 const images = {
   STUDYWITHME,
@@ -16,6 +17,7 @@ const images = {
   MAN_3,
   MAN_4,
   MAN_5,
+  MONKEY_FACE,
 };
 
 export { images };

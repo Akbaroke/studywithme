@@ -1,5 +1,5 @@
 import { CategoryModel } from './categoryModel';
-import { QuestionModel } from './questionModel';
+import { HistoryQuestionModel, QuestionModel } from './questionModel';
 
 export interface ContentModel {
   id: string;
@@ -32,6 +32,7 @@ export interface DetailContentModel {
   created_at: Date;
   updated_at: Date;
   questions: QuestionModel[];
+  historyQuestion?: HistoryQuestionModel;
 }
 
 export interface DiscussionModel {

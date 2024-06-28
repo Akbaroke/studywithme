@@ -1,5 +1,4 @@
 import { images } from '@/assets';
-import cn from '@/helpers/cn';
 import { formatSeconds } from '@/helpers/formatDate';
 import { ActionIcon, Progress } from '@mantine/core';
 import { IconPlayerPlayFilled } from '@tabler/icons-react';
@@ -11,22 +10,16 @@ const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 export default function VideoPlayer({
   id,
   url,
-  isNotMobile,
   duration,
   thumbnail,
 }: {
   id: string;
   url?: string;
-  isNotMobile?: boolean;
   duration?: number;
   thumbnail?: string | null;
 }) {
   const CustomPlaceholder = () => (
-    <div
-      className={cn(
-        'w-full h-full bg-black border rounded-xl border-gray-400 relative',
-        isNotMobile ? 'h-[450px]' : 'h-[200px]'
-      )}>
+    <div className="w-full h-full bg-black border rounded-xl border-gray-400 relative">
       <Image
         src={thumbnail ? thumbnail : images.DEFAULT_THUMBNAIL}
         alt="thumbnail"
@@ -68,14 +61,14 @@ export default function VideoPlayer({
   );
 
   return (
-    <div className="w-full h-full border rounded-lg overflow-hidden flex items-center justify-center">
+    <div className="w-full h-[240px] sm:h-[360px] md:h-[480px] border rounded-lg overflow-hidden flex items-center justify-center">
       <ReactPlayer
         key={id}
         url={url}
         width="100%"
         light={<CustomPlaceholder />}
         playing={true}
-        height={isNotMobile ? 450 : 200}
+        height="100%"
         playIcon={<></>}
         controls
       />

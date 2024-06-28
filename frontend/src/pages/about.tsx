@@ -71,7 +71,7 @@ const teamDatas = [
   {
     name: 'Muhamad Aldiarsyah Arifin',
     role: 'Mobile Developer',
-    image: images.MAN_2,
+    image: images.MONKEY_FACE,
   },
   {
     name: 'Gufranaka Samudra',

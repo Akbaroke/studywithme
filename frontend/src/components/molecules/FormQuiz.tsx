@@ -1,16 +1,13 @@
 import { useForm } from '@mantine/form';
 import { Button, Radio } from '@mantine/core';
-import {
-  IconArrowNarrowRight,
-  IconCheck,
-  IconDeviceFloppy,
-} from '@tabler/icons-react';
+import { IconArrowNarrowRight, IconCheck } from '@tabler/icons-react';
 import { QuizQuestionModel } from '@/models/questionModel';
 import cn from '@/helpers/cn';
 import ModalConfirm from '../organisms/ModalConfirm';
 import { useEffect } from 'react';
 
 export type AnswerType = {
+  question_number: number;
   id_question: string;
   id_answer: string;
   score: number;
@@ -18,12 +15,12 @@ export type AnswerType = {
 
 type Props = {
   currentQuestionNumber: number;
+  setCurrentQuestionNumber: (value: number) => void;
   question: QuizQuestionModel;
-  nextQuestion: (answer: AnswerType, questionNumber: number) => void;
-  prevQuestion: (questionNumber: number) => void;
   totalQuestion: number;
-  lastQuestion: (answer: AnswerType) => void;
-  prevAnswer?: string;
+  answers: AnswerType[];
+  setAnswers: (value: AnswerType[]) => void;
+  saveAnswer: (answers: AnswerType[]) => void;
 };
 
 type QuizForm = {
@@ -32,12 +29,12 @@ type QuizForm = {
 
 export default function FormQuiz({
   currentQuestionNumber,
+  setCurrentQuestionNumber,
   question,
-  nextQuestion,
-  prevQuestion,
   totalQuestion,
-  lastQuestion,
-  prevAnswer,
+  answers,
+  setAnswers,
+  saveAnswer,
 }: Props) {
   const form = useForm<QuizForm>({
     validateInputOnChange: true,
@@ -51,44 +48,59 @@ export default function FormQuiz({
   });
 
   useEffect(() => {
-    if (prevAnswer) {
-      console.log(prevAnswer);
-      form.setValues({
-        answer: prevAnswer,
-      });
+    const existingAnswer = answers.find(
+      (a) => a.question_number === currentQuestionNumber
+    );
+    if (existingAnswer) {
+      form.setFieldValue('answer', existingAnswer.id_answer);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prevAnswer]);
+  }, [currentQuestionNumber, answers]);
 
-  const handleSubmit = () => {
-    const getAnswer = question.options.find(
-      (op) => op.id === form.values.answer
+  const handleSubmit = (values: QuizForm) => {
+    const answer: AnswerType = {
+      question_number: currentQuestionNumber,
+      id_question: question.id_question,
+      id_answer: values.answer,
+      score: question.options.find((opt) => opt.id === values.answer)?.is_answer
+        ? question.score
+        : 0,
+    };
+
+    const updatedAnswers = [...answers];
+    const existingAnswerIndex = updatedAnswers.findIndex(
+      (a) => a.question_number === currentQuestionNumber
     );
-    if (currentQuestionNumber === totalQuestion) {
-      lastQuestion({
-        id_question: question.id_question,
-        id_answer: form.values.answer as string,
-        score: getAnswer?.is_answer ? question.score : 0,
-      });
+
+    if (existingAnswerIndex !== -1) {
+      updatedAnswers[existingAnswerIndex] = answer;
     } else {
-      nextQuestion(
-        {
-          id_question: question.id_question,
-          id_answer: form.values.answer as string,
-          score: getAnswer?.is_answer ? question.score : 0,
-        },
-        currentQuestionNumber
-      );
+      updatedAnswers.push(answer);
     }
+
+    setAnswers(updatedAnswers);
+
+    if (currentQuestionNumber === totalQuestion) {
+      saveAnswer(updatedAnswers);
+    } else {
+      setCurrentQuestionNumber(currentQuestionNumber + 1);
+    }
+
     form.reset();
   };
 
+  const prevQuestion = (questionNumber: number) => {
+    if (questionNumber > 1) {
+      setCurrentQuestionNumber(questionNumber - 1);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-5">
-      <h1 className="text-2xl font-semibold">
+    <div className="flex flex-col gap-4">
+      <h1 className="text-lg md:text-xl font-semibold">
         Soal No.{currentQuestionNumber}
       </h1>
-      <p className="text-lg font-medium break-words whitespace-pre-line">
+      <p className="text-sm md:text-md font-medium break-words whitespace-pre-line">
         {question.question}
       </p>
       <form
@@ -104,7 +116,7 @@ export default function FormQuiz({
                 styles={{
                   label: {
                     fontWeight: 500,
-                    fontSize: 16,
+                    fontSize: 14,
                   },
                 }}
                 value={value?.id as string}
@@ -122,12 +134,8 @@ export default function FormQuiz({
             onClick={() => prevQuestion(currentQuestionNumber)}
             type="button"
             variant="default"
-            radius="md"
-            styles={{
-              root: {
-                margin: '14px 30px',
-              },
-            }}>
+            size="xs"
+            radius="md">
             Sebelumnya
           </Button>
           {currentQuestionNumber === totalQuestion ? (
@@ -137,15 +145,8 @@ export default function FormQuiz({
               text={`Apakah anda yakin ingin menyelesaikan semua soal ?`}
               type="info"
               icon={<IconCheck size={18} />}
-              onAction={handleSubmit}>
-              <Button
-                radius="md"
-                disabled={!form.isValid()}
-                styles={{
-                  root: {
-                    margin: '14px 30px',
-                  },
-                }}>
+              onAction={form.onSubmit(handleSubmit)}>
+              <Button radius="md" size="xs" disabled={!form.isValid()}>
                 Selesai
               </Button>
             </ModalConfirm>
@@ -155,11 +156,7 @@ export default function FormQuiz({
               type="submit"
               radius="md"
               disabled={!form.isValid()}
-              styles={{
-                root: {
-                  margin: '14px 30px',
-                },
-              }}>
+              size="xs">
               Selanjutnya
             </Button>
           )}
