@@ -176,11 +176,11 @@ export default function Appshell({ children }: Props) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Container size="lg" p={0} mb={100}>
+        <Container size="lg" p={10}>
           {children}
         </Container>
-        <Footer />
       </AppShell.Main>
+      <Footer />
     </AppShell>
   );
 }

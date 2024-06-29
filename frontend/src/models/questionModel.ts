@@ -8,7 +8,7 @@ export interface QuestionModel {
 }
 
 export interface OptionModel {
-  id: string;
+  id?: string;
   option: string;
   is_answer: boolean;
 }

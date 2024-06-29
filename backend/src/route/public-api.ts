@@ -2,6 +2,7 @@ import express from 'express';
 import { UserController } from '../controller/user-controller';
 import { CategoryController } from '../controller/category-controller';
 import { ContentController } from '../controller/content-controller';
+import { DiscussionController } from '../controller/discussion-controller';
 
 export const publicRouter = express.Router();
 
@@ -19,4 +20,9 @@ publicRouter.get('/api/categories/:id', CategoryController.getById);
 publicRouter.patch('/api/contents/klik/:id', ContentController.clickedContent);
 publicRouter.get('/api/contents', ContentController.getAll);
 publicRouter.get('/api/contents/free', ContentController.getFreeContent);
-publicRouter.get('/api/contents/most-click', ContentController.getMostClickedContent);
+publicRouter.get(
+  '/api/contents/most-click',
+  ContentController.getMostClickedContent
+);
+
+publicRouter.get('/api/discussions', DiscussionController.getAll);

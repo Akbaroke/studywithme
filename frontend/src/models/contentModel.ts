@@ -1,5 +1,6 @@
 import { CategoryModel } from './categoryModel';
 import { HistoryQuestionModel, QuestionModel } from './questionModel';
+import { UserModel } from './userModel';
 
 export interface ContentModel {
   id: string;
@@ -33,22 +34,22 @@ export interface DetailContentModel {
   updated_at: Date;
   questions: QuestionModel[];
   historyQuestion?: HistoryQuestionModel;
+  discussions?: DiscussionModel[];
 }
 
 export interface DiscussionModel {
   id: string;
   message: string;
-  like: {
-    count: number;
-    is_liked: boolean;
-  };
-  created_at: string;
-  updated_at: string;
-  user: {
-    id: string;
-    name: string;
-    avatar: string;
-    isVerified: boolean;
-  };
-  replies?: DiscussionModel[];
+  id_detail_content: string;
+  id_user: string;
+  created_at: Date;
+  updated_at: Date;
+  replies: DiscussionModel[];
+  user: UserModel;
+}
+
+export interface SendDiscussionModel {
+  message: string;
+  id_detail_content: string;
+  id_replies_discussion?: string;
 }

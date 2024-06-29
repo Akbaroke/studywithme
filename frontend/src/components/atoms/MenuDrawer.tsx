@@ -2,20 +2,32 @@ import { Drawer, ScrollArea } from '@mantine/core';
 import React from 'react';
 
 type Props = {
+  title?: string;
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactElement;
+  position?: 'left' | 'right' | 'top' | 'bottom';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
+  withCloseButton?: boolean;
 };
 
-export default function MenuDrawer({ isOpen, onClose, children }: Props) {
+export default function MenuDrawer({
+  title,
+  isOpen,
+  onClose,
+  children,
+  position,
+  size,
+  withCloseButton,
+}: Props) {
   return (
     <Drawer
       opened={isOpen}
       onClose={onClose}
-      title="Menu"
+      title={title ?? 'Menu'}
       styles={{
         title: {
-          fontWeight: 700,
+          fontWeight: position === 'bottom' ? 'lighter' : 'bold',
         },
         header: {
           padding: '0 25px',
@@ -27,10 +39,10 @@ export default function MenuDrawer({ isOpen, onClose, children }: Props) {
           height: 'max-content',
         },
       }}
-      withCloseButton={false}
-      position="left"
+      withCloseButton={withCloseButton}
+      position={position}
       radius="lg"
-      size="xs"
+      size={size}
       overlayProps={{
         backgroundOpacity: 0.2,
         blur: 1,

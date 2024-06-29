@@ -62,19 +62,22 @@ model Price {
 }
 
 model Discussion {
-  id                    String   @id @default(uuid()) @db.VarChar(255)
-  message               String?  @db.VarChar(255)
-  created_at            DateTime @default(now()) @db.Timestamp(0)
-  updated_at            DateTime @default(now()) @updatedAt @db.Timestamp(0)
-  id_replies_discussion String?  @db.VarChar(255)
-  id_user               String   @db.VarChar(255)
-  id_detail_content     String   @db.VarChar(255)
+  id                    String      @id @default(uuid()) @db.VarChar(255)
+  message               String?     @db.VarChar(5000)
+  created_at            DateTime    @default(now()) @db.Timestamp(0)
+  updated_at            DateTime    @default(now()) @updatedAt @db.Timestamp(0)
+  id_replies_discussion String?     @db.VarChar(255)
+  id_user               String      @db.VarChar(255)
+  id_detail_content     String      @db.VarChar(255)
 
-  user          User          @relation("DiscussionUserId", fields: [id_user], references: [id])
-  detailContent DetailContent @relation("DiscussionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
+  user                  User        @relation("DiscussionUserId", fields: [id_user], references: [id])
+  detailContent         DetailContent @relation("DiscussionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
+  parentDiscussion      Discussion? @relation("Replies", fields: [id_replies_discussion], references: [id])
+  replies               Discussion[] @relation("Replies")
 
   @@map("tb_discussions")
 }
+
 
 model Content {
   id          String   @id @default(uuid()) @db.VarChar(255)

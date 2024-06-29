@@ -52,7 +52,7 @@ const SocialMediaIcons = () => (
 
 const FooterContent = ({ isMobile }: { isMobile: boolean }) => (
   <div
-    className={`flex ${
+    className={`flex px-5 ${
       isMobile ? 'flex-col items-center gap-5' : 'items-center justify-between'
     }`}>
     <div
@@ -79,14 +79,14 @@ const FooterContent = ({ isMobile }: { isMobile: boolean }) => (
 const Footer = () => (
   <>
     <div className="hidden md:block">
-      <Divider my="md" />
+      <Divider mb="md" />
       <FooterContent isMobile={false} />
-      <Divider my="md" />
+      <Divider mt="md" />
     </div>
     <div className="md:hidden">
-      <Divider my="md" />
+      <Divider mb="md" />
       <FooterContent isMobile={true} />
-      <Divider my="md" />
+      <Divider mt="md" />
     </div>
   </>
 );

@@ -6,6 +6,7 @@ import {
 } from '../validation/detail-content-validation';
 import { prismaClient } from '../application/database';
 import { Validation } from '../validation/validation';
+import { toUserResponse } from '../model/user-model';
 
 export class DetailContentService {
   static async create(
@@ -68,6 +69,20 @@ export class DetailContentService {
           },
         },
         historyQuestion: true,
+        discussionDetailContentId: {
+          include: {
+            replies: {
+              include: {
+                user: true,
+              },
+              orderBy: {
+                created_at: 'asc',
+              },
+            },
+            user: true,
+            parentDiscussion: true,
+          },
+        },
       },
     });
     return {
@@ -84,6 +99,17 @@ export class DetailContentService {
           is_answer: option.is_answer,
         })),
       })),
+      discussionDetailContentId: null,
+      discussions: query?.discussionDetailContentId
+        .filter((discussion) => !discussion.parentDiscussion)
+        .map((discussion) => ({
+          ...discussion,
+          replies: discussion.replies.map((reply) => ({
+            ...reply,
+            user: toUserResponse(reply.user),
+          })),
+          user: toUserResponse(discussion.user),
+        })),
     };
   }
 
