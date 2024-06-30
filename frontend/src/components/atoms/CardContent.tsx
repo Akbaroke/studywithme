@@ -2,7 +2,7 @@ import { images } from '@/assets';
 import { formatSeconds } from '@/helpers/formatDate';
 import { ContentModel } from '@/models/contentModel';
 import { clickedContent } from '@/services/contentService';
-import { Badge, Card } from '@mantine/core';
+import { Badge, Card, Skeleton } from '@mantine/core';
 import { IconClock } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -11,7 +11,7 @@ import { IoStatsChart } from 'react-icons/io5';
 import { MdWorkspacePremium } from 'react-icons/md';
 import LazyLoad from 'react-lazy-load';
 
-export default function CardContent({
+export function CardContent({
   id,
   title,
   description,
@@ -65,15 +65,15 @@ export default function CardContent({
 
       <div className="mt-3 flex flex-col justify-between h-full">
         <div className="flex flex-col gap-2">
-          <h1 className="sm:text-md text-xs font-medium line-clamp-2">
+          <h1 className="sm:text-lg text-sm font-semibold line-clamp-2">
             {title}
           </h1>
           <div className="flex gap-4 items-center">
-            <div className="flex text-gray-400 items-center gap-1 text-xs">
+            <div className="flex text-gray-400 items-center gap-1 sm:text-md text-xs">
               <IoStatsChart size={12} />
               <p>{total_klik}</p>
             </div>
-            <div className="flex text-gray-400 items-center gap-1 text-xs">
+            <div className="flex text-gray-400 items-center gap-1 sm:text-md text-xs">
               <IconClock size={12} />
               <p>{formatSeconds(total_duration ?? 0)}</p>
             </div>
@@ -85,7 +85,7 @@ export default function CardContent({
               key={category.id}
               color="blue"
               variant="light"
-              size="xs"
+              size="sm"
               styles={{
                 label: {
                   textTransform: 'capitalize',
@@ -93,6 +93,36 @@ export default function CardContent({
               }}>
               {category.name}
             </Badge>
+          ))}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+export function CardContentSkeleton() {
+  return (
+    <Card
+      shadow="sm"
+      padding="md"
+      radius="md"
+      withBorder
+      className="min-h-[300px]">
+      <Card.Section className="bg-black/20 w-full h-full">
+        <Skeleton height={150} width={300} />
+      </Card.Section>
+
+      <div className="mt-3 flex flex-col justify-between h-full">
+        <div className="flex flex-col gap-6">
+          <Skeleton height={10} width="30%" radius="xl" />
+          <div className="flex gap-4 flex-col">
+            <Skeleton height={8} radius="xl" />
+            <Skeleton height={8} width="50%" radius="xl" />
+          </div>
+        </div>
+        <div className="flex gap-2 flex-wrap mt-3">
+          {Array.from({ length: 2 }).map((_, index) => (
+            <Skeleton height={8} width="20%" radius="xl" key={index} />
           ))}
         </div>
       </div>

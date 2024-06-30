@@ -2,7 +2,7 @@ import Banner from '@/components/atoms/Banner';
 import SectionListContent from '@/components/molecules/SectionListContent';
 import {
   getAllContent,
-  getFreeContent,
+  // getFreeContent,
   getMostClickedContent,
 } from '@/services/contentService';
 import { useQuery } from '@tanstack/react-query';
@@ -13,10 +13,10 @@ function Home() {
     queryKey: ['contents'],
     queryFn: getAllContent,
   });
-  const contentsFree = useQuery({
-    queryKey: ['contents/free'],
-    queryFn: getFreeContent,
-  });
+  // const contentsFree = useQuery({
+  //   queryKey: ['contents/free'],
+  //   queryFn: getFreeContent,
+  // });
   const contentsMostClicked = useQuery({
     queryKey: ['contents/most-click'],
     queryFn: getMostClickedContent,
@@ -26,14 +26,19 @@ function Home() {
     <div className="flex flex-col gap-10">
       <Banner />
       <SectionListContent
-        title="Paling Banyak Dilihat"
+        title="Paling Populer"
         data={contentsMostClicked.data}
+        loading={contentsMostClicked.isLoading}
       />
-      <SectionListContent
+      {/* <SectionListContent
         title="Pembelajaran Gratis"
         data={contentsFree.data}
+      /> */}
+      <SectionListContent
+        title="Terbaru"
+        data={contents.data}
+        loading={contentsMostClicked.isLoading}
       />
-      <SectionListContent title="Pembelajaran Terbaru" data={contents.data} />
     </div>
   );
 }

@@ -1,14 +1,15 @@
 import { ContentModel } from '@/models/contentModel';
 import { Divider, SimpleGrid } from '@mantine/core';
 import React from 'react';
-import CardContent from '../atoms/CardContent';
+import { CardContent, CardContentSkeleton } from '../atoms/CardContent';
 
 type Props = {
   title: string;
   data: ContentModel[];
+  loading: boolean;
 };
 
-export default function SectionListContent({ title, data }: Props) {
+export default function SectionListContent({ title, data, loading }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <div>
@@ -17,14 +18,24 @@ export default function SectionListContent({ title, data }: Props) {
         </div>
         <Divider mt={10} />
       </div>
-      {data?.length > 0 && (
+      {loading ? (
         <SimpleGrid
           cols={{ base: 2, xs: 3, sm: 4 }}
           spacing={{ base: 10, sm: 20 }}>
-          {data?.map((item) => (
-            <CardContent key={item.id} {...item} />
+          {Array.from({ length: 8 }).map((_, index) => (
+            <CardContentSkeleton key={index} />
           ))}
         </SimpleGrid>
+      ) : (
+        data?.length > 0 && (
+          <SimpleGrid
+            cols={{ base: 2, xs: 3, sm: 4 }}
+            spacing={{ base: 10, sm: 20 }}>
+            {data?.map((item) => (
+              <CardContent key={item.id} {...item} />
+            ))}
+          </SimpleGrid>
+        )
       )}
     </div>
   );

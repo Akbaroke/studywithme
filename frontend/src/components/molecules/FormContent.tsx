@@ -155,7 +155,7 @@ export default function FormContent({ id, close }: Props) {
         minRows={2}
         maxRows={4}
       />
-      <Radio.Group
+      {/* <Radio.Group
         label="Premium"
         required
         value={form.values.is_premium ? 'true' : 'false'}
@@ -167,7 +167,7 @@ export default function FormContent({ id, close }: Props) {
           <Radio value="true" label="Ya" />
           <Radio value="false" label="Tidak" />
         </Group>
-      </Radio.Group>
+      </Radio.Group> */}
       <MultiSelect
         label="Kategori"
         required

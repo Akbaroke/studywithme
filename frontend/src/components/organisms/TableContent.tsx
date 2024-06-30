@@ -7,13 +7,7 @@ import React from 'react';
 import Table from '../molecules/Table';
 import { ActionIcon, Table as MantineTable } from '@mantine/core';
 import ModalForm from './ModalForm';
-import {
-  IconCheck,
-  IconPencil,
-  IconScreenShare,
-  IconTrash,
-  IconX,
-} from '@tabler/icons-react';
+import { IconPencil, IconScreenShare, IconTrash } from '@tabler/icons-react';
 import ModalConfirm from './ModalConfirm';
 import Notify from '../atoms/Notify';
 import { formatDate } from '@/helpers/formatDate';
@@ -70,7 +64,7 @@ export default function TableContent() {
           {[
             'Sampul',
             'Judul',
-            'Premium',
+            // 'Premium',
             'Total Konten',
             'Kategori',
             'Total Klik',
@@ -101,13 +95,13 @@ export default function TableContent() {
             </LazyLoad>
           </MantineTable.Td>
           <MantineTable.Td width={400}>{element.title}</MantineTable.Td>
-          <MantineTable.Td>
+          {/* <MantineTable.Td>
             {element.is_premium ? (
               <IconCheck size={18} className="m-auto text-green-600" />
             ) : (
               <IconX size={18} className="m-auto text-red-600" />
             )}
-          </MantineTable.Td>
+          </MantineTable.Td> */}
           <MantineTable.Td>{element.total_content}</MantineTable.Td>
           <MantineTable.Td>
             {element.categories?.map((cat) => cat.name).join(', ')}

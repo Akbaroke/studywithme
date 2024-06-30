@@ -104,6 +104,7 @@ export default function DetailContent({
   }, [detailContentSSR, newDetailContent.data, id_detail_content]);
 
   useEffect(() => {
+    console.log(historyQuestion);
     if (historyQuestion) {
       setQuestionStatus('answered');
       setQuestionFinalScore({
@@ -309,11 +310,11 @@ export default function DetailContent({
           </div>
           <div className="flex items-center gap-2">
             {materi.video_url && <p>{formatSeconds(materi.duration)}</p>}
-            {materi.is_premium ? (
+            {/* {materi.is_premium ? (
               <IconLock size={16} />
             ) : (
               <IconLockOpen2 size={16} />
-            )}
+            )} */}
           </div>
         </Link>
       ))}
@@ -368,91 +369,6 @@ export default function DetailContent({
             thumbnail={content?.thumbnail}
           />
         )}
-        <div className="w-full border rounded-lg">
-          <div className="p-6 flex flex-col gap-1 md:gap-5">
-            <div className="flex items-center justify-between">
-              <h1 className="text-lg md:text-2xl font-bold">
-                {detailContent?.title}
-              </h1>
-              <div className="md:flex items-center gap-2 hidden">
-                <PagingVideo />
-              </div>
-            </div>
-            <p className="text-sm md:text-lg font-medium break-words whitespace-pre-line leading-5">
-              {urlify(detailContent?.description)}
-            </p>
-          </div>
-          <div className="p-6 flex flex-col gap-5 border-t">
-            <div className="flex flex-col gap-1">
-              <h2 className="font-bold text-md md:text-xl">Komentar</h2>
-              <p className="text-sm text-gray-600">
-                {detailContent?.discussions?.length === 0
-                  ? 'Jadi yang pertama untuk berkomentar'
-                  : `Ada ${detailContent?.discussions?.length} komentar pada materi ini.`}
-              </p>
-            </div>
-            {isNotMobile ? (
-              <InputDiscussion
-                isLoading={mutationDiscussion.isPending}
-                sendComment={sendComment}
-                user={session}
-                onChange={setNewComment}
-                value={newComment}
-              />
-            ) : (
-              <div
-                className="grid place-items-center p-3 border-dashed border rounded-lg cursor-pointer text-gray-600 hover:text-black hover:font-medium transition-all duration-300"
-                onClick={() => setIsOpenCommentMobileDrawer(true)}>
-                Tambahkan komentar
-              </div>
-            )}
-            <div className="pb-4 flex flex-col gap-6">
-              {detailContent?.discussions?.map((discussion) => (
-                <div key={discussion.id}>
-                  <DiscussionItem
-                    discussion={discussion}
-                    onOpenReply={() => {
-                      replyCommentId === discussion.id
-                        ? setReplyCommentId('')
-                        : setReplyCommentId(discussion.id);
-
-                      replyCommentId !== discussion.id && setReplyComment('');
-                    }}
-                  />
-                  <Transition
-                    mounted={discussion.id === replyCommentId}
-                    transition="pop-top-left"
-                    duration={400}
-                    timingFunction="ease">
-                    {(styles) => (
-                      <div style={styles} className="pl-16 mt-2">
-                        <InputDiscussion
-                          hiddenUserInfo={true}
-                          isLoading={mutationDiscussion.isPending}
-                          sendComment={sendComment}
-                          user={session}
-                          onChange={setReplyComment}
-                          value={replyComment}
-                        />
-                      </div>
-                    )}
-                  </Transition>
-                  {discussion.replies.length > 0 && (
-                    <div className="flex flex-col gap-8 pl-12 mt-6">
-                      {discussion.replies.map((reply) => (
-                        <DiscussionItem
-                          key={reply.id}
-                          discussion={reply}
-                          isDisableReply={true}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
         <div className="flex items-center justify-between md:hidden">
           <Button
             radius="md"
@@ -468,6 +384,96 @@ export default function DetailContent({
             <PagingVideo />
           </div>
         </div>
+        <div className="w-full border rounded-lg">
+          <div className="p-6 flex flex-col gap-1 md:gap-5">
+            <div className="flex items-center justify-between">
+              <h1 className="text-lg md:text-2xl font-bold">
+                {detailContent?.title}
+              </h1>
+              <div className="md:flex items-center gap-2 hidden">
+                <PagingVideo />
+              </div>
+            </div>
+            <p className="text-sm md:text-lg font-medium break-words whitespace-pre-line leading-5">
+              {urlify(detailContent?.description)}
+            </p>
+          </div>
+          {!(
+            questionStatus === 'unanswered' && detailContent?.questions?.length
+          ) && (
+            <div className="p-6 flex flex-col gap-5 border-t">
+              <div className="flex flex-col gap-1">
+                <h2 className="font-bold text-md md:text-xl">Komentar</h2>
+                <p className="text-sm text-gray-600">
+                  {detailContent?.discussions?.length === 0
+                    ? 'Jadi yang pertama untuk berkomentar'
+                    : `Ada ${detailContent?.discussions?.length} komentar pada materi ini.`}
+                </p>
+              </div>
+              {isNotMobile ? (
+                <InputDiscussion
+                  isLoading={mutationDiscussion.isPending}
+                  sendComment={sendComment}
+                  user={session}
+                  onChange={setNewComment}
+                  value={newComment}
+                />
+              ) : (
+                <div
+                  className="grid place-items-center p-3 border-dashed border rounded-lg cursor-pointer text-gray-600 hover:text-black hover:font-medium transition-all duration-300"
+                  onClick={() => setIsOpenCommentMobileDrawer(true)}>
+                  Tambahkan komentar
+                </div>
+              )}
+              <div className="pb-4 flex flex-col gap-6">
+                {detailContent?.discussions?.map((discussion) => (
+                  <div key={discussion.id}>
+                    <DiscussionItem
+                      discussion={discussion}
+                      onOpenReply={() => {
+                        replyCommentId === discussion.id
+                          ? setReplyCommentId('')
+                          : setReplyCommentId(discussion.id);
+
+                        replyCommentId !== discussion.id && setReplyComment('');
+                      }}
+                    />
+                    <Transition
+                      mounted={discussion.id === replyCommentId}
+                      transition="pop-top-left"
+                      duration={400}
+                      timingFunction="ease">
+                      {(styles) => (
+                        <div style={styles} className="pl-16 mt-2">
+                          <InputDiscussion
+                            hiddenUserInfo={true}
+                            isLoading={mutationDiscussion.isPending}
+                            sendComment={sendComment}
+                            user={session}
+                            onChange={setReplyComment}
+                            value={replyComment}
+                          />
+                        </div>
+                      )}
+                    </Transition>
+                    {discussion.replies.length > 0 && (
+                      <div className="flex flex-col gap-8 pl-12 mt-6">
+                        {discussion.replies.map((reply) => (
+                          <DiscussionItem
+                            key={reply.id}
+                            discussion={reply}
+                            isDisableReply={true}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
         {detailContent?.questions?.length ? (
           <div className="w-full border rounded-lg p-5">
             {questionStatus === 'unanswered' &&

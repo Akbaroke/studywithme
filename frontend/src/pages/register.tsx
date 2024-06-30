@@ -79,7 +79,7 @@ export default function Register() {
       console.log(response);
     } catch (error: any) {
       console.log(error);
-      Notify('error', error.response.data.errors, 'register');
+      Notify('error', error?.response?.data?.errors, 'register');
     } finally {
       setIsLoading(false);
     }
