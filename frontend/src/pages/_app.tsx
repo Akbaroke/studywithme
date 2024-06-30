@@ -1,5 +1,4 @@
 import type { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
 import { Quicksand } from 'next/font/google';
 import { Toaster } from 'sonner';
 import '@/styles/globals.css';
@@ -11,7 +10,6 @@ import 'aos/dist/aos.css';
 import { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import Appshell from '@/components/layouts/AppShell';
-import { store } from '@/redux';
 import { SessionProvider } from 'next-auth/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -35,32 +33,30 @@ export default function App({
 
   return (
     <SessionProvider session={session}>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <MantineProvider
-            theme={theme}
-            forceColorScheme="light"
-            defaultColorScheme="light">
-            <main className={quicksand.className}>
-              <Toaster
-                richColors
-                position="top-center"
-                expand={true}
-                duration={800}
-              />
-              <NextNProgress
-                showOnShallow={false}
-                options={{ showSpinner: false }}
-                color="#000"
-              />
-              <Appshell>
-                <Component {...pageProps} />
-                <Analytics />
-              </Appshell>
-            </main>
-          </MantineProvider>
-        </QueryClientProvider>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider
+          theme={theme}
+          forceColorScheme="light"
+          defaultColorScheme="light">
+          <main className={quicksand.className}>
+            <Toaster
+              richColors
+              position="top-center"
+              expand={true}
+              duration={800}
+            />
+            <NextNProgress
+              showOnShallow={false}
+              options={{ showSpinner: false }}
+              color="#000"
+            />
+            <Appshell>
+              <Component {...pageProps} />
+              <Analytics />
+            </Appshell>
+          </main>
+        </MantineProvider>
+      </QueryClientProvider>
     </SessionProvider>
   );
 }
