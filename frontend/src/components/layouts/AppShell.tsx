@@ -48,8 +48,8 @@ export default function Appshell({ children }: Props) {
 
   if (session?.role === 'TEACHER' || session?.role === 'ADMIN') {
     navLinkData.push({
-      label: 'Mengelola Konten',
-      href: '/manage-content',
+      label: 'Mengelola',
+      href: '/manage',
     });
   } 
       

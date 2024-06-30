@@ -4,13 +4,18 @@ import ModalForm from '@/components/organisms/ModalForm';
 import TableCategory from '@/components/organisms/TableCategory';
 import TableContent from '@/components/organisms/TableContent';
 import TableQuestion from '@/components/organisms/TableQuestion';
+import TableManageContent from '@/components/organisms/TableManageContent';
+import { GetServerSideProps } from 'next';
+import { NextRequest } from 'next/server';
+import getSession from '@/services/getSession';
+import { RoleType } from '@/models/userModel';
 
-export default function ManageContent() {
+export default function Manage({ role }: { role: RoleType }) {
   return (
     <div className="w-full">
       <div className="flex flex-col gap-10 py-10 w-full">
         <div className="flex flex-col gap-3">
-          <h1 className="text-3xl font-bold">Mengelola Konten</h1>
+          <h1 className="text-3xl font-bold">Mengelola</h1>
           <p className="text-md font-medium text-gray-500 max-w-lg">
             Kelola materi pelajaran dan konten yang ada di studywithme.
           </p>
@@ -20,6 +25,9 @@ export default function ManageContent() {
             <Tabs.Tab value="kategori">Kategori</Tabs.Tab>
             <Tabs.Tab value="konten">Konten</Tabs.Tab>
             <Tabs.Tab value="bank-soal">Bank Soal</Tabs.Tab>
+            {role === 'ADMIN' && (
+              <Tabs.Tab value="manage-user">Kelola Pengguna</Tabs.Tab>
+            )}
           </Tabs.List>
 
           <Tabs.Panel value="kategori">
@@ -61,8 +69,43 @@ export default function ManageContent() {
               <TableQuestion />
             </div>
           </Tabs.Panel>
+          <Tabs.Panel value="manage-user">
+            <div className="flex flex-col gap-3 my-5 px-5">
+              <div className="flex items-center justify-between">
+                <p className="text-md font-semibold">Kelola Pengguna</p>
+                <ModalForm
+                  formType="manage-user"
+                  title="Kelola Pengguna"
+                  size="lg">
+                  <ActionIcon variant="light" size="lg" radius="md">
+                    <IconPlus size={18} />
+                  </ActionIcon>
+                </ModalForm>
+              </div>
+              <TableManageContent />
+            </div>
+          </Tabs.Panel>
         </Tabs>
       </div>
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const sessionData = await getSession(ctx.req as unknown as NextRequest);
+
+  if (!['ADMIN', 'TEACHER'].includes(sessionData?.role as string)) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      role: sessionData?.role,
+    },
+  };
+};

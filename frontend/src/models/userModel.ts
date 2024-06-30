@@ -1,4 +1,5 @@
 export interface UserModel {
+  id?: string;
   email: string;
   name: string;
   token?: string | null;
@@ -7,5 +8,15 @@ export interface UserModel {
   is_verified: boolean;
   is_email_verification: boolean;
 }
+
+export interface ManageUserModel {
+  id?: string;
+  is_banned: boolean;
+  role: RoleType | null;
+  name: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
 
 export type RoleType = 'ADMIN' | 'TEACHER' | 'STUDENT';

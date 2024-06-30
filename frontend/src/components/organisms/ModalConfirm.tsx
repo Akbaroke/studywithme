@@ -9,7 +9,7 @@ type Props = {
   btnTitle: string;
   onAction: () => void;
   icon?: React.ReactNode;
-  type: 'danger' | 'warning' | 'info';
+  type: 'danger' | 'warning' | 'info' | 'success';
 };
 
 export default function ModalConfirm({
@@ -54,6 +54,7 @@ export default function ModalConfirm({
                 {
                   'bg-yellow-100 text-yellow-500': type === 'warning',
                   'bg-red-100 text-red-500': type === 'danger',
+                  'bg-green-100 text-green-500': type === 'success',
                 }
               )}>
               {icon}
@@ -74,6 +75,8 @@ export default function ModalConfirm({
                   ? 'red'
                   : type === 'warning'
                   ? 'yellow'
+                  : type === 'success'
+                  ? 'green'
                   : 'blue'
               }
               onClick={() => {

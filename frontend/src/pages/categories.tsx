@@ -65,6 +65,7 @@ export default function Categories() {
               ))}
         </div>
         <SimpleGrid
+          mt={30}
           cols={{ base: 2, xs: 3, sm: 4 }}
           spacing={{ base: 10, sm: 20 }}>
           {filteredContents?.map((item) => (

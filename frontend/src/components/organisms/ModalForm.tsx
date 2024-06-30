@@ -4,11 +4,17 @@ import FormCategory from '../molecules/FormCategory';
 import FormContent from '../molecules/FormContent';
 import FormDetailContent from '../molecules/FormDetailContent';
 import FormQuestion from '../molecules/FormQuestion';
+import FormManageUser from '../molecules/FormManageUser';
 
 type Props = {
   children: React.ReactNode;
   title: string;
-  formType: 'category' | 'content' | 'detail-content' | 'question';
+  formType:
+    | 'category'
+    | 'content'
+    | 'detail-content'
+    | 'question'
+    | 'manage-user';
   id?: string;
   id_content?: string;
   className?: string;
@@ -38,6 +44,8 @@ export default function ModalForm({
         );
       case 'question':
         return <FormQuestion id={id} close={close} />;
+      case 'manage-user':
+        return <FormManageUser id={id} close={close} />;
     }
   };
 
