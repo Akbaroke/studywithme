@@ -7,6 +7,14 @@ import { DiscussionController } from '../controller/discussion-controller';
 export const publicRouter = express.Router();
 
 // USER ROUTES
+publicRouter.get('/', (req, res) => {
+  res.json({
+    message: 'Server up and running',
+    version: '1.0.0',
+    status: 200,
+    route: '/api',
+  });
+});
 publicRouter.post('/api/users', UserController.register);
 publicRouter.post('/api/users/login', UserController.login);
 publicRouter.post('/api/users/verify-otp', UserController.verifyOTP);
