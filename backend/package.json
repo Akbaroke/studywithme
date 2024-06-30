@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf public && tsc",
+    "build": "tsc",
     "start": "node public/main.js",
     "dev": "nodemon src/main.ts"
   },
