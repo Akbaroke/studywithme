@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",
-    "dev": "nodemon src/main.ts"
+    "dev": "nodemon src/main.ts",
+    "vercel-build": "tsc && cp -r public dist/public"
   },
   "author": "Muhammad Akbar",
   "license": "ISC",
