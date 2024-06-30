@@ -1,3 +1,4 @@
+import Metadata from '@/components/atoms/Metadata';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import { Button, Card, PasswordInput, TextInput } from '@mantine/core';
 import { isEmail, matchesField, useForm } from '@mantine/form';
@@ -50,6 +51,7 @@ export default function ResetPassword({
 
   return (
     <AuthLayout>
+      <Metadata title="Reset Password" />
       <Card shadow="sm" padding="lg" radius="lg" withBorder p={40}>
         <div className="flex flex-col gap-1 mb-4">
           <h1 className="text-lg font-bold">Reset Password</h1>

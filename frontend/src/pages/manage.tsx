@@ -11,12 +11,14 @@ import getSession from '@/services/getSession';
 import { RoleType } from '@/models/userModel';
 import { useState } from 'react';
 import cn from '@/helpers/cn';
+import Metadata from '@/components/atoms/Metadata';
 
 export default function Manage({ role }: { role: RoleType }) {
   const [tabActive, setTabActive] = useState('kategori');
 
   return (
     <div className="w-full">
+      <Metadata title="Mengelola Data" />
       <div className="flex flex-col gap-10 py-10 w-full">
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">Mengelola</h1>

@@ -1,10 +1,12 @@
 import { images } from '@/assets';
+import Metadata from '@/components/atoms/Metadata';
 import Image from 'next/image';
 import React from 'react';
 
 export default function Privacy() {
   return (
     <div className="max-w-screen-sm m-auto flex flex-col gap-3 my-20 realative">
+      <Metadata title="Privacy Policy" />
       <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute -top-10 left-56 -z-10"></div>
       <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute right-0 top-1/2 -z-10"></div>
       <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute -right-10 top-1/4 -z-10"></div>

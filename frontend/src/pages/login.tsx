@@ -10,6 +10,7 @@ import { validatorPassword } from '@/helpers/validator';
 import Notify from '@/components/atoms/Notify';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
+import Metadata from '@/components/atoms/Metadata';
 
 type FormType = {
   email: string;
@@ -79,6 +80,7 @@ export default function Login() {
 
   return (
     <AuthLayout>
+      <Metadata title="Login" />
       <Card shadow="sm" padding="lg" radius="lg" withBorder p={40}>
         <div className="flex flex-col gap-1 mb-4">
           <h1 className="text-lg font-bold">Login</h1>

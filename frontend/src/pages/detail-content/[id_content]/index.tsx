@@ -17,6 +17,7 @@ import { useSession } from 'next-auth/react';
 import { UserModel } from '@/models/userModel';
 import { useRouter } from 'next/router';
 import ListContent from '@/components/molecules/ListContent';
+import Metadata from '@/components/atoms/Metadata';
 
 type Props = {
   id_content: string;
@@ -44,6 +45,7 @@ export default function Content({ id_content }: Props) {
 
   return (
     <div className="flex gap-10 py-10 md:flex-row flex-col">
+      <Metadata title="Kontent" />
       <div className="w-full md:max-w-[600px] min-h-[180px] h-max max-w-none rounded-2xl overflow-hidden bg-gray-800 relative md:sticky md:top-28">
         <Image
           src={

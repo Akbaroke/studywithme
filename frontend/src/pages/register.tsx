@@ -17,6 +17,7 @@ import axios from '@/helpers/axios';
 import { validatorNotOnlySpace, validatorPassword } from '@/helpers/validator';
 import Notify from '@/components/atoms/Notify';
 import { useRouter } from 'next/router';
+import Metadata from '@/components/atoms/Metadata';
 
 type FormType = {
   name: string;
@@ -71,7 +72,11 @@ export default function Register() {
         password: values.password,
         name: values.name,
       });
-      Notify('success', 'Akun anda telah dibuat. Silakan verifikasi email.', 'register');
+      Notify(
+        'success',
+        'Akun anda telah dibuat. Silakan verifikasi email.',
+        'register'
+      );
       router.push({
         pathname: '/verify-otp',
         query: { email: values.email },
@@ -87,6 +92,7 @@ export default function Register() {
 
   return (
     <AuthLayout>
+      <Metadata title="Register" />
       <Card shadow="sm" padding="lg" radius="lg" withBorder p={40}>
         <div className="flex flex-col gap-1 mb-4">
           <h1 className="text-lg font-bold">Register</h1>

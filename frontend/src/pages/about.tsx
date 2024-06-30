@@ -1,10 +1,12 @@
 import { images } from '@/assets';
+import Metadata from '@/components/atoms/Metadata';
 import Image from 'next/image';
 import React from 'react';
 
 export default function About() {
   return (
     <div>
+      <Metadata title="Tentang Kami" />
       <div className="flex flex-col gap-20 py-10">
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">Tentang Kami</h1>
@@ -71,7 +73,7 @@ const teamDatas = [
   {
     name: 'Muhamad Aldiarsyah Arifin',
     role: 'Mobile Developer',
-    image: images.MONKEY_FACE,
+    image: images.MAN_2,
   },
   {
     name: 'Gufranaka Samudra',

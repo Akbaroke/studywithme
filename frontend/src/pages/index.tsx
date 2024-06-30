@@ -1,4 +1,5 @@
 import Banner from '@/components/atoms/Banner';
+import Metadata from '@/components/atoms/Metadata';
 import SectionListContent from '@/components/molecules/SectionListContent';
 import {
   getAllContent,
@@ -24,6 +25,7 @@ function Home() {
 
   return (
     <div className="flex flex-col gap-10">
+      <Metadata />
       <Banner />
       <SectionListContent
         title="Paling Populer"

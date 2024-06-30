@@ -1,3 +1,4 @@
+import Metadata from '@/components/atoms/Metadata';
 import Notify from '@/components/atoms/Notify';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import axios from '@/helpers/axios';
@@ -105,6 +106,7 @@ export default function VerifyOtp({ email }: { email: string }) {
 
   return (
     <AuthLayout>
+      <Metadata title="Verifikasi OTP" />
       {email ? (
         <Card shadow="sm" padding="lg" radius="lg" withBorder p={40}>
           <div className="flex flex-col gap-1 mb-4">

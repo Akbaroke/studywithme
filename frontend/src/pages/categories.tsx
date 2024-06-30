@@ -2,6 +2,7 @@ import {
   CardContent,
   CardContentSkeleton,
 } from '@/components/atoms/CardContent';
+import Metadata from '@/components/atoms/Metadata';
 import cn from '@/helpers/cn';
 import { CategoryModel } from '@/models/categoryModel';
 import { ContentModel } from '@/models/contentModel';
@@ -30,6 +31,7 @@ export default function Categories() {
 
   return (
     <div>
+      <Metadata title="Kategori" />
       <div className="flex flex-col gap-5 py-10">
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">Kategori</h1>

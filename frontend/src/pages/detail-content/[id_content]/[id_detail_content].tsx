@@ -47,6 +47,7 @@ import MenuDrawer from '@/components/atoms/MenuDrawer';
 import DiscussionItem from '@/components/molecules/DiscussionItem';
 import InputDiscussion from '@/components/atoms/InputDiscussion';
 import { createDiscussion } from '@/services/discussionService';
+import Metadata from '@/components/atoms/Metadata';
 
 type Props = {
   content: ContentModel | null;
@@ -323,6 +324,7 @@ export default function DetailContent({
 
   return (
     <div className="flex items-start gap-5 py-10">
+      <Metadata title="Detail Materi" />
       <MenuDrawer
         title="List Materi"
         size="xs"
