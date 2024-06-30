@@ -349,7 +349,7 @@ export default function DetailContent({
           />
         </div>
       </MenuDrawer>
-      <div className="md:w-[200px] lg:w-[300px] md:flex flex-col gap-5 border rounded-lg p-3 hidden md:sticky md:top-28">
+      <div className="md:w-[200px] lg:w-[300px] md:flex flex-col gap-5 border rounded-lg p-3 hidden md:sticky md:top-28 bg-white">
         <Link
           href={`/detail-content/${id_content}`}
           className="flex flex-col gap-0 p-3 border-b cursor-pointer hover:bg-gray-100 transition-all duration-300">
@@ -384,7 +384,7 @@ export default function DetailContent({
             <PagingVideo />
           </div>
         </div>
-        <div className="w-full border rounded-lg">
+        <div className="w-full border rounded-lg bg-white">
           <div className="p-6 flex flex-col gap-1 md:gap-5">
             <div className="flex items-center justify-between">
               <h1 className="text-lg md:text-2xl font-bold">
@@ -475,7 +475,7 @@ export default function DetailContent({
         </div>
 
         {detailContent?.questions?.length ? (
-          <div className="w-full border rounded-lg p-5">
+          <div className="w-full border rounded-lg p-5 bg-white">
             {questionStatus === 'unanswered' &&
               detailContent?.questions[currentQuestionNumber - 1] && (
                 <FormQuiz

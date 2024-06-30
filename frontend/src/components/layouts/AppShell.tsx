@@ -177,6 +177,8 @@ export default function Appshell({ children }: Props) {
 
       <AppShell.Main>
         <Container size="lg" p={10}>
+          <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute top-5 -left-5 -z-10"></div>
+          <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute bottom-0 right-0 -z-10"></div>
           {children}
         </Container>
       </AppShell.Main>

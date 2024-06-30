@@ -1,4 +1,7 @@
-import CardContent from '@/components/atoms/CardContent';
+import {
+  CardContent,
+  CardContentSkeleton,
+} from '@/components/atoms/CardContent';
 import cn from '@/helpers/cn';
 import { CategoryModel } from '@/models/categoryModel';
 import { ContentModel } from '@/models/contentModel';
@@ -68,9 +71,13 @@ export default function Categories() {
           mt={30}
           cols={{ base: 2, xs: 3, sm: 4 }}
           spacing={{ base: 10, sm: 20 }}>
-          {filteredContents?.map((item) => (
-            <CardContent key={item.id} {...item} />
-          ))}
+          {contents?.isLoading
+            ? Array.from({ length: 16 }).map((_, index) => (
+                <CardContentSkeleton key={index} />
+              ))
+            : filteredContents?.map((item) => (
+                <CardContent key={item.id} {...item} />
+              ))}
         </SimpleGrid>
       </div>
     </div>

@@ -34,7 +34,7 @@ export default function Table({ isLoading, body, header, minWidth }: Props) {
           },
         }}>
         <MantineTable.Thead>{ths}</MantineTable.Thead>
-        <MantineTable.Tbody>
+        <MantineTable.Tbody bg={'white'}>
           {isLoading
             ? Array.from({ length: 5 }).map((_, index) => (
                 <MantineTable.Tr key={index}>

@@ -9,8 +9,12 @@ import { GetServerSideProps } from 'next';
 import { NextRequest } from 'next/server';
 import getSession from '@/services/getSession';
 import { RoleType } from '@/models/userModel';
+import { useState } from 'react';
+import cn from '@/helpers/cn';
 
 export default function Manage({ role }: { role: RoleType }) {
+  const [tabActive, setTabActive] = useState('kategori');
+
   return (
     <div className="w-full">
       <div className="flex flex-col gap-10 py-10 w-full">
@@ -20,13 +24,33 @@ export default function Manage({ role }: { role: RoleType }) {
             Kelola materi pelajaran dan konten yang ada di studywithme.
           </p>
         </div>
-        <Tabs variant="outline" defaultValue="kategori" className="w-full">
+        <Tabs
+          variant="outline"
+          className="w-full"
+          value={tabActive}
+          onChange={(e) => setTabActive(e as string)}>
           <Tabs.List>
-            <Tabs.Tab value="kategori">Kategori</Tabs.Tab>
-            <Tabs.Tab value="konten">Konten</Tabs.Tab>
-            <Tabs.Tab value="bank-soal">Bank Soal</Tabs.Tab>
+            <Tabs.Tab
+              value="kategori"
+              className={cn({ 'font-bold': tabActive === 'kategori' })}>
+              Kategori
+            </Tabs.Tab>
+            <Tabs.Tab
+              value="konten"
+              className={cn({ 'font-bold': tabActive === 'konten' })}>
+              Konten
+            </Tabs.Tab>
+            <Tabs.Tab
+              value="bank-soal"
+              className={cn({ 'font-bold': tabActive === 'bank-soal' })}>
+              Bank Soal
+            </Tabs.Tab>
             {role === 'ADMIN' && (
-              <Tabs.Tab value="manage-user">Kelola Pengguna</Tabs.Tab>
+              <Tabs.Tab
+                value="manage-user"
+                className={cn({ 'font-bold': tabActive === 'manage-user' })}>
+                Kelola Pengguna
+              </Tabs.Tab>
             )}
           </Tabs.List>
 
@@ -73,14 +97,13 @@ export default function Manage({ role }: { role: RoleType }) {
             <div className="flex flex-col gap-3 my-5 px-5">
               <div className="flex items-center justify-between">
                 <p className="text-md font-semibold">Kelola Pengguna</p>
-                <ModalForm
-                  formType="manage-user"
-                  title="Kelola Pengguna"
-                  size="lg">
-                  <ActionIcon variant="light" size="lg" radius="md">
-                    <IconPlus size={18} />
-                  </ActionIcon>
-                </ModalForm>
+                <ActionIcon
+                  variant="light"
+                  size="lg"
+                  radius="md"
+                  className="invisible">
+                  <IconPlus size={18} />
+                </ActionIcon>
               </div>
               <TableManageContent />
             </div>
