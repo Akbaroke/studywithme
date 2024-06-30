@@ -9,7 +9,7 @@ import { createTheme, MantineProvider } from '@mantine/core';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
-// import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/react';
 import Appshell from '@/components/layouts/AppShell';
 import { store } from '@/redux';
 import { SessionProvider } from 'next-auth/react';
@@ -55,7 +55,7 @@ export default function App({
               />
               <Appshell>
                 <Component {...pageProps} />
-                {/* <Analytics /> */}
+                <Analytics />
               </Appshell>
             </main>
           </MantineProvider>
