@@ -1,16 +1,16 @@
 import { prismaClient } from '../application/database';
+import { HistoryQuestion } from '@prisma/client';
 import {
   HistoryQuestionValidation,
   UpdateHistoryQuestionValidation,
   ValidatedHistoryQuestionData,
 } from '../validation/history-question-validation';
-import { HistoryQuestion } from '@prisma/client';
 
 export class HistoryQuestionService {
   static async create(
-    data: ValidatedHistoryQuestionData
+    data: ValidatedHistoryQuestionData,
+    userId: string
   ): Promise<HistoryQuestion> {
-    // Validate data
     const validatedData = HistoryQuestionValidation.parse(data);
 
     if (!validatedData.id_detail_content) {
@@ -19,6 +19,7 @@ export class HistoryQuestionService {
 
     const historyQuestion = await prismaClient.historyQuestion.create({
       data: {
+        id_user: userId,
         id_detail_content: validatedData.id_detail_content,
         result_score: validatedData.result_score,
         target_score: validatedData.target_score,
@@ -49,7 +50,6 @@ export class HistoryQuestionService {
     id: string,
     data: ValidatedHistoryQuestionData
   ): Promise<HistoryQuestion> {
-    // Validate data
     const validatedData = UpdateHistoryQuestionValidation.parse(data);
 
     if (!validatedData.id_detail_content) {
@@ -62,6 +62,9 @@ export class HistoryQuestionService {
         id_detail_content: validatedData.id_detail_content,
         result_score: validatedData.result_score,
         target_score: validatedData.target_score,
+      },
+      include: {
+        detailContent: true,
       },
     });
   }

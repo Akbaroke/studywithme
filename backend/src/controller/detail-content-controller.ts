@@ -31,10 +31,11 @@ export class DetailContentController {
     }
   }
 
-  static async getById(req: Request, res: Response, next: NextFunction) {
+  static async getById(req: UserRequest, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const detailContent = await DetailContentService.getById(id);
+      const userId = req.user!.id;
+      const detailContent = await DetailContentService.getById(id, userId);
       res.status(200).json({ data: detailContent });
     } catch (e) {
       next(e);

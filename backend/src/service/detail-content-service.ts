@@ -55,7 +55,7 @@ export class DetailContentService {
     });
   }
 
-  static async getById(id: string): Promise<any> {
+  static async getById(id: string, userId: string): Promise<any> {
     const query = await prismaClient.detailContent.findUnique({
       where: { id },
       include: {
@@ -68,7 +68,11 @@ export class DetailContentService {
             },
           },
         },
-        historyQuestion: true,
+        historyQuestion: {
+          where: {
+            id_user: userId,
+          },
+        },
         discussionDetailContentId: {
           include: {
             replies: {
@@ -100,6 +104,7 @@ export class DetailContentService {
         })),
       })),
       discussionDetailContentId: null,
+      historyQuestion: query?.historyQuestion[0],
       discussions: query?.discussionDetailContentId
         .filter((discussion) => !discussion.parentDiscussion)
         .map((discussion) => ({
@@ -164,7 +169,7 @@ export class DetailContentService {
           id_detail_content: id,
         },
       });
-      await prismaClient.historyQuestion.delete({
+      await prismaClient.historyQuestion.deleteMany({
         where: {
           id_detail_content: id,
         },

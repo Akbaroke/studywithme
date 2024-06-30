@@ -119,7 +119,7 @@ model DetailContent {
   discussionDetailContentId Discussion[]            @relation("DiscussionDetailContentId")
   content                   Content                 @relation("detailContentContentId", fields: [id_content], references: [id], onDelete: Cascade)
   questions                 DetailContentQuestion[] @relation("detailContentQuestionDetailContentId")
-  historyQuestion           HistoryQuestion?        @relation("HistoryQuestionDetailContentId")
+  historyQuestion           HistoryQuestion[]       @relation("HistoryQuestionDetailContentId")
 
   @@map("tb_detail_content")
 }
@@ -187,7 +187,8 @@ model Option {
 
 model HistoryQuestion {
   id                String @id @default(uuid()) @db.VarChar(255)
-  id_detail_content String @unique @db.VarChar(255)
+  id_user           String @db.VarChar(255)
+  id_detail_content String @db.VarChar(255)
   result_score      Int?   @default(0)
   target_score      Int?   @default(0)
 

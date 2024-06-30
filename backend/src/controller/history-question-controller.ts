@@ -5,13 +5,16 @@ import {
   UpdateHistoryQuestionValidation,
   ValidatedHistoryQuestionData,
 } from '../validation/history-question-validation';
+import { UserRequest } from '../type/user-request';
 
 export class HistoryQuestionController {
-  static async create(req: Request, res: Response, next: NextFunction) {
+  static async create(req: UserRequest, res: Response, next: NextFunction) {
     try {
+      const userId = req.user!.id;
       const validatedData = HistoryQuestionValidation.parse(req.body);
       const historyQuestion = await HistoryQuestionService.create(
-        validatedData
+        validatedData,
+        userId
       );
       res.status(201).json({
         data: historyQuestion,
