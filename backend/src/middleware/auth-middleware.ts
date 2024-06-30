@@ -33,14 +33,21 @@ export const authMiddleware = async (
       throw new ResponseError(401, 'Unauthorized');
     }
 
+    if (user.is_banned) {
+      throw new ResponseError(403, 'User is banned');
+    }
+
     req.user = user;
     next();
-  } catch (error) {
-    res
-      .status(401)
-      .json({
+  } catch (error: any) {
+    if (error) {
+      res.status(error.statusCode).json({
+        errors: error.message,
+      }).end();
+    } else {
+      res.status(401).json({
         errors: 'Unauthorized',
-      })
-      .end();
+      }).end();
+    }
   }
 };

@@ -10,7 +10,7 @@ datasource db {
 enum Role {
   ADMIN
   STUDENT
-  THEACHER
+  TEACHER
 }
 
 model User {
@@ -22,6 +22,7 @@ model User {
   is_verified               Boolean   @default(false)
   is_email_verification     Boolean   @default(false)
   is_premium                Boolean   @default(false)
+  is_banned                 Boolean   @default(false)
   pemium_start_at           DateTime?
   pemium_expired_at         DateTime?
   role                      Role      @default(STUDENT)
@@ -62,22 +63,21 @@ model Price {
 }
 
 model Discussion {
-  id                    String      @id @default(uuid()) @db.VarChar(255)
-  message               String?     @db.VarChar(5000)
-  created_at            DateTime    @default(now()) @db.Timestamp(0)
-  updated_at            DateTime    @default(now()) @updatedAt @db.Timestamp(0)
-  id_replies_discussion String?     @db.VarChar(255)
-  id_user               String      @db.VarChar(255)
-  id_detail_content     String      @db.VarChar(255)
+  id                    String   @id @default(uuid()) @db.VarChar(255)
+  message               String?  @db.VarChar(5000)
+  created_at            DateTime @default(now()) @db.Timestamp(0)
+  updated_at            DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  id_replies_discussion String?  @db.VarChar(255)
+  id_user               String   @db.VarChar(255)
+  id_detail_content     String   @db.VarChar(255)
 
-  user                  User        @relation("DiscussionUserId", fields: [id_user], references: [id])
-  detailContent         DetailContent @relation("DiscussionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
-  parentDiscussion      Discussion? @relation("Replies", fields: [id_replies_discussion], references: [id])
-  replies               Discussion[] @relation("Replies")
+  user             User          @relation("DiscussionUserId", fields: [id_user], references: [id])
+  detailContent    DetailContent @relation("DiscussionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
+  parentDiscussion Discussion?   @relation("Replies", fields: [id_replies_discussion], references: [id])
+  replies          Discussion[]  @relation("Replies")
 
   @@map("tb_discussions")
 }
-
 
 model Content {
   id          String   @id @default(uuid()) @db.VarChar(255)
@@ -119,7 +119,7 @@ model DetailContent {
   discussionDetailContentId Discussion[]            @relation("DiscussionDetailContentId")
   content                   Content                 @relation("detailContentContentId", fields: [id_content], references: [id], onDelete: Cascade)
   questions                 DetailContentQuestion[] @relation("detailContentQuestionDetailContentId")
-  historyQuestion   HistoryQuestion? @relation("HistoryQuestionDetailContentId")
+  historyQuestion           HistoryQuestion?        @relation("HistoryQuestionDetailContentId")
 
   @@map("tb_detail_content")
 }
@@ -186,12 +186,12 @@ model Option {
 }
 
 model HistoryQuestion {
-  id                String        @id @default(uuid()) @db.VarChar(255)
-  id_detail_content String        @db.VarChar(255) @unique
-  result_score      Int?          @default(0)
-  target_score      Int?          @default(0)
+  id                String @id @default(uuid()) @db.VarChar(255)
+  id_detail_content String @unique @db.VarChar(255)
+  result_score      Int?   @default(0)
+  target_score      Int?   @default(0)
 
-  detailContent     DetailContent @relation("HistoryQuestionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
+  detailContent DetailContent @relation("HistoryQuestionDetailContentId", fields: [id_detail_content], references: [id], onDelete: Cascade)
 
   @@map("tb_history_question")
 }
