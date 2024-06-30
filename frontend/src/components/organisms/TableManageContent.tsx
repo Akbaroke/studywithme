@@ -5,12 +5,12 @@ import Table from '../molecules/Table';
 import { ActionIcon, Badge, Table as MantineTable } from '@mantine/core';
 import ModalForm from './ModalForm';
 import { IconPencil } from '@tabler/icons-react';
-import ModalConfirm from './ModalConfirm';
+// import ModalConfirm from './ModalConfirm';
 import Notify from '../atoms/Notify';
 import { formatDate } from '@/helpers/formatDate';
 import { getAllUsers, updateUser } from '@/services/manageUserService';
-import { MdBlock } from 'react-icons/md';
-import { CgUnblock } from 'react-icons/cg';
+// import { MdBlock } from 'react-icons/md';
+// import { CgUnblock } from 'react-icons/cg';
 
 export default function TableManageContent() {
   const session: UserModel = useSession().data?.user as UserModel;
@@ -47,17 +47,17 @@ export default function TableManageContent() {
     },
   });
 
-  const onTogleStatusBanned = async (id: string, is_banned: boolean) => {
-    if (session.token) {
-      mutation.mutate({
-        id: id,
-        is_banned: !is_banned,
-        token: session.token,
-      });
-    } else {
-      console.error('User is not authenticated');
-    }
-  };
+  // const onTogleStatusBanned = async (id: string, is_banned: boolean) => {
+  //   if (session.token) {
+  //     mutation.mutate({
+  //       id: id,
+  //       is_banned: !is_banned,
+  //       token: session.token,
+  //     });
+  //   } else {
+  //     console.error('User is not authenticated');
+  //   }
+  // };
 
   return (
     <Table
@@ -65,7 +65,7 @@ export default function TableManageContent() {
       header={
         <>
           <MantineTable.Th w={50}>No.</MantineTable.Th>
-          {['Nama', 'Peran', 'Terakhir Diubah']?.map((element, index) => (
+          {['Nama', 'Email', 'Peran', 'Terakhir Diubah']?.map((element, index) => (
             <MantineTable.Th key={index}>{element}</MantineTable.Th>
           ))}
           <MantineTable.Th w={110}>Action</MantineTable.Th>
@@ -75,6 +75,7 @@ export default function TableManageContent() {
         <MantineTable.Tr key={index}>
           <MantineTable.Td>{index + 1}</MantineTable.Td>
           <MantineTable.Td>{element.name}</MantineTable.Td>
+          <MantineTable.Td>{element.email}</MantineTable.Td>
           <MantineTable.Td
             width={100}
             styles={{ td: { whiteSpace: 'nowrap' } }}>
@@ -87,7 +88,8 @@ export default function TableManageContent() {
             styles={{ td: { whiteSpace: 'nowrap' } }}>
             {formatDate(element?.updated_at as Date)}
           </MantineTable.Td>
-          <MantineTable.Td className="flex items-center gap-3 justify-evenly">
+          <MantineTable.Td
+            className="flex items-center gap-3 justify-evenly">
             <ModalForm
               formType="manage-user"
               id={element.id}
@@ -96,7 +98,7 @@ export default function TableManageContent() {
                 <IconPencil size={18} />
               </ActionIcon>
             </ModalForm>
-            <ModalConfirm
+            {/* <ModalConfirm
               btnTitle={`Ya, ${element.is_banned ? 'Unbanned' : 'Banned'}`}
               title={`${element.is_banned ? 'Unbanned' : 'Banned'} Akun`}
               text={`Apakah anda yakin ingin melakukan ${
@@ -124,7 +126,7 @@ export default function TableManageContent() {
                   <MdBlock size={18} />
                 )}
               </ActionIcon>
-            </ModalConfirm>
+            </ModalConfirm> */}
           </MantineTable.Td>
         </MantineTable.Tr>
       ))}

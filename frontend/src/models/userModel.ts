@@ -14,6 +14,7 @@ export interface ManageUserModel {
   is_banned: boolean;
   role: RoleType | null;
   name: string;
+  email?: string;
   created_at?: Date;
   updated_at?: Date;
 }
