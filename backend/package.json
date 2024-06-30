@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "_vercel/api/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node _vercel/api/main.js",
+    "start": "node dist/main.js",
     "dev": "nodemon src/main.ts"
   },
   "author": "Muhammad Akbar",
