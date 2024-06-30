@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { Button, NumberInput, TextInput } from '@mantine/core';
 import { IconDeviceFloppy } from '@tabler/icons-react';
-import { useDispatch } from 'react-redux';
 import axios from '@/helpers/axios';
 import {
   createCategory,
