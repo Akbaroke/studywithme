@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "build/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/main.js",
+    "start": "node build/main.js",
     "dev": "nodemon src/main.ts"
   },
   "author": "Muhammad Akbar",
