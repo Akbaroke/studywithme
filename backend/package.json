@@ -5,8 +5,8 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node build/main.js",
-    "dev": "nodemon src/main.ts"
+    "start": "node build/index.js",
+    "dev": "nodemon src/index.ts"
   },
   "author": "Muhammad Akbar",
   "license": "ISC",
