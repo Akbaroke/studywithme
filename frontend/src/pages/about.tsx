@@ -7,32 +7,36 @@ export default function About() {
   return (
     <div>
       <Metadata title="Tentang Kami" />
-      <div className="flex flex-col gap-20 py-10">
-        <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-32 py-10">
+        <div className="flex flex-col gap-5">
           <h1 className="text-3xl font-bold">Tentang Kami</h1>
-          <p className="text-md font-medium text-gray-500 text-justify indent-10">
-            <b>studywithme</b> adalah platform edukasi inovatif yang menyediakan
-            berbagai layanan tontonan pembelajaran seputar pemrograman dan
-            teknologi informasi (IT). Kami menawarkan beragam video berkualitas
-            tinggi yang mencakup berbagai topik, mulai dari dasar-dasar
-            pemrograman hingga teknik lanjutan dalam pengembangan perangkat
-            lunak, jaringan komputer, keamanan siber, dan banyak lagi. Setiap
-            kategori pembelajaran kami dirancang secara sistematis untuk
-            membantu Anda memahami konsep-konsep kunci dan keterampilan yang
-            diperlukan di dunia teknologi yang terus berkembang.
-          </p>
-          <p className="text-md font-medium text-gray-500 text-justify indent-10">
-            Selain video pembelajaran, setiap materi kami di <b>studywithme</b>{' '}
-            dilengkapi dengan soal latihan yang interaktif untuk memastikan Anda
-            dapat mengaplikasikan pengetahuan yang telah dipelajari. Soal-soal
-            ini dirancang untuk menguji pemahaman Anda dan memberikan umpan
-            balik yang konstruktif. Dengan pendekatan ini, kami berkomitmen
-            untuk tidak hanya menyampaikan pengetahuan, tetapi juga membantu
-            Anda mengembangkan kemampuan praktis yang diperlukan untuk sukses
-            dalam karir di bidang teknologi informasi. Gabunglah dengan kami di{' '}
-            <b>studywithme</b> dan mulailah perjalanan belajar Anda dengan
-            dukungan dari para ahli dan komunitas pembelajar yang berdedikasi.
-          </p>
+          <div className="px-5 flex flex-col gap-5">
+            <p className="text-md font-medium text-gray-500 text-justify indent-10 leading-8">
+              <b>studywithme</b> adalah platform edukasi inovatif yang
+              menyediakan berbagai layanan tontonan pembelajaran seputar
+              pemrograman dan teknologi informasi (IT). Kami menawarkan beragam
+              video berkualitas tinggi yang mencakup berbagai topik, mulai dari
+              dasar-dasar pemrograman hingga teknik lanjutan dalam pengembangan
+              perangkat lunak, jaringan komputer, keamanan siber, dan banyak
+              lagi. Setiap kategori pembelajaran kami dirancang secara
+              sistematis untuk membantu Anda memahami konsep-konsep kunci dan
+              keterampilan yang diperlukan di dunia teknologi yang terus
+              berkembang.
+            </p>
+            <p className="text-md font-medium text-gray-500 text-justify indent-10 leading-8">
+              Selain video pembelajaran, setiap materi kami di{' '}
+              <b>studywithme</b> dilengkapi dengan soal latihan yang interaktif
+              untuk memastikan Anda dapat mengaplikasikan pengetahuan yang telah
+              dipelajari. Soal-soal ini dirancang untuk menguji pemahaman Anda
+              dan memberikan umpan balik yang konstruktif. Dengan pendekatan
+              ini, kami berkomitmen untuk tidak hanya menyampaikan pengetahuan,
+              tetapi juga membantu Anda mengembangkan kemampuan praktis yang
+              diperlukan untuk sukses dalam karir di bidang teknologi informasi.
+              Gabunglah dengan kami di <b>studywithme</b> dan mulailah
+              perjalanan belajar Anda dengan dukungan dari para ahli dan
+              komunitas pembelajar yang berdedikasi.
+            </p>
+          </div>
         </div>
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-1 justify-center items-center max-w-md text-center m-auto">

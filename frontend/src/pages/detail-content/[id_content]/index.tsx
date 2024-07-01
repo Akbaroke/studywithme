@@ -18,6 +18,7 @@ import { UserModel } from '@/models/userModel';
 import { useRouter } from 'next/router';
 import ListContent from '@/components/molecules/ListContent';
 import Metadata from '@/components/atoms/Metadata';
+import Notify from '@/components/atoms/Notify';
 
 type Props = {
   id_content: string;
@@ -30,6 +31,7 @@ export default function Content({ id_content }: Props) {
     data: content,
     error,
     isLoading,
+    isPending,
   } = useQuery<ContentModel>({
     queryKey: ['contents/' + id_content],
     queryFn: () => getContentById(id_content, session.token as string),
@@ -86,17 +88,23 @@ export default function Content({ id_content }: Props) {
               {urlify(content?.description)}
             </p>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex md:justify-end justify-center items-center">
             <Button
               variant="filled"
               leftSection={<IconPlayerPlay size={16} />}
               size="xs"
               radius="md"
               color="blue"
-              onClick={() => {}}>
+              onClick={() => {
+                content.detail_content.length === 0
+                  ? Notify('error', 'Belum ada materi')
+                  : router.push(
+                      `/detail-content/${id_content}/${content.detail_content[0].id}`
+                    );
+              }}>
               Mulai Belajar
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               leftSection={<IconUpload size={16} />}
               size="xs"
@@ -104,7 +112,7 @@ export default function Content({ id_content }: Props) {
               color="white"
               onClick={() => {}}>
               Bagikan
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
@@ -135,6 +143,7 @@ export default function Content({ id_content }: Props) {
           {content?.detail_content?.map((item, index) => (
             <ListContent key={index} content={item} id_content={id_content} />
           ))}
+          {isPending && <ListMateriSekeleton />}
         </div>
       </div>
     </div>
@@ -191,20 +200,23 @@ const SkeletonComponent = () => {
         </div>
         <div className="flex flex-col">
           {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              className="flex items-center justify-between py-4 border-b border-dashed cursor-pointer"
-              key={index}>
-              <div className="flex items-center gap-2">
-                <Skeleton height={8} width={100} radius="xl" />
-              </div>
-              <div className="flex items-center gap-4">
-                <Divider orientation="vertical" />
-                <Skeleton height={8} width={50} radius="xl" />
-              </div>
-            </div>
+            <ListMateriSekeleton key={index} />
           ))}
+          {}
         </div>
       </div>
     </div>
   );
 };
+
+const ListMateriSekeleton = () => (
+  <div className="flex items-center justify-between py-4 border-b border-dashed cursor-pointer">
+    <div className="flex items-center gap-2">
+      <Skeleton height={8} width={100} radius="xl" />
+    </div>
+    <div className="flex items-center gap-4">
+      <Divider orientation="vertical" />
+      <Skeleton height={8} width={50} radius="xl" />
+    </div>
+  </div>
+);

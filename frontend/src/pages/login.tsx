@@ -90,6 +90,13 @@ export default function Login() {
         </div>
         <Button
           leftSection={<FcGoogle size={12} />}
+          onClick={() =>
+            Notify(
+              'error',
+              'Sementara tidak tersedia, fitur dalam tahap pengembangan',
+              'login'
+            )
+          }
           variant="default"
           radius="md">
           <p className="text-xs">Masuk dengan google</p>

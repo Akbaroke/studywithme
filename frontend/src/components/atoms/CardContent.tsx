@@ -65,7 +65,7 @@ export function CardContent({
 
       <div className="mt-3 flex flex-col justify-between h-full">
         <div className="flex flex-col gap-2">
-          <h1 className="sm:text-lg text-sm font-semibold line-clamp-2">
+          <h1 className="sm:text-base text-sm font-semibold line-clamp-2">
             {title}
           </h1>
           <div className="flex gap-4 items-center">

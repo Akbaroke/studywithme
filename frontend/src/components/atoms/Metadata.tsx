@@ -11,7 +11,7 @@ const Metadata: React.FC<MetadataModel> = ({ title, ogImageUrl }) => {
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?title=${title}`
     : `${process.env.NEXT_PUBLIC_BASE_URL}/api/og`;
 
-  const defaultTitle = 'studywithme.';
+  const defaultTitle = 'studywithme_';
   const pageUrl = new URL(
     pathname,
     process.env.NEXT_PUBLIC_BASE_URL
@@ -29,10 +29,7 @@ const Metadata: React.FC<MetadataModel> = ({ title, ogImageUrl }) => {
         content="Website pembelajaran untuk para calon programmer."
         key="desc"
       />
-      <meta
-        name="keywords"
-        content="Alquran, Al-Quran, Alquran Indonesia, Indonesia Quran, Alquran dan Terjemahan, Hadits Bahasa Indonesia, Doa Doa Harian, Website Alquran, Alquran Online"
-      />
+      <meta name="keywords" content="Programming, LMS, Belajar Programing" />
       <meta name="author" content="Muhammad Akbar - Akbaroke" />
 
       <meta

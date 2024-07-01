@@ -11,20 +11,9 @@ import {
 import { getContentById } from '@/services/contentService';
 import { getDetailContentById } from '@/services/detailContentService';
 import getSession from '@/services/getSession';
-import {
-  ActionIcon,
-  Button,
-  Loader,
-  ScrollArea,
-  Transition,
-} from '@mantine/core';
+import { ActionIcon, Button, ScrollArea, Transition } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import {
-  IconLock,
-  IconLockOpen2,
-  IconPlayerTrackNext,
-  IconPlayerTrackPrev,
-} from '@tabler/icons-react';
+import { IconPlayerTrackNext, IconPlayerTrackPrev } from '@tabler/icons-react';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -162,7 +151,6 @@ export default function DetailContent({
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ['contents/' + id_content] });
       Notify('success', response, 'action-content');
-      close();
     },
     onError: (error: any) => {
       Notify('error', 'Gagal memproses konten', 'action-content');
@@ -195,7 +183,9 @@ export default function DetailContent({
       } else {
         setNewComment('');
       }
-      close();
+      if (!isNotMobile) {
+        setIsOpenCommentMobileDrawer(false);
+      }
     },
     onError: (error: any) => {
       Notify('error', 'Gagal menambahkan komentar', 'action-dicusion');

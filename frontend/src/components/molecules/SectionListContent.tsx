@@ -2,6 +2,7 @@ import { ContentModel } from '@/models/contentModel';
 import { Divider, SimpleGrid } from '@mantine/core';
 import React from 'react';
 import { CardContent, CardContentSkeleton } from '../atoms/CardContent';
+import { useMediaQuery } from '@mantine/hooks';
 
 type Props = {
   title: string;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export default function SectionListContent({ title, data, loading }: Props) {
+  const isNotMobile = useMediaQuery('(min-width: 768px)');
+
   return (
     <div className="flex flex-col gap-4">
       <div>
@@ -22,7 +25,7 @@ export default function SectionListContent({ title, data, loading }: Props) {
         <SimpleGrid
           cols={{ base: 2, xs: 3, sm: 4 }}
           spacing={{ base: 10, sm: 20 }}>
-          {Array.from({ length: 8 }).map((_, index) => (
+          {Array.from({ length: isNotMobile ? 4 : 8 }).map((_, index) => (
             <CardContentSkeleton key={index} />
           ))}
         </SimpleGrid>
@@ -31,7 +34,7 @@ export default function SectionListContent({ title, data, loading }: Props) {
           <SimpleGrid
             cols={{ base: 2, xs: 3, sm: 4 }}
             spacing={{ base: 10, sm: 20 }}>
-            {data?.map((item) => (
+            {data?.slice(0, isNotMobile ? 4 : 8).map((item) => (
               <CardContent key={item.id} {...item} />
             ))}
           </SimpleGrid>

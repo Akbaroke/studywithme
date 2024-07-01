@@ -141,7 +141,7 @@ export default function Appshell({ children }: Props) {
         </Group>
       </AppShell.Header>
 
-      <AppShell.Navbar py="md" px={4}>
+      <AppShell.Navbar py="md" px={4} className="flex flex-col justify-between">
         <div className="flex flex-col gap-2 p-3">
           {navLinkData.map((data, index) =>
             isActivePage(data.href) ? (
@@ -171,6 +171,29 @@ export default function Appshell({ children }: Props) {
                 {data.label}
               </Button>
             )
+          )}
+        </div>
+        <div className="w-full">
+          {session?.token ? (
+            <Button
+              variant="outline"
+              fullWidth
+              radius="md"
+              h={60}
+              color="#000"
+              onClick={() => signOut()}>
+              Logout
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              fullWidth
+              radius="md"
+              h={60}
+              color="#000"
+              onClick={() => router.push('/login')}>
+              Login
+            </Button>
           )}
         </div>
       </AppShell.Navbar>

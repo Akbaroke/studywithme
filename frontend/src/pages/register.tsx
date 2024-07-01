@@ -101,6 +101,13 @@ export default function Register() {
         <Button
           leftSection={<FcGoogle size={12} />}
           variant="default"
+          onClick={() =>
+            Notify(
+              'error',
+              'Sementara tidak tersedia, fitur dalam tahap pengembangan',
+              'register'
+            )
+          }
           radius="md">
           <p className="text-xs">Register dengan google</p>
         </Button>
