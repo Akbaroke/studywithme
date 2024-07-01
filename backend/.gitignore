@@ -5,4 +5,3 @@ dist
 build
 yarn.lock
 package-lock.json
-/prisma/migrations
