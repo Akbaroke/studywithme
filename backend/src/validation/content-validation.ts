@@ -19,7 +19,7 @@ export interface ValidatedContentData
 export class ContentValidation {
   static readonly CREATE: ZodType<ContentData> = z.object({
     title: z.string().min(1).max(255),
-    description: z.string().max(255).optional(),
+    description: z.string().max(10000).optional(),
     thumbnail: z.string().max(255).optional(),
     is_premium: z.boolean(),
     total_klik: z.number().int().positive().optional(),
@@ -28,7 +28,7 @@ export class ContentValidation {
 
   static readonly UPDATE: ZodType<Partial<ContentData>> = z.object({
     title: z.string().min(1).max(255).optional(),
-    description: z.string().max(255).optional(),
+    description: z.string().max(10000).optional(),
     thumbnail: z.string().max(255).optional(),
     is_premium: z.boolean().optional(),
     total_klik: z.number().int().positive().optional(),

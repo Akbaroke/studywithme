@@ -37,6 +37,8 @@ export default function FormCategory({ id, close }: Props) {
       name: (value: string) =>
         value.length < 2
           ? 'Nama minimal harus 2 karakter.'
+          : value.length > 50
+          ? 'Nama maksimal 50 karakter.'
           : validatorNotOnlySpace(value)
           ? 'Nama tidak boleh hanya berisi spasi.'
           : null,

@@ -44,6 +44,8 @@ export default function Register() {
       name: (value) =>
         value.length < 8
           ? 'Nama minimal harus 8 karakter.'
+          : value.length > 40
+          ? 'Nama maksimal 40 karakter.'
           : validatorNotOnlySpace(value)
           ? 'Nama tidak boleh hanya berisi spasi.'
           : null,

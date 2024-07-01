@@ -60,15 +60,13 @@ export default function FormContent({ id, close }: Props) {
       title: (value: string) =>
         value.length < 3
           ? 'Judul minimal harus 3 karakter.'
+          : value.length > 250
+          ? 'Deskripsi maksimal 250 karakter.'
           : validatorNotOnlySpaceSymbolTrue(value)
           ? 'Judul tidak boleh hanya berisi spasi.'
           : null,
       description: (value: string) =>
-        value.length < 5
-          ? 'Deskripsi minimal harus 5 karakter.'
-          : value.length > 10000
-          ? 'Deskripsi maksimal 10.000 karakter.'
-          : null,
+        value.length > 10000 ? 'Deskripsi maksimal 10.000 karakter.' : null,
       categories: (value) =>
         value.length > 0 ? null : 'Pilih minimal 1 kategori.',
     },
@@ -144,7 +142,6 @@ export default function FormContent({ id, close }: Props) {
       />
       <Textarea
         label="Deskripsi"
-        required
         value={form.values.description}
         error={form.errors.description as string}
         onChange={(e) =>

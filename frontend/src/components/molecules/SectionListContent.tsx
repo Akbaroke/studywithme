@@ -25,7 +25,7 @@ export default function SectionListContent({ title, data, loading }: Props) {
         <SimpleGrid
           cols={{ base: 2, xs: 3, sm: 4 }}
           spacing={{ base: 10, sm: 20 }}>
-          {Array.from({ length: isNotMobile ? 4 : 8 }).map((_, index) => (
+          {Array.from({ length: isNotMobile ? 8 : 4 }).map((_, index) => (
             <CardContentSkeleton key={index} />
           ))}
         </SimpleGrid>
@@ -34,7 +34,7 @@ export default function SectionListContent({ title, data, loading }: Props) {
           <SimpleGrid
             cols={{ base: 2, xs: 3, sm: 4 }}
             spacing={{ base: 10, sm: 20 }}>
-            {data?.slice(0, isNotMobile ? 4 : 8).map((item) => (
+            {data?.slice(0, isNotMobile ? 8 : 4).map((item) => (
               <CardContent key={item.id} {...item} />
             ))}
           </SimpleGrid>

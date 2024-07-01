@@ -29,6 +29,8 @@ export default function FormManageUser({ id, close }: Props) {
       name: (value: string) =>
         value.length < 2
           ? 'Nama minimal harus 2 karakter.'
+          : value.length > 40
+          ? 'Nama maksimal 40 karakter.'
           : validatorNotOnlySpace(value)
           ? 'Nama tidak boleh hanya berisi spasi.'
           : null,
