@@ -12,6 +12,7 @@ export interface UserModel {
 export interface ManageUserModel {
   id?: string;
   is_banned: boolean;
+  is_verified?: boolean;
   role: RoleType | null;
   name: string;
   email?: string;

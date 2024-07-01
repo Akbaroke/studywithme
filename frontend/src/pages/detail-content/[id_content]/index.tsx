@@ -1,11 +1,7 @@
 import { getContentById } from '@/services/contentService';
 import { GetServerSideProps } from 'next';
 import { ContentModel } from '@/models/contentModel';
-import {
-  IconPlayerPlay,
-  IconPlus,
-  IconUpload,
-} from '@tabler/icons-react';
+import { IconPlayerPlay, IconPlus } from '@tabler/icons-react';
 import Image from 'next/image';
 import { images } from '@/assets';
 import { ActionIcon, Badge, Button, Divider, Skeleton } from '@mantine/core';
@@ -19,6 +15,7 @@ import { useRouter } from 'next/router';
 import ListContent from '@/components/molecules/ListContent';
 import Metadata from '@/components/atoms/Metadata';
 import Notify from '@/components/atoms/Notify';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type Props = {
   id_content: string;
@@ -139,16 +136,51 @@ export default function Content({ id_content }: Props) {
             </ModalForm>
           )}
         </div>
-        <div className="flex flex-col">
-          {content?.detail_content?.map((item, index) => (
-            <ListContent key={index} content={item} id_content={id_content} />
-          ))}
-          {isPending && <ListMateriSekeleton />}
-        </div>
+        <AnimatePresence>
+          <div className="flex flex-col">
+            {content?.detail_content?.map((item, index) => (
+              <motion.div
+                key={index}
+                custom={index}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={itemVariants}>
+                <ListContent content={item} id_content={id_content} />
+              </motion.div>
+            ))}
+            {isPending && <ListMateriSekeleton />}
+          </div>
+        </AnimatePresence>
       </div>
     </div>
   );
 }
+const itemVariants = {
+  hidden: (index: number) => ({
+    opacity: 0,
+    y: 20,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+    },
+  }),
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+      duration: 0.5,
+    },
+  }),
+  exit: (index: number) => ({
+    opacity: 0,
+    y: 20,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+    },
+  }),
+};
+
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id_content } = ctx.query;

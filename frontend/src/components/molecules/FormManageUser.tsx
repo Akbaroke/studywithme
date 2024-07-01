@@ -22,6 +22,7 @@ export default function FormManageUser({ id, close }: Props) {
     validateInputOnChange: true,
     initialValues: {
       is_banned: false,
+      is_verified: false,
       role: null,
       name: '',
     },
@@ -43,6 +44,7 @@ export default function FormManageUser({ id, close }: Props) {
         form.setValues({
           name: data.name,
           role: data.role,
+          is_verified: data.is_verified,
           is_banned: data.is_banned,
         });
       });
@@ -108,6 +110,19 @@ export default function FormManageUser({ id, close }: Props) {
           <Radio value="STUDENT" label={<Badge color="gray">MURID</Badge>} />
           <Radio value="TEACHER" label={<Badge color="teal">GURU</Badge>} />
           <Radio value="ADMIN" label={<Badge color="#000">ADMIN</Badge>} />
+        </div>
+      </Radio.Group>
+      <Radio.Group
+        label="Pengguna Verified"
+        required
+        value={form.values.is_verified ? 'true' : 'false'}
+        readOnly={mutation.isPending}
+        onChange={(e) =>
+          form.setFieldValue('is_verified', e === 'true' ? true : false)
+        }>
+        <div className="flex flex-col gap-3 mt-3 pl-3">
+          <Radio value="false" label={<Badge color="gray">Unverified</Badge>} />
+          <Radio value="true" label={<Badge color="blue">Verified</Badge>} />
         </div>
       </Radio.Group>
       <Button
