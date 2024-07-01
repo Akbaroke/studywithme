@@ -30,7 +30,7 @@ export default async function handler(request: Request) {
             boxShadow: '10px 10px 20px 0 rgba(0, 0, 0, 0.2)',
             borderRadius: '20px',
           }}
-          src="https://cdn.discordapp.com/attachments/1165274297766531144/1257269080625385604/SPOILER_studywithme.png?ex=6683ca93&is=66827913&hm=628e2451f467352e18277122f5f9663e2772a4702f649312c01645acc5afb7c2&"
+          src="https://firebasestorage.googleapis.com/v0/b/chattytalks.appspot.com/o/personal%2F1e6728ca-7e54-4e6f-809c-3a5b7f44d2b6%2Fa46f94b0-ad26-426c-a525-c28d389e2b75.jpg?alt=media&token=c3a65715-ba21-4866-8ea7-284742e89440"
         />
         <div style={{ marginTop: 40, fontSize: 30, fontWeight: 600 }}>
           {title}
