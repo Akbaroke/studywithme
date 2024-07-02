@@ -2,24 +2,24 @@ import Banner from '@/components/atoms/Banner';
 import Metadata from '@/components/atoms/Metadata';
 import SectionListContent from '@/components/molecules/SectionListContent';
 import {
-  getAllContent,
   // getFreeContent,
   getMostClickedContent,
+  getNewContent,
 } from '@/services/contentService';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 function Home() {
   const contents = useQuery({
-    queryKey: ['contents'],
-    queryFn: getAllContent,
+    queryKey: ['contents/new', 'contents'],
+    queryFn: getNewContent,
   });
   // const contentsFree = useQuery({
   //   queryKey: ['contents/free'],
   //   queryFn: getFreeContent,
   // });
   const contentsMostClicked = useQuery({
-    queryKey: ['contents/most-click'],
+    queryKey: ['contents/most-click', 'contents'],
     queryFn: getMostClickedContent,
   });
 

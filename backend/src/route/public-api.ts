@@ -33,5 +33,6 @@ publicRouter.get(
   '/api/contents/most-click',
   ContentController.getMostClickedContent
 );
+publicRouter.get('/api/contents/new', ContentController.getNewContent);
 
 publicRouter.get('/api/discussions', DiscussionController.getAll);

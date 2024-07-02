@@ -6,6 +6,11 @@ export const getAllContent = async () => {
   return data.data;
 };
 
+export const getNewContent = async () => {
+  const { data } = await axios.get('/contents/new');
+  return data.data;
+};
+
 export const getFreeContent = async () => {
   const { data } = await axios.get('/contents/free');
   return data.data;

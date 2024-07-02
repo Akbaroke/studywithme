@@ -29,6 +29,15 @@ export class ContentController {
     }
   }
 
+  static async getNewContent(req: Request, res: Response, next: NextFunction) {
+    try {
+      const contents = await ContentService.getNewContent();
+      res.status(200).json({ data: contents });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   static async getFreeContent(req: Request, res: Response, next: NextFunction) {
     try {
       const contents = await ContentService.getFreeContent();
