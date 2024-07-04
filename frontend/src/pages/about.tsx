@@ -1,13 +1,13 @@
 import { images } from '@/assets';
 import Metadata from '@/components/atoms/Metadata';
 import Image from 'next/image';
-import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function About() {
   return (
-    <div>
+    <AnimatePresence>
       <Metadata title="Tentang Kami" />
-      <div className="flex flex-col gap-32 py-10">
+      <div className="flex flex-col gap-32 sm:py-10 py-5">
         <div className="flex flex-col gap-5">
           <h1 className="text-3xl font-bold">Tentang Kami</h1>
           <div className="px-5 flex flex-col gap-5">
@@ -48,9 +48,14 @@ export default function About() {
           </div>
           <div className="flex justify-center items-center gap-5 flex-wrap max-w-2xl mx-auto">
             {teamDatas.map((data, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="flex flex-col gap-3 justify-center items-center max-w-md text-center w-[200px]">
+                custom={index}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="flex flex-col gap-3 justify-center items-center max-w-md text-center w-[200px]"
+                variants={itemVariants}>
                 <Image
                   src={data.image}
                   alt={data.name}
@@ -59,12 +64,12 @@ export default function About() {
                 />
                 <h1 className="text-lg font-bold">{data.name}</h1>
                 <p className="text-sm font-medium text-gray-500">{data.role}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 }
 
@@ -95,3 +100,29 @@ const teamDatas = [
     image: images.MAN_5,
   },
 ];
+
+const itemVariants = {
+  hidden: (index: number) => ({
+    opacity: 0,
+    y: 20,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+    },
+  }),
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+      duration: 0.5,
+    },
+  }),
+  exit: (index: number) => ({
+    opacity: 0,
+    y: 20,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+    },
+  }),
+};
+

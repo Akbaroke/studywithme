@@ -10,6 +10,7 @@ import { getAllCategory } from '@/services/categoryService';
 import { getAllContent } from '@/services/contentService';
 import { Button, SimpleGrid, Skeleton } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 
 export default function Categories() {
@@ -30,9 +31,9 @@ export default function Categories() {
     : contents?.data;
 
   return (
-    <div>
+    <AnimatePresence>
       <Metadata title="Kategori" />
-      <div className="flex flex-col gap-5 py-10">
+      <div className="flex flex-col gap-5 sm:py-10 py-5">
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">Kategori</h1>
           <p className="text-md font-medium text-gray-500 max-w-lg">
@@ -47,27 +48,38 @@ export default function Categories() {
                   <Skeleton height={8} width={50} radius="xl" />
                 </Button>
               ))
-            : categories?.data?.map((category: CategoryModel) => (
-                <Button
-                  key={category.id}
-                  variant={
-                    categorySelected === category.id ? 'filled' : 'default'
-                  }
-                  radius="md"
-                  color={categorySelected === category.id ? '#000' : 'default'}
-                  size="xs"
-                  onClick={() =>
-                    setCategorySelected(
-                      categorySelected === category.id ? '' : category.id
-                    )
-                  }
-                  className={cn(
-                    'hover:shadow-lg transition-all duration-500',
-                    categorySelected === category.id && 'shadow-lg'
-                  )}>
-                  {category.name}
-                </Button>
-              ))}
+            : categories?.data?.map(
+                (category: CategoryModel, index: number) => (
+                  <motion.div
+                    key={index}
+                    custom={index}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={itemVariants}>
+                    <Button
+                      variant={
+                        categorySelected === category.id ? 'filled' : 'default'
+                      }
+                      radius="md"
+                      color={
+                        categorySelected === category.id ? '#000' : 'default'
+                      }
+                      size="xs"
+                      onClick={() =>
+                        setCategorySelected(
+                          categorySelected === category.id ? '' : category.id
+                        )
+                      }
+                      className={cn(
+                        'hover:shadow-lg transition-all duration-500',
+                        categorySelected === category.id && 'shadow-lg'
+                      )}>
+                      {category.name}
+                    </Button>
+                  </motion.div>
+                )
+              )}
         </div>
         <SimpleGrid
           mt={30}
@@ -77,11 +89,45 @@ export default function Categories() {
             ? Array.from({ length: 16 }).map((_, index) => (
                 <CardContentSkeleton key={index} />
               ))
-            : filteredContents?.map((item) => (
-                <CardContent key={item.id} {...item} />
+            : filteredContents?.map((item, index) => (
+                <motion.div
+                  key={index}
+                  custom={index}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={itemVariants}>
+                  <CardContent {...item} />
+                </motion.div>
               ))}
         </SimpleGrid>
       </div>
-    </div>
+    </AnimatePresence>
   );
 }
+
+const itemVariants = {
+  hidden: (index: number) => ({
+    opacity: 0,
+    y: 20,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+    },
+  }),
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+      duration: 0.5,
+    },
+  }),
+  exit: (index: number) => ({
+    opacity: 0,
+    y: 20,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+    },
+  }),
+};
+

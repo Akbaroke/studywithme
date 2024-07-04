@@ -13,6 +13,8 @@ import Logo from '../atoms/Logo';
 import Footer from '../molecules/Footer';
 import { signOut, useSession } from 'next-auth/react';
 import { UserModel } from '@/models/userModel';
+import { FloatingWhatsApp } from 'react-floating-whatsapp';
+import { images } from '@/assets';
 
 type Props = {
   children: React.ReactNode;
@@ -51,8 +53,7 @@ export default function Appshell({ children }: Props) {
       label: 'Mengelola',
       href: '/manage',
     });
-  } 
-      
+  }
 
   return pathNotNavbar.includes(rootPath) ? (
     children
@@ -200,6 +201,20 @@ export default function Appshell({ children }: Props) {
 
       <AppShell.Main>
         <Container size="lg" p={10}>
+          {/* <FloatingWhatsApp
+            buttonStyle={{
+              width: '40px',
+              height: '40px',
+            }}
+            style={{
+              width: '40px',
+              height: '40px',
+            }}
+            phoneNumber="081310725348"
+            accountName="studywithme_"
+            chatMessage="Halo, ada yang bisa kami bantu ? 🙏"
+            avatar="https://firebasestorage.googleapis.com/v0/b/chattytalks.appspot.com/o/personal%2F1e6728ca-7e54-4e6f-809c-3a5b7f44d2b6%2Fa46f94b0-ad26-426c-a525-c28d389e2b75.jpg?alt=media&token=c3a65715-ba21-4866-8ea7-284742e89440"
+          /> */}
           <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute top-5 -left-5 -z-10"></div>
           <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute bottom-0 right-0 -z-10"></div>
           {children}

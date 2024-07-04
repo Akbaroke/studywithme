@@ -313,7 +313,7 @@ export default function DetailContent({
   );
 
   return (
-    <div className="flex items-start gap-5 py-10">
+    <div className="flex items-start gap-5 sm:py-10 py-5">
       <Metadata title="Detail Materi" />
       <MenuDrawer
         title="List Materi"

@@ -3,6 +3,7 @@ import { Divider, SimpleGrid } from '@mantine/core';
 import React from 'react';
 import { CardContent, CardContentSkeleton } from '../atoms/CardContent';
 import { useMediaQuery } from '@mantine/hooks';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type Props = {
   title: string;
@@ -21,25 +22,61 @@ export default function SectionListContent({ title, data, loading }: Props) {
         </div>
         <Divider mt={10} />
       </div>
-      {loading ? (
-        <SimpleGrid
-          cols={{ base: 2, xs: 3, sm: 4 }}
-          spacing={{ base: 10, sm: 20 }}>
-          {Array.from({ length: isNotMobile ? 8 : 4 }).map((_, index) => (
-            <CardContentSkeleton key={index} />
-          ))}
-        </SimpleGrid>
-      ) : (
-        data?.length > 0 && (
+      <AnimatePresence>
+        {loading ? (
           <SimpleGrid
             cols={{ base: 2, xs: 3, sm: 4 }}
             spacing={{ base: 10, sm: 20 }}>
-            {data?.slice(0, isNotMobile ? 8 : 4).map((item) => (
-              <CardContent key={item.id} {...item} />
+            {Array.from({ length: isNotMobile ? 8 : 4 }).map((_, index) => (
+              <CardContentSkeleton key={index} />
             ))}
           </SimpleGrid>
-        )
-      )}
+        ) : (
+          data?.length > 0 && (
+            <SimpleGrid
+              cols={{ base: 2, xs: 3, sm: 4 }}
+              spacing={{ base: 10, sm: 20 }}>
+              {data?.slice(0, isNotMobile ? 8 : 4).map((item, index) => (
+                <motion.div
+                  key={index}
+                  custom={index}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={itemVariants}>
+                  <CardContent {...item} />
+                </motion.div>
+              ))}
+            </SimpleGrid>
+          )
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+
+const itemVariants = {
+  hidden: (index: number) => ({
+    opacity: 0,
+    y: 20,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+    },
+  }),
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+      duration: 0.5,
+    },
+  }),
+  exit: (index: number) => ({
+    opacity: 0,
+    y: 20,
+    transition: {
+      delay: index * 0.2, // Adjust the delay as needed
+    },
+  }),
+};
+

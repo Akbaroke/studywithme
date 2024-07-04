@@ -3,7 +3,7 @@ import { formatSeconds } from '@/helpers/formatDate';
 import { ContentModel } from '@/models/contentModel';
 import { clickedContent } from '@/services/contentService';
 import { Badge, Card, Skeleton } from '@mantine/core';
-import { IconClock } from '@tabler/icons-react';
+import { IconBrandYoutube, IconClock, IconEye } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -22,6 +22,7 @@ export function CardContent({
   total_klik,
   updated_at,
   created_at,
+  total_content,
 }: ContentModel) {
   const router = useRouter();
 
@@ -37,7 +38,7 @@ export function CardContent({
       padding="md"
       radius="md"
       withBorder
-      className="cursor-pointer [&>div>div>img]:hover:scale-110 min-h-[300px]">
+      className="cursor-pointer [&>div>div>img]:hover:scale-110 min-h-[300px] h-full">
       <Card.Section className="relative bg-black/20">
         {is_premium && (
           <Badge
@@ -68,14 +69,21 @@ export function CardContent({
           <h1 className="sm:text-base text-sm font-semibold line-clamp-2">
             {title}
           </h1>
-          <div className="flex gap-4 items-center">
-            <div className="flex text-gray-400 items-center gap-1 sm:text-md text-xs">
-              <IoStatsChart size={12} />
-              <p>{total_klik}</p>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex text-gray-400 items-center gap-1 sm:text-md text-xs">
+                <IconClock size={12} />
+                <p>{formatSeconds(total_duration ?? 0)}</p>
+              </div>
+              <div className="flex text-gray-400 items-center gap-1 sm:text-md text-xs">
+                <IconBrandYoutube size={12} />
+                <p>{total_content} Materi</p>
+              </div>
             </div>
             <div className="flex text-gray-400 items-center gap-1 sm:text-md text-xs">
-              <IconClock size={12} />
-              <p>{formatSeconds(total_duration ?? 0)}</p>
+              <IoStatsChart size={12} />
+              {/* <IconEye size={16} /> */}
+              <p>{total_klik}</p>
             </div>
           </div>
         </div>

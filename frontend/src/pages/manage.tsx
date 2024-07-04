@@ -19,7 +19,7 @@ export default function Manage({ role }: { role: RoleType }) {
   return (
     <div className="w-full">
       <Metadata title="Mengelola Data" />
-      <div className="flex flex-col gap-10 py-10 w-full">
+      <div className="flex flex-col gap-10 sm:py-10 py-5 w-full">
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">Mengelola</h1>
           <p className="text-md font-medium text-gray-500 max-w-lg">

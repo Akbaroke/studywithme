@@ -33,6 +33,7 @@
     "nextjs-progressbar": "^0.0.16",
     "react": "^18",
     "react-dom": "^18",
+    "react-floating-whatsapp": "^5.0.8",
     "react-icons": "^5.2.1",
     "react-lazy-load": "^4.0.1",
     "react-player": "^2.16.0",

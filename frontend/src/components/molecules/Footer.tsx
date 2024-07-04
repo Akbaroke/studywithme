@@ -3,49 +3,52 @@ import Image from 'next/image';
 import React from 'react';
 import Logo from '../atoms/Logo';
 import {
-  IconBrandFacebook,
+  IconBrandGithub,
   IconBrandInstagram,
   IconBrandLinkedin,
   IconBrandWhatsapp,
-  IconBrandX,
 } from '@tabler/icons-react';
-import { ActionIcon, Divider } from '@mantine/core';
+import { ActionIcon, Divider, Tooltip } from '@mantine/core';
 import TextLink from '../atoms/TextLink';
+import Link from 'next/link';
 
 const socialMediaLinks = [
   {
-    name: 'Facebook',
-    link: 'https://facebook.com',
-    icon: <IconBrandFacebook size={15} />,
+    name: 'Github',
+    link: 'https://github.com/akbaroke',
+    icon: <IconBrandGithub size={15} />,
   },
   {
     name: 'LinkedIn',
-    link: 'https://linkedin.com',
+    link: 'https://www.linkedin.com/in/akbaroke/',
     icon: <IconBrandLinkedin size={15} />,
   },
   {
     name: 'Instagram',
-    link: 'https://instagram.com',
+    link: 'https://www.instagram.com/akbar.833/',
     icon: <IconBrandInstagram size={15} />,
   },
   {
     name: 'Whatsapp',
-    link: 'https://whatsapp.com',
+    link: 'https://wa.me/6281310725348',
     icon: <IconBrandWhatsapp size={15} />,
-  },
-  {
-    name: 'Twitter',
-    link: 'https://twitter.com',
-    icon: <IconBrandX size={15} />,
   },
 ];
 
 const SocialMediaIcons = () => (
   <div className="flex items-center gap-2">
-    {socialMediaLinks.map(({ icon }, index) => (
-      <ActionIcon key={index} variant="default" radius="md">
-        {icon}
-      </ActionIcon>
+    {socialMediaLinks.map(({ icon, link, name }, index) => (
+      <Link href={link} key={index} target="_blank">
+        <Tooltip
+          label={name}
+          withArrow
+          openDelay={300}
+          transitionProps={{ transition: 'pop', duration: 300 }}>
+          <ActionIcon variant="default" radius="md">
+            {icon}
+          </ActionIcon>
+        </Tooltip>
+      </Link>
     ))}
   </div>
 );

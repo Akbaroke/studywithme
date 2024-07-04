@@ -43,7 +43,7 @@ export default function Content({ id_content }: Props) {
   }
 
   return (
-    <div className="flex gap-10 py-10 md:flex-row flex-col">
+    <div className="flex gap-10 sm:py-10 py-5 md:flex-row flex-col">
       <Metadata title="Kontent" />
       <div className="w-full md:max-w-[600px] min-h-[180px] h-max max-w-none rounded-2xl overflow-hidden bg-gray-800 relative md:sticky md:top-28">
         <Image
@@ -181,7 +181,6 @@ const itemVariants = {
   }),
 };
 
-
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id_content } = ctx.query;
 
@@ -203,7 +202,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 const SkeletonComponent = () => {
   return (
-    <div className="flex gap-10 py-10 md:flex-row flex-col">
+    <div className="flex gap-10 sm:py-10 py-5 md:flex-row flex-col">
       <div className="relative w-full md:max-w-[600px] min-h-[180px] max-w-none rounded-2xl overflow-hidden bg-gray-100">
         <div className="flex flex-col gap-14 relative z-10 text-white w-full min-h-[180px] h-full justify-between p-7 sm:p-10 backdrop-blur-md rounded-2xl">
           <div className="flex flex-col gap-3">
