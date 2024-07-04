@@ -53,7 +53,7 @@ type DetailContentForm = {
 export default function FormDetailContent({ id, id_content, close }: Props) {
   const queryClient = useQueryClient();
   const session: UserModel = useSession().data?.user as UserModel;
-  const [meteriType, setMeteriType] = useState<'video' | 'quiz'>('video');
+  const [meteriType, setMateriType] = useState<'video' | 'quiz'>('video');
   const bankSoal = useQuery<QuestionModel[]>({
     queryKey: ['questions'],
     queryFn: () => getAllQuestion(session?.token as string),
@@ -105,7 +105,7 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
       getDetailContentById(id, session.token!).then((data) => {
         console.log(data);
         if (data.video_url) {
-          setMeteriType('video');
+          setMateriType('video');
           form.setValues({
             title: data.title,
             description: data.description.trim(),
@@ -115,7 +115,7 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
             serial_number: data.serial_number,
           });
         } else {
-          setMeteriType('quiz');
+          setMateriType('quiz');
           form.setValues({
             title: data.title,
             description: data.description.trim(),
@@ -291,7 +291,7 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
         value={meteriType}
         readOnly={mutation.status === 'pending'}
         onChange={(value) =>
-          setMeteriType(value === 'video' ? 'video' : 'quiz')
+          setMateriType(value === 'video' ? 'video' : 'quiz')
         }>
         <Group mt="xs">
           <Radio value="video" label="Video" />

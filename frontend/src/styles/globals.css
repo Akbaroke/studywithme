@@ -12,3 +12,13 @@
   filter: none;
   opacity: 1;
 }
+
+.floating-whatsapp-button {
+  width: 45px !important;
+  height: 45px !important;
+}
+
+.floating-whatsapp-button::after {
+  width: 45px !important;
+  height: 45px !important;
+}

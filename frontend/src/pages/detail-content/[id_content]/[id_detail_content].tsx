@@ -346,7 +346,7 @@ export default function DetailContent({
           href={`/detail-content/${id_content}`}
           className="flex flex-col gap-0 p-3 border-b cursor-pointer hover:bg-gray-100 transition-all duration-300">
           <h1 className="text-md font-semibold">{content?.title}</h1>
-          <p className="text-xs">{content?.total_content} meteri</p>
+          <p className="text-xs">{content?.total_content} materi</p>
         </Link>
         <ScrollArea.Autosize mah={350} type="scroll">
           <ListDetailContents />

@@ -1,7 +1,7 @@
 import { images } from '@/assets';
 import Metadata from '@/components/atoms/Metadata';
-import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
+import CardTeam from '@/components/atoms/CardTeam';
 
 export default function About() {
   return (
@@ -46,8 +46,8 @@ export default function About() {
               berbagai latar belakang yang berbeda.
             </p>
           </div>
-          <div className="flex justify-center items-center gap-5 flex-wrap max-w-2xl mx-auto">
-            {teamDatas.map((data, index) => (
+          <div className="flex justify-center items-center gap-5 flex-wrap mx-auto">
+            {/* {teamDatas.map((data, index) => (
               <motion.div
                 key={index}
                 custom={index}
@@ -65,6 +65,17 @@ export default function About() {
                 <h1 className="text-lg font-bold">{data.name}</h1>
                 <p className="text-sm font-medium text-gray-500">{data.role}</p>
               </motion.div>
+            ))} */}
+            {teamDatas.map((data, index) => (
+              <motion.div
+                key={index}
+                custom={index}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={itemVariants}>
+                <CardTeam data={data} />
+              </motion.div>
             ))}
           </div>
         </div>
@@ -77,27 +88,43 @@ const teamDatas = [
   {
     name: 'Muhammad Akbar',
     role: 'Founder, Fullstack Developer',
-    image: images.MAN_1,
+    image: images.FOTO_AKBAR,
+    githubLink: 'https://github.com/akbaroke',
+    linkedinLink: 'https://www.linkedin.com/in/akbaroke',
+    instagramLink: 'https://www.instagram.com/akbar.833',
   },
   {
     name: 'Muhamad Aldiarsyah Arifin',
     role: 'Mobile Developer',
-    image: images.MAN_2,
+    image: images.FOTO_ALDI,
+    githubLink: 'https://github.com/aldiarsyah81',
+    linkedinLink:
+      'https://www.linkedin.com/in/muhamad-aldiarsyah-arifin-43244414a',
+    instagramLink: 'https://www.instagram.com/aldiarsyah02',
   },
   {
     name: 'Gufranaka Samudra',
     role: 'Machine Learning Engineer',
-    image: images.MAN_3,
+    image: images.FOTO_AGUF,
+    githubLink: 'https://github.com/AgufSamudra',
+    linkedinLink: 'https://www.linkedin.com/in/gufranaka-samudra',
+    instagramLink: 'https://www.instagram.com/agufsamudra',
   },
   {
     name: 'Muhammad Arya Dipanegara',
     role: 'Frontend Developer',
-    image: images.MAN_4,
+    image: images.FOTO_ARGUN,
+    githubLink: 'https://github.com/AryaGunawann',
+    linkedinLink: 'https://www.linkedin.com/in/aryagunawan',
+    instagramLink: 'https://www.instagram.com/arya_gunawannnn',
   },
   {
     name: 'Windu Ardan',
     role: 'Network Engineer',
-    image: images.MAN_5,
+    image: images.FOTO_WINDU,
+    githubLink: 'https://github.com',
+    linkedinLink: 'https://www.linkedin.com/in',
+    instagramLink: 'https://www.instagram.com',
   },
 ];
 

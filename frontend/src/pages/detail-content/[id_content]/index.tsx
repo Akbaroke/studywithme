@@ -233,7 +233,6 @@ const SkeletonComponent = () => {
           {Array.from({ length: 6 }).map((_, index) => (
             <ListMateriSekeleton key={index} />
           ))}
-          {}
         </div>
       </div>
     </div>
