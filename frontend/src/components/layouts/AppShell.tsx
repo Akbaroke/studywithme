@@ -200,7 +200,7 @@ export default function Appshell({ children }: Props) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Container size="lg" p={10}>
+        <Container size="lg" px={10} py={5}>
           {isActivePage('/') && (
             <FloatingWhatsApp
               className="floating-whatsapp-button"
