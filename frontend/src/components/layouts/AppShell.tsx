@@ -174,7 +174,7 @@ export default function Appshell({ children }: Props) {
             )
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full px-3">
           {session?.token ? (
             <Button
               variant="outline"
