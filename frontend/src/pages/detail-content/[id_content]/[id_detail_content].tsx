@@ -94,7 +94,7 @@ export default function DetailContent({
   }, [detailContentSSR, newDetailContent.data, id_detail_content]);
 
   useEffect(() => {
-    console.log(historyQuestion);
+    // console.log(historyQuestion);
     if (historyQuestion) {
       setQuestionStatus('answered');
       setQuestionFinalScore({

@@ -50,10 +50,10 @@ export default function ForgotPassword({ token }: { token: string }) {
         newPassword: values.newPassword,
       });
       Notify('success', 'Password berhasil diperbarui.', 'reset-password');
-      console.log(response);
+      // console.log(response);
       router.replace('/login');
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
       if (error.response.data.errors === 'jwt malformed') {
         router.replace('/login');
         Notify(

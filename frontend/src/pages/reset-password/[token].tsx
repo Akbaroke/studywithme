@@ -45,7 +45,7 @@ export default function ResetPassword({
   });
 
   const hanldeSubmitForm = (values: FormType) => {
-    console.log(values);
+    // console.log(values);
     form.setFieldError('email', 'Token reset password ini tidak valid.');
   };
 

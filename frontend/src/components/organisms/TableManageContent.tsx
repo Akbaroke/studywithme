@@ -19,7 +19,7 @@ export default function TableManageContent() {
     queryKey: ['manage-users'],
     queryFn: () => getAllUsers(session.token as string),
   });
-  console.log(data);
+  // console.log(data);
 
   const mutation = useMutation({
     mutationFn: async ({
@@ -42,7 +42,7 @@ export default function TableManageContent() {
       Notify('success', response, 'manage-user');
     },
     onError: (error: any) => {
-      console.log(error);
+      // console.log(error);
       Notify('error', 'Gagal mengubah status akun', 'manage-user');
     },
   });
@@ -65,9 +65,11 @@ export default function TableManageContent() {
       header={
         <>
           <MantineTable.Th w={50}>No.</MantineTable.Th>
-          {['Nama', 'Email', 'Peran', 'Terakhir Diubah']?.map((element, index) => (
-            <MantineTable.Th key={index}>{element}</MantineTable.Th>
-          ))}
+          {['Nama', 'Email', 'Peran', 'Terakhir Diubah']?.map(
+            (element, index) => (
+              <MantineTable.Th key={index}>{element}</MantineTable.Th>
+            )
+          )}
           <MantineTable.Th w={110}>Action</MantineTable.Th>
         </>
       }
@@ -88,8 +90,7 @@ export default function TableManageContent() {
             styles={{ td: { whiteSpace: 'nowrap' } }}>
             {formatDate(element?.updated_at as Date)}
           </MantineTable.Td>
-          <MantineTable.Td
-            className="flex items-center gap-3 justify-evenly">
+          <MantineTable.Td className="flex items-center gap-3 justify-evenly">
             <ModalForm
               formType="manage-user"
               id={element.id}

@@ -83,9 +83,9 @@ export default function Register() {
         pathname: '/verify-otp',
         query: { email: values.email },
       });
-      console.log(response);
+      // console.log(response);
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
       Notify('error', error?.response?.data?.errors, 'register');
     } finally {
       setIsLoading(false);

@@ -38,7 +38,7 @@ export default function TableContent() {
       Notify('success', response, 'delete-content');
     },
     onError: (error: any) => {
-      console.log(error);
+      // console.log(error);
       Notify('error', 'Konten gagal dihapus', 'delete-content');
     },
   });

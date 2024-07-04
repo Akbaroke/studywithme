@@ -200,7 +200,10 @@ export default function Appshell({ children }: Props) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Container size="lg" px={10} py={5}>
+        <Container size="lg" p={10}>
+          <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute top-5 -left-5 -z-10"></div>
+          <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute bottom-0 right-0 -z-10"></div>
+          {children}
           {isActivePage('/') && (
             <FloatingWhatsApp
               className="floating-whatsapp-button"
@@ -210,9 +213,6 @@ export default function Appshell({ children }: Props) {
               avatar="https://firebasestorage.googleapis.com/v0/b/chattytalks.appspot.com/o/personal%2F1e6728ca-7e54-4e6f-809c-3a5b7f44d2b6%2Fa46f94b0-ad26-426c-a525-c28d389e2b75.jpg?alt=media&token=c3a65715-ba21-4866-8ea7-284742e89440"
             />
           )}
-          <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute top-5 -left-5 -z-10"></div>
-          <div className="w-[100px] h-[50px] bg-mantineBlue rounded-full blur-[80px] absolute bottom-0 right-0 -z-10"></div>
-          {children}
         </Container>
       </AppShell.Main>
       <Footer />

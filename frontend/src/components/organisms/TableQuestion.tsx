@@ -32,7 +32,7 @@ export default function TableQuestion() {
       Notify('success', response, 'delete-question');
     },
     onError: (error: any) => {
-      console.log(error);
+      // console.log(error);
       Notify('error', 'Soal gagal dihapus', 'delete-question');
     },
   });

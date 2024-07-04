@@ -32,7 +32,7 @@ export default function TableCategory() {
       Notify('success', response, 'delete-category');
     },
     onError: (error: any) => {
-      console.log(error);
+      // console.log(error);
       Notify('error', 'Kategori gagal dihapus', 'delete-category');
     },
   });

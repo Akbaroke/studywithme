@@ -38,7 +38,7 @@ export default function ForgotPassword() {
       const response = await axios.post('/users/forgot-password', {
         email: values.email,
       });
-      console.log(response);
+      // console.log(response);
       setStatus('success');
       Notify(
         'success',
@@ -47,7 +47,7 @@ export default function ForgotPassword() {
       );
       setTime(60);
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
       Notify('error', error.response.data.errors, 'forgot-password');
     } finally {
       setIsLoading(false);

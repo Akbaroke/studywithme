@@ -50,7 +50,7 @@ export default function VerifyOtp({ email }: { email: string }) {
         email: email,
         otp: otp,
       });
-      console.log(response);
+      // console.log(response);
       Notify('success', 'Email berhasil terverifikasi');
       router.replace('/login');
     } catch (error: any) {
@@ -74,10 +74,10 @@ export default function VerifyOtp({ email }: { email: string }) {
       });
       setTime(60);
       setOtp('');
-      console.log(response);
+      // console.log(response);
       Notify('success', 'Kirim ulang OTP berhasil.', 'resend-otp');
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
       Notify('error', error.response.data.errors, 'resend-otp');
     } finally {
       setIsLoading(false);
@@ -93,11 +93,11 @@ export default function VerifyOtp({ email }: { email: string }) {
       router.replace({
         query: { email: values.email },
       });
-      console.log(response);
+      // console.log(response);
       toggle();
     } catch (error: any) {
       setErrorMessage(error.response.data.errors);
-      console.log(error.response.data.errors);
+      // console.log(error.response.data.errors);
       Notify('error', error.response.data.errors, 'resend-otp');
     } finally {
       setIsLoading(false);

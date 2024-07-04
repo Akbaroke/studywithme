@@ -103,7 +103,7 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
   useEffect(() => {
     if (id) {
       getDetailContentById(id, session.token!).then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.video_url) {
           setMateriType('video');
           form.setValues({
@@ -148,7 +148,7 @@ export default function FormDetailContent({ id, id_content, close }: Props) {
       Notify('success', response, 'delete-content');
     },
     onError: (error: any) => {
-      console.log(error);
+      // console.log(error);
       Notify('error', 'Konten gagal dihapus', 'delete-content');
     },
   });
