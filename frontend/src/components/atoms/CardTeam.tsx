@@ -162,7 +162,7 @@ function Sosmed({ githubLink, instagramLink, linkedinLink }: any) {
           variant="default"
           radius="md"
           size={30}
-          onClick={() => window.open(instagramLink)}>
+          onClick={() => window.open(linkedinLink)}>
           <IconBrandLinkedin
             style={{ width: '70%', height: '70%' }}
             stroke={1.5}
@@ -178,7 +178,7 @@ function Sosmed({ githubLink, instagramLink, linkedinLink }: any) {
           variant="default"
           radius="md"
           size={30}
-          onClick={() => window.open(linkedinLink)}>
+          onClick={() => window.open(instagramLink)}>
           <IconBrandInstagram
             style={{ width: '70%', height: '70%' }}
             stroke={1.5}
