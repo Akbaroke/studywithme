@@ -13,7 +13,7 @@
 
 ## Introduction
 
-studywithme adalah sebuah aplikasi pembelajaran sederhana.
+StudyWithMe adalah aplikasi pembelajaran sederhana yang dirancang untuk membantu pengguna tetap fokus dan produktif dalam belajar. Aplikasi ini menyediakan berbagai fitur yang dapat mendukung pengalaman belajar yang lebih terstruktur dan efisien, baik bagi pelajar maupun profesional yang ingin meningkatkan produktivitas mereka.
 
 <br/>
 
@@ -27,7 +27,6 @@ studywithme adalah sebuah aplikasi pembelajaran sederhana.
 - Tailwind CSS
 
 <br/>
-
 
 <br/>
 
