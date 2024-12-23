@@ -28,3 +28,20 @@ Aplikasi ini cocok digunakan oleh pelajar, mahasiswa, atau siapa saja yang ingin
 - **Notifikasi Pengingat**: Memberikan pengingat kepada pengguna untuk mengambil istirahat atau menyelesaikan tugas sesuai dengan waktu yang telah ditentukan.
 
 - **Tema dan Pengaturan Kustomisasi**: Sesuaikan tampilan aplikasi dengan tema gelap atau terang, serta berbagai preferensi lainnya.
+
+## Tech Stack
+
+Aplikasi ini dibangun menggunakan teknologi-teknologi berikut:
+
+- **Next.js**: Framework React untuk membangun antarmuka pengguna yang cepat dan responsif.
+- **TypeScript**: Bahasa pemrograman yang memberikan pengembangan yang lebih aman dan lebih terstruktur.
+- **Express**: Framework Node.js untuk membangun API backend yang cepat dan minimalis.
+- **Prisma**: ORM (Object-Relational Mapping) untuk mengelola interaksi dengan database.
+- **MySQL**: Sistem manajemen database relasional untuk menyimpan data pengguna, tugas, dan statistik.
+- **Tailwind CSS**: Framework CSS yang memungkinkan pembuatan UI yang responsif dan modern dengan cepat.
+
+## Links
+
+- **Web**: [studywithme.akbaroke.my.id](https://studywithme.akbaroke.my.id)
+- **Repo**: [github.com/Akbaroke/studywithme](https://github.com/Akbaroke/studywithme)
+- **Issues/Feedback**: [Report Bug](https://github.com/Akbaroke/studywithme/issues) · [Request Feature](https://github.com/Akbaroke/studywithme/issues)
