@@ -1,18 +1,18 @@
-import { DetailContent } from '@prisma/client';
+// import { DetailContent } from '@prisma/client';
 import {
   DetailContentValidation,
   QuestionType,
   ValidatedDetailContentData,
-} from '../validation/detail-content-validation';
-import { prismaClient } from '../application/database';
-import { Validation } from '../validation/validation';
-import { toUserResponse } from '../model/user-model';
+} from "../validation/detail-content-validation";
+import { prismaClient } from "../application/database";
+import { Validation } from "../validation/validation";
+import { toUserResponse } from "../model/user-model";
 
 export class DetailContentService {
   static async create(
     data: ValidatedDetailContentData,
     userId: string
-  ): Promise<DetailContent> {
+  ): Promise<any> {
     const validatedData = Validation.validate(
       DetailContentValidation.CREATE,
       data
@@ -44,13 +44,13 @@ export class DetailContentService {
     return createdContent;
   }
 
-  static async getAllByContentId(id: string): Promise<DetailContent[]> {
+  static async getAllByContentId(id: string): Promise<any[]> {
     return prismaClient.detailContent.findMany({
       where: {
         id_content: id,
       },
       orderBy: {
-        updated_at: 'desc',
+        updated_at: "desc",
       },
     });
   }
@@ -80,7 +80,7 @@ export class DetailContentService {
                 user: true,
               },
               orderBy: {
-                created_at: 'asc',
+                created_at: "asc",
               },
             },
             user: true,
@@ -91,13 +91,13 @@ export class DetailContentService {
     });
     return {
       ...query,
-      questions: query?.questions?.map((question) => ({
+      questions: query?.questions?.map((question: any) => ({
         id_question: question.question.id,
         score: question.score,
         question: question.question.question,
         created_at: question.question.created_at,
         updated_at: question.question.updated_at,
-        options: question.question.options.map((option) => ({
+        options: question.question.options.map((option: any) => ({
           id: option.id,
           option: option.option,
           is_answer: option.is_answer,
@@ -122,7 +122,7 @@ export class DetailContentService {
     id: string,
     data: ValidatedDetailContentData,
     userId: string
-  ): Promise<DetailContent> {
+  ): Promise<any> {
     const validatedData = Validation.validate(
       DetailContentValidation.UPDATE,
       data

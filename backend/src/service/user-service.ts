@@ -4,16 +4,16 @@ import {
   toUserResponse,
   UpdateUserRequest,
   UserResponse,
-} from '../model/user-model';
-import { Validation } from '../validation/validation';
-import { UserValidation } from '../validation/user-validation';
-import { prismaClient } from '../application/database';
-import { ResponseError } from '../error/response-error';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { User } from '@prisma/client';
-import { sendEmail } from '../helper/email';
-import { generateOTP, isOTPValid } from '../helper/otp';
+} from "../model/user-model";
+import { Validation } from "../validation/validation";
+import { UserValidation } from "../validation/user-validation";
+import { prismaClient } from "../application/database";
+import { ResponseError } from "../error/response-error";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+// import { User } from '@prisma/client';
+import { sendEmail } from "../helper/email";
+import { generateOTP, isOTPValid } from "../helper/otp";
 
 export class UserService {
   static async register(request: CreateUserRequest): Promise<UserResponse> {
@@ -29,7 +29,7 @@ export class UserService {
     });
 
     if (totalUserWithSameEmail != 0) {
-      throw new ResponseError(400, 'Email already exists');
+      throw new ResponseError(400, "Email already exists");
     }
 
     registerRequest.password = await bcrypt.hash(registerRequest.password, 10);
@@ -48,7 +48,7 @@ export class UserService {
 
     await sendEmail(
       registerRequest.email,
-      'Verify your email',
+      "Verify your email",
       `Your OTP is ${otp}`
     );
 
@@ -61,7 +61,7 @@ export class UserService {
     });
 
     if (!user || !isOTPValid(user.otp!, user.otp_expiration!, otp)) {
-      throw new ResponseError(400, 'Invalid or expired OTP');
+      throw new ResponseError(400, "Invalid or expired OTP");
     }
 
     await prismaClient.user.update({
@@ -74,7 +74,7 @@ export class UserService {
     const user = await prismaClient.user.findUnique({ where: { email } });
 
     if (!user) {
-      throw new ResponseError(404, 'User not found');
+      throw new ResponseError(404, "User not found");
     }
 
     const otp = generateOTP();
@@ -86,7 +86,7 @@ export class UserService {
       data: { otp, otp_expiration: otpExpiration },
     });
 
-    await sendEmail(email, 'Verify your email', `Your OTP is ${otp}`);
+    await sendEmail(email, "Verify your email", `Your OTP is ${otp}`);
   }
 
   static async login(
@@ -101,7 +101,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new ResponseError(401, 'Email or password is wrong');
+      throw new ResponseError(401, "Email or password is wrong");
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -109,16 +109,16 @@ export class UserService {
       user.password
     );
     if (!isPasswordValid) {
-      throw new ResponseError(401, 'Email or password is wrong');
+      throw new ResponseError(401, "Email or password is wrong");
     }
 
     if (!user.is_email_verification) {
-      throw new ResponseError(402, 'Email is not verified');
+      throw new ResponseError(402, "Email is not verified");
     }
 
     // Create JWT token
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
-      expiresIn: '7d',
+      expiresIn: "7d",
     });
 
     return {
@@ -133,14 +133,14 @@ export class UserService {
     });
 
     if (!user) {
-      throw new ResponseError(400, 'Email not found');
+      throw new ResponseError(400, "Email not found");
     }
 
     const resetToken = jwt.sign(
       { id: user.id },
       process.env.JWT_SECRET as string,
       {
-        expiresIn: '1h',
+        expiresIn: "1h",
       }
     );
 
@@ -154,7 +154,7 @@ export class UserService {
 
     await sendEmail(
       email,
-      'Reset your password',
+      "Reset your password",
       `Your reset token is ${process.env.CLIENT_URL}/reset-password?token=${resetToken}`
     );
   }
@@ -176,7 +176,7 @@ export class UserService {
       user.reset_password_token !== token ||
       user.reset_password_expiration! < new Date()
     ) {
-      throw new ResponseError(400, 'Invalid or expired reset token');
+      throw new ResponseError(400, "Invalid or expired reset token");
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -191,12 +191,12 @@ export class UserService {
     });
   }
 
-  static async get(user: User): Promise<UserResponse> {
+  static async get(user: any): Promise<UserResponse> {
     return toUserResponse(user);
   }
 
   static async update(
-    user: User,
+    user: any,
     request: UpdateUserRequest
   ): Promise<UserResponse> {
     const updateRequest = Validation.validate(UserValidation.UPDATE, request);
@@ -209,12 +209,12 @@ export class UserService {
           user.password
         );
         if (!isOldPasswordValid) {
-          throw new ResponseError(401, 'Old password is incorrect');
+          throw new ResponseError(401, "Old password is incorrect");
         }
       } else {
         throw new ResponseError(
           400,
-          'Old password is required to change the password'
+          "Old password is required to change the password"
         );
       }
       user.password = await bcrypt.hash(updateRequest.newPassword, 10);
@@ -234,7 +234,7 @@ export class UserService {
     return toUserResponse(result);
   }
 
-  static async logout(user: User): Promise<UserResponse> {
+  static async logout(user: any): Promise<UserResponse> {
     const result = await prismaClient.user.update({
       where: {
         email: user.email,

@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+// import { User } from '@prisma/client';
 
 export type UserResponse = {
   id: string;
@@ -30,7 +30,7 @@ export type UpdateUserRequest = {
   newPassword?: string;
 };
 
-export function toUserResponse(user: User): UserResponse {
+export function toUserResponse(user: any): UserResponse {
   return {
     id: user.id,
     name: user.name,

@@ -1,10 +1,25 @@
-import { DetailContent } from '@prisma/client';
-import { z, ZodType } from 'zod';
+// import { DetailContent } from "@prisma/client";
+import { z, ZodType } from "zod";
+
+interface DetailContent {
+  id: string;
+  id_content: string;
+  serial_number: number;
+  title: string;
+  description?: string;
+  is_premium: boolean;
+  duration?: number;
+  video_url?: string;
+  created_by: string;
+  updated_by: string;
+  created_at: Date;
+  updated_at: Date;
+}
 
 export interface ValidatedDetailContentData
   extends Omit<
     DetailContent,
-    'id' | 'created_at' | 'updated_at' | 'created_by'
+    "id" | "created_at" | "updated_at" | "created_by"
   > {
   questions: QuestionType[];
 }

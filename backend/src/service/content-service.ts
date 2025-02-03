@@ -1,16 +1,16 @@
-import { prismaClient } from '../application/database';
-import { Content } from '@prisma/client';
-import { Validation } from '../validation/validation';
+import { prismaClient } from "../application/database";
+// import { Content } from '@prisma/client';
+import { Validation } from "../validation/validation";
 import {
   ContentValidation,
   ValidatedContentData,
-} from '../validation/content-validation';
+} from "../validation/content-validation";
 
 export class ContentService {
   static async create(
     contentData: ValidatedContentData,
     userId: string
-  ): Promise<Content> {
+  ): Promise<any> {
     const validatedData = Validation.validate(
       ContentValidation.CREATE,
       contentData
@@ -37,10 +37,65 @@ export class ContentService {
     return createdContent;
   }
 
-  static async getAll(): Promise<Content[]> {
+  static async getAll(): Promise<any[]> {
     const contents = await prismaClient.content.findMany({
       orderBy: {
-        updated_at: 'desc',
+        updated_at: "desc",
+      },
+      include: {
+        detailContentContentId: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+        createdBy: {
+          select: {
+            name: true,
+          },
+        },
+        updatedBy: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    return contents.map((content: any) => {
+      let total_duration = 0;
+      content.detailContentContentId.forEach((detail: any) => {
+        total_duration += detail.duration ?? 0;
+      });
+      return {
+        id: content.id,
+        title: content.title,
+        description: content.description,
+        thumbnail: content.thumbnail,
+        is_premium: content.is_premium,
+        total_duration,
+        total_klik: content.total_klik,
+        created_by: content.createdBy.name,
+        updated_by: content.updatedBy.name,
+        created_at: content.created_at,
+        updated_at: content.updated_at,
+        total_content: content.detailContentContentId.length,
+        categories: content.categories.map(({ category }: any) => ({
+          id: category.id,
+          name: category.name,
+          created_by: category.created_by,
+          updated_by: category.updated_by,
+          created_at: category.created_at,
+          updated_at: category.updated_at,
+        })),
+      };
+    });
+  }
+
+  static async getNewContent(): Promise<any[]> {
+    const contents = await prismaClient.content.findMany({
+      orderBy: {
+        created_at: "desc",
       },
       include: {
         detailContentContentId: true,
@@ -92,68 +147,13 @@ export class ContentService {
     });
   }
 
-  static async getNewContent(): Promise<Content[]> {
-    const contents = await prismaClient.content.findMany({
-      orderBy: {
-        created_at: 'desc',
-      },
-      include: {
-        detailContentContentId: true,
-        categories: {
-          include: {
-            category: true,
-          },
-        },
-        createdBy: {
-          select: {
-            name: true,
-          },
-        },
-        updatedBy: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
-
-    return contents.map((content) => {
-      let total_duration = 0;
-      content.detailContentContentId.forEach((detail) => {
-        total_duration += detail.duration ?? 0;
-      });
-      return {
-        id: content.id,
-        title: content.title,
-        description: content.description,
-        thumbnail: content.thumbnail,
-        is_premium: content.is_premium,
-        total_duration,
-        total_klik: content.total_klik,
-        created_by: content.createdBy.name,
-        updated_by: content.updatedBy.name,
-        created_at: content.created_at,
-        updated_at: content.updated_at,
-        total_content: content.detailContentContentId.length,
-        categories: content.categories.map(({ category }) => ({
-          id: category.id,
-          name: category.name,
-          created_by: category.created_by,
-          updated_by: category.updated_by,
-          created_at: category.created_at,
-          updated_at: category.updated_at,
-        })),
-      };
-    });
-  }
-
-  static async getFreeContent(): Promise<Content[]> {
+  static async getFreeContent(): Promise<any[]> {
     const contents = await prismaClient.content.findMany({
       where: {
         is_premium: false,
       },
       orderBy: {
-        created_at: 'asc',
+        created_at: "asc",
       },
       include: {
         detailContentContentId: true,
@@ -175,9 +175,9 @@ export class ContentService {
       },
     });
 
-    return contents.map((content) => {
+    return contents.map((content: any) => {
       let total_duration = 0;
-      content.detailContentContentId.forEach((detail) => {
+      content.detailContentContentId.forEach((detail: any) => {
         total_duration += detail.duration ?? 0;
       });
 
@@ -194,7 +194,7 @@ export class ContentService {
         created_at: content.created_at,
         updated_at: content.updated_at,
         total_content: content.detailContentContentId.length,
-        categories: content.categories.map(({ category }) => ({
+        categories: content.categories.map(({ category }: any) => ({
           id: category.id,
           name: category.name,
           created_by: category.created_by,
@@ -206,10 +206,10 @@ export class ContentService {
     });
   }
 
-  static async getMostClickedContent(): Promise<Content[]> {
+  static async getMostClickedContent(): Promise<any[]> {
     const contents = await prismaClient.content.findMany({
       orderBy: {
-        total_klik: 'desc',
+        total_klik: "desc",
       },
       include: {
         detailContentContentId: true,
@@ -231,9 +231,9 @@ export class ContentService {
       },
     });
 
-    return contents.map((content) => {
+    return contents.map((content: any) => {
       let total_duration = 0;
-      content.detailContentContentId.forEach((detail) => {
+      content.detailContentContentId.forEach((detail: any) => {
         total_duration += detail.duration ?? 0;
       });
 
@@ -251,7 +251,7 @@ export class ContentService {
         updated_at: content.updated_at,
         total_content: content.detailContentContentId.length,
         detail_content: content.detailContentContentId,
-        categories: content.categories.map(({ category }) => ({
+        categories: content.categories.map(({ category }: any) => ({
           id: category.id,
           name: category.name,
           created_by: category.created_by,
@@ -271,7 +271,7 @@ export class ContentService {
       include: {
         detailContentContentId: {
           orderBy: {
-            serial_number: 'asc',
+            serial_number: "asc",
           },
         },
         categories: {
@@ -297,7 +297,7 @@ export class ContentService {
     }
 
     let total_duration = 0;
-    content.detailContentContentId.forEach((detail) => {
+    content.detailContentContentId.forEach((detail: any) => {
       total_duration += detail.duration ?? 0;
     });
 
@@ -315,7 +315,7 @@ export class ContentService {
       updated_at: content.updated_at,
       total_content: content.detailContentContentId.length,
       detail_content: content.detailContentContentId,
-      categories: content.categories.map(({ category }) => ({
+      categories: content.categories.map(({ category }: any) => ({
         id: category.id,
         name: category.name,
         created_by: category.created_by,
@@ -326,7 +326,7 @@ export class ContentService {
     };
   }
 
-  static async clickedContent(contentId: string): Promise<Content> {
+  static async clickedContent(contentId: string): Promise<any> {
     const currentContent = await prismaClient.content.findUnique({
       where: {
         id: contentId,
@@ -334,7 +334,7 @@ export class ContentService {
     });
 
     if (!currentContent) {
-      throw new Error('Konten tidak ditemukan');
+      throw new Error("Konten tidak ditemukan");
     }
 
     const previousTotalKlik = currentContent.total_klik
@@ -358,7 +358,7 @@ export class ContentService {
     contentId: string,
     contentData: ValidatedContentData,
     userId: string
-  ): Promise<Content> {
+  ): Promise<any> {
     const validatedData = Validation.validate(
       ContentValidation.UPDATE,
       contentData

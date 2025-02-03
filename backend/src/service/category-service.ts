@@ -1,13 +1,10 @@
-import { prismaClient } from '../application/database';
-import { Category } from '@prisma/client';
-import { Validation } from '../validation/validation';
-import { CategoryValidation } from '../validation/category-validation';
+import { prismaClient } from "../application/database";
+// import { Category } from '@prisma/client';
+import { Validation } from "../validation/validation";
+import { CategoryValidation } from "../validation/category-validation";
 
 export class CategoryService {
-  static async create(
-    data: Omit<Category, 'id' | 'created_at' | 'updated_at'>,
-    userId: string
-  ): Promise<Category> {
+  static async create(data: any, userId: string): Promise<any> {
     const validatedData = Validation.validate(CategoryValidation.CREATE, data);
     return await prismaClient.category.create({
       data: {
@@ -18,23 +15,23 @@ export class CategoryService {
     });
   }
 
-  static async getAll(): Promise<Category[]> {
+  static async getAll(): Promise<any[]> {
     return await prismaClient.category.findMany({
       orderBy: {
-        updated_at: 'desc',
+        updated_at: "desc",
       },
     });
   }
 
-  static async getById(id: string): Promise<Category | null> {
+  static async getById(id: string): Promise<any | null> {
     return await prismaClient.category.findUnique({ where: { id } });
   }
 
   static async update(
     id: string,
-    data: Omit<Category, 'id' | 'created_at' | 'updated_at' | 'created_by'>,
+    data: Omit<any, "id" | "created_at" | "updated_at" | "created_by">,
     userId: string
-  ): Promise<Category> {
+  ): Promise<any> {
     const validatedData = Validation.validate(CategoryValidation.UPDATE, data);
     return await prismaClient.category.update({
       where: { id },
