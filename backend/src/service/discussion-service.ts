@@ -1,12 +1,12 @@
-import { prismaClient } from '../application/database';
-import { ValidatedDiscussionData } from '../validation/discussion-validation';
-import { Discussion } from '@prisma/client';
+import { prismaClient } from "../application/database";
+import { ValidatedDiscussionData } from "../validation/discussion-validation";
+// import { Discussion } from '@prisma/client';
 
 export class DiscussionService {
   static async create(
     data: ValidatedDiscussionData,
     userId: string
-  ): Promise<Discussion> {
+  ): Promise<any> {
     const discussion = await prismaClient.discussion.create({
       data: {
         message: data.message,
@@ -18,7 +18,7 @@ export class DiscussionService {
     return discussion;
   }
 
-  static async getAll(): Promise<Discussion[]> {
+  static async getAll(): Promise<any[]> {
     return prismaClient.discussion.findMany({
       include: {
         user: true,
@@ -29,7 +29,7 @@ export class DiscussionService {
     });
   }
 
-  static async getById(id: string): Promise<Discussion | null> {
+  static async getById(id: string): Promise<any | null> {
     return prismaClient.discussion.findUnique({
       where: { id },
       include: {
@@ -45,7 +45,7 @@ export class DiscussionService {
     id: string,
     data: ValidatedDiscussionData,
     userId: string
-  ): Promise<Discussion> {
+  ): Promise<any> {
     return prismaClient.discussion.update({
       where: { id },
       data: {

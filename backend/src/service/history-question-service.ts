@@ -1,20 +1,20 @@
-import { prismaClient } from '../application/database';
-import { HistoryQuestion } from '@prisma/client';
+import { prismaClient } from "../application/database";
+// import { HistoryQuestion } from '@prisma/client';
 import {
   HistoryQuestionValidation,
   UpdateHistoryQuestionValidation,
   ValidatedHistoryQuestionData,
-} from '../validation/history-question-validation';
+} from "../validation/history-question-validation";
 
 export class HistoryQuestionService {
   static async create(
     data: ValidatedHistoryQuestionData,
     userId: string
-  ): Promise<HistoryQuestion> {
+  ): Promise<any> {
     const validatedData = HistoryQuestionValidation.parse(data);
 
     if (!validatedData.id_detail_content) {
-      throw new Error('id_detail_content is required');
+      throw new Error("id_detail_content is required");
     }
 
     const historyQuestion = await prismaClient.historyQuestion.create({
@@ -29,7 +29,7 @@ export class HistoryQuestionService {
     return historyQuestion;
   }
 
-  static async getAll(): Promise<HistoryQuestion[]> {
+  static async getAll(): Promise<any[]> {
     return prismaClient.historyQuestion.findMany({
       include: {
         detailContent: true,
@@ -37,7 +37,7 @@ export class HistoryQuestionService {
     });
   }
 
-  static async getById(id: string): Promise<HistoryQuestion | null> {
+  static async getById(id: string): Promise<any | null> {
     return prismaClient.historyQuestion.findUnique({
       where: { id },
       include: {
@@ -49,11 +49,11 @@ export class HistoryQuestionService {
   static async update(
     id: string,
     data: ValidatedHistoryQuestionData
-  ): Promise<HistoryQuestion> {
+  ): Promise<any> {
     const validatedData = UpdateHistoryQuestionValidation.parse(data);
 
     if (!validatedData.id_detail_content) {
-      throw new Error('id_detail_content is required');
+      throw new Error("id_detail_content is required");
     }
 
     return prismaClient.historyQuestion.update({

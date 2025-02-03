@@ -106,10 +106,10 @@ export class DetailContentService {
       discussionDetailContentId: null,
       historyQuestion: query?.historyQuestion[0],
       discussions: query?.discussionDetailContentId
-        .filter((discussion) => !discussion.parentDiscussion)
-        .map((discussion) => ({
+        .filter((discussion: any) => !discussion.parentDiscussion)
+        .map((discussion: any) => ({
           ...discussion,
-          replies: discussion.replies.map((reply) => ({
+          replies: discussion.replies.map((reply: any) => ({
             ...reply,
             user: toUserResponse(reply.user),
           })),

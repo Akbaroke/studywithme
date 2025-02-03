@@ -1,6 +1,6 @@
-import { prismaClient } from '../application/database';
-import { UserResponse } from '../model/user-model';
-import { ValidatedManageUserData } from '../validation/manage-user-validation';
+import { prismaClient } from "../application/database";
+import { UserResponse } from "../model/user-model";
+import { ValidatedManageUserData } from "../validation/manage-user-validation";
 
 export class ManageUserService {
   static async updateUser(id: string, data: ValidatedManageUserData) {
@@ -13,7 +13,7 @@ export class ManageUserService {
   static async getAllUsers() {
     const users = await prismaClient.user.findMany();
 
-    return users.map((value) => ({
+    return users.map((value: any) => ({
       id: value.id,
       email: value.email,
       name: value.name,

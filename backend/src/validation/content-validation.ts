@@ -1,5 +1,18 @@
-import { Content } from '@prisma/client';
-import { z, ZodType } from 'zod';
+// import { Content } from '@prisma/client';
+import { z, ZodType } from "zod";
+
+interface Content {
+  id: string;
+  title: string;
+  description?: string;
+  thumbnail?: string;
+  is_premium: boolean;
+  total_klik?: number;
+  created_by: string;
+  updated_by: string;
+  created_at: Date;
+  updated_at: Date;
+}
 
 interface ContentData {
   title: string;
@@ -12,7 +25,7 @@ interface ContentData {
 }
 
 export interface ValidatedContentData
-  extends Omit<Content, 'id' | 'created_at' | 'updated_at' | 'created_by'> {
+  extends Omit<Content, "id" | "created_at" | "updated_at" | "created_by"> {
   categories: string[]; // Add categories here if it's not defined in Content already
 }
 

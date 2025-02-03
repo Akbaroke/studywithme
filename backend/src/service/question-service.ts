@@ -1,8 +1,8 @@
-import { prismaClient } from '../application/database';
-import { Question } from '@prisma/client';
+import { prismaClient } from "../application/database";
+// import { Question } from '@prisma/client';
 
 export class QuestionService {
-  static async create(data: any): Promise<Question> {
+  static async create(data: any): Promise<any> {
     const { question, score, options } = data;
 
     return prismaClient.question.create({
@@ -18,18 +18,18 @@ export class QuestionService {
     });
   }
 
-  static async getAll(): Promise<Question[]> {
+  static async getAll(): Promise<any[]> {
     return prismaClient.question.findMany({
       include: {
         options: true,
       },
       orderBy: {
-        updated_at: 'desc',
+        updated_at: "desc",
       },
     });
   }
 
-  static async getById(id: string): Promise<Question | null> {
+  static async getById(id: string): Promise<any | null> {
     return prismaClient.question.findUnique({
       where: { id },
       include: {
@@ -38,7 +38,7 @@ export class QuestionService {
     });
   }
 
-  static async update(id: string, data: any): Promise<Question> {
+  static async update(id: string, data: any): Promise<any> {
     const { question, score, options } = data;
 
     await prismaClient.option.deleteMany({
@@ -60,7 +60,7 @@ export class QuestionService {
   }
 
   static async delete(id: string): Promise<void> {
-    await prismaClient.$transaction(async (prisma) => {
+    await prismaClient.$transaction(async (prisma: any) => {
       await prisma.option.deleteMany({
         where: { id_question: id },
       });

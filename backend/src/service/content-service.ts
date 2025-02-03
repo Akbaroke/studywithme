@@ -117,9 +117,9 @@ export class ContentService {
       },
     });
 
-    return contents.map((content) => {
+    return contents.map((content: any) => {
       let total_duration = 0;
-      content.detailContentContentId.forEach((detail) => {
+      content.detailContentContentId.forEach((detail: any) => {
         total_duration += detail.duration ?? 0;
       });
       return {
@@ -135,7 +135,7 @@ export class ContentService {
         created_at: content.created_at,
         updated_at: content.updated_at,
         total_content: content.detailContentContentId.length,
-        categories: content.categories.map(({ category }) => ({
+        categories: content.categories.map(({ category }: any) => ({
           id: category.id,
           name: category.name,
           created_by: category.created_by,
